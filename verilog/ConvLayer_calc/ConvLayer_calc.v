@@ -209,7 +209,7 @@ parameter NMP5 = N + M + 5;
   end // always
 
 
-always @(posedge clk or rst)
+always @(posedge clk) // or rst)
  if (rst) begin
    en_prod <= 1'b0;
    en_sum  <= 1'b0;

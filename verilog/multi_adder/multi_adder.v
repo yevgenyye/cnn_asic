@@ -1,26 +1,29 @@
  module multi_adder    #(
-    parameter CL_IN = 3,  // number of inputs features
+    parameter CL_IN = 3,  // 2...64, number of inputs features
+    parameter RELU  = 1,  // 0 - no relu, 1 - relu, only positive output values
     parameter N     = 8,  // input/output data width
     parameter SR    = 2   // data shift right before output
 
 ) (
     input wire               clk  ,
     input wire               rst  ,
-    input wire [CL_IN*N-1:0] d_in ,
-    input wire               en_in,
+    input      [CL_IN*N-1:0] d_in ,
+    input                    en_in,
 
     output reg [N-1:0]      d_out ,
     output reg              en_out    
 );
 
  integer i = 0;
- parameter E  = 4; // Number of extention bits (6 for 64 inputs, 8 for 256 inputs ,..)
+ parameter E  = 3; // Number of extention bits (6 for 64 inputs, 8 for 256 inputs ,..)
  //parameter NMP1 = N + M + 1;
  //reg [256*(N+E)-1:0] d_256;
  reg [64*(N+E)-1:0] d_64;
  reg [16*(N+E)-1:0] d_16;
  reg [ 4*(N+E)-1:0] d_4;
  reg [ 1*(N+E)-1:0] d_1;
+ reg [ 1*(N+E)-1:0] d_relu;
+ reg [ 1*(N+E)-1:0] d_ovf;
 
  reg  en_64;
  reg  en_16;
@@ -200,7 +203,7 @@ generate
                                       d_64[ 1*(N+E) +: N+E] +
                                       d_64[ 0*(N+E) +: N+E] ;
          end
-         always @(posedge clk or rst)
+         always @(posedge clk) // or rst)
             if (rst) en_16 <= 1'b0;
             else     en_16 <= en_64;
       end
@@ -243,24 +246,59 @@ generate
                                    d_16[ 0*(N+E) +: N+E] ;
          end
          
-         always @(posedge clk or rst)
+         always @(posedge clk) // or rst)
             if (rst) en_4 <= 1'b0;
             else     en_4 <= en_16;
       end
 endgenerate
 
-always @(posedge clk) begin
-   d_1 <= d_4[3*(N+E) +: N+E] + 
-          d_4[2*(N+E) +: N+E] + 
-          d_4[1*(N+E) +: N+E] + 
-          d_4[0*(N+E) +: N+E] ;
-end
+//always @(posedge clk) begin
+//   d_1 <= d_4[3*(N+E) +: N+E] + 
+//          d_4[2*(N+E) +: N+E] + 
+//          d_4[1*(N+E) +: N+E] + 
+//          d_4[0*(N+E) +: N+E] ;
+//end
 
-always @(posedge clk or rst)
+// TEST RELU + Overflow
+always @(posedge clk)
+   if (rst) 
+      d_1 <= {(N+E){1'b0}};
+   else     
+      d_1 <=  d_1 + 1'b1 ;
+
+
+always @(posedge clk) // or rst)
    if (rst) en_out <= 1'b0;
    else     en_out <= en_4;
 
-always @(d_1) d_out <= d_1[SR +: N];
 
+
+always @(d_1) 
+   if (RELU) 
+      d_relu <= {(N+E){!d_1[N+E-1]}} & d_1;
+   else
+      d_relu <= d_1;
+
+always @(d_relu) 
+   if (d_relu[(N+E)-1 : N + SR] == {(E-1-SR){1'b0}})
+      d_ovf <= d_relu;
+   else
+      begin
+      d_ovf[ (N+E)-1    : N + SR -1 ] <= {( ((N+E)-1   )- (N + SR -1) + 1){1'b0}};
+      d_ovf[ N + SR - 2 :         0 ] <= {( (N + SR - 2)-             + 1){1'b1}};
+      end
+
+
+//always @(d_relu) 
+//   if (d_relu[(N+E)-1 : N + SR -1] == {(((N+E)-1 )- (N + SR -1) + 1){1'b0}})
+//      d_ovf <= d_relu;
+//   else
+//      begin
+//      d_ovf[ (N+E)-1    : N + SR -1 ] <= {( ((N+E)-1   )- (N + SR -1) + 1){1'b0}};
+//      d_ovf[ N + SR - 2 :         0 ] <= {( (N + SR - 2)-             + 1){1'b1}};
+//      end
+
+always @(d_ovf)
+   d_out <= d_ovf[SR +: N];
 
 endmodule

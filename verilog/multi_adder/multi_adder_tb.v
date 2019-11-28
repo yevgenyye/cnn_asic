@@ -1,8 +1,9 @@
   `timescale 1 ns/10 ps 
 
  module multi_adder_tb ();
-    parameter CL_IN = 1;  // number of inputs features
-    parameter N     = 4;  // input/output data width
+    parameter CL_IN = 8;  // number of inputs features
+    parameter RELU  = 0;
+    parameter N     = 3;  // input/output data width
     parameter SR    = 2;  // data shift right before output
 
 
@@ -21,6 +22,7 @@
 
 multi_adder #(
   .CL_IN (CL_IN), 
+  .RELU  (RELU ),
   .N     (N    ), 
   .SR    (SR   )     
    ) 
@@ -53,7 +55,7 @@ initial // initial block executes only once
      rst <= 1'b0; 
      #20;
      en_in <= 1'b1;
-     for(j=0; j<10; j=j+1) 
+     for(j=0; j<100; j=j+1) 
      begin
         for(i=0; i<CL_IN; i=i+1) 
            d_in[i*N +: N] <= d_val + i;
