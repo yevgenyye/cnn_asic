@@ -15,7 +15,7 @@
 );
 
  integer i = 0;
- parameter E  = 3; // Number of extention bits (6 for 64 inputs, 8 for 256 inputs ,..)
+ parameter E  = 4; // Number of extention bits (6 for 64 inputs, 8 for 256 inputs ,..)
  //parameter NMP1 = N + M + 1;
  //reg [256*(N+E)-1:0] d_256;
  reg [64*(N+E)-1:0] d_64;
@@ -252,20 +252,20 @@ generate
       end
 endgenerate
 
-//always @(posedge clk) begin
-//   d_1 <= d_4[3*(N+E) +: N+E] + 
-//          d_4[2*(N+E) +: N+E] + 
-//          d_4[1*(N+E) +: N+E] + 
-//          d_4[0*(N+E) +: N+E] ;
-//end
+always @(posedge clk) begin
+   d_1 <= d_4[3*(N+E) +: N+E] + 
+          d_4[2*(N+E) +: N+E] + 
+          d_4[1*(N+E) +: N+E] + 
+          d_4[0*(N+E) +: N+E] ;
+end
 
-// TEST RELU + Overflow
-always @(posedge clk)
-   if (rst) 
-      d_1 <= {(N+E){1'b0}};
-   else     
-      d_1 <=  d_1 + 1'b1 ;
-
+//// TEST RELU + Overflow
+//always @(posedge clk)
+//   if (rst) 
+//      d_1 <= {(N+E){1'b0}};
+//   else     
+//      d_1 <=  d_1 + 1'b1 ;
+//// TEST END
 
 always @(posedge clk) // or rst)
    if (rst) en_out <= 1'b0;
@@ -280,13 +280,30 @@ always @(d_1)
       d_relu <= d_1;
 
 always @(d_relu) 
-   if (d_relu[(N+E)-1 : N + SR] == {(E-1-SR){1'b0}})
-      d_ovf <= d_relu;
-   else
+   if      (d_relu[(N+E)-1 : N + SR -1] == {(E -SR){1'b0}})  // positive value. same sign in MSB and highest cutted bits
+      d_ovf <= d_relu;                                           // no overflow
+   else if (d_relu[(N+E)-1 : N + SR -1] == {(E-SR+1){1'b1}}) // negative value. same sign in MSB and highest cutted bits
+      d_ovf <= d_relu;                                           // no overflow
+   else if (d_relu[(N+E)-1] == 1'b0)                         // positive overflow
       begin
-      d_ovf[ (N+E)-1    : N + SR -1 ] <= {( ((N+E)-1   )- (N + SR -1) + 1){1'b0}};
-      d_ovf[ N + SR - 2 :         0 ] <= {( (N + SR - 2)-             + 1){1'b1}};
+      d_ovf[ (N+E)-1 : N + SR -1 ] <= {( ((N+E)-1)- (N + SR -1) + 1){1'b0}};
+      d_ovf[ N + SR  :         0 ] <= {( (N + SR )-             + 1){1'b1}};
       end
+   else                                                     // negative overflow
+      begin
+      d_ovf[ (N+E)-1 : N + SR -1 ] <= {( E - SR    +1){1'b1}};
+      d_ovf[ N+SR-2  :         0 ] <= {( N + SR -2 +1){1'b0}};
+      end
+
+
+//always @(d_relu) 
+//   if (d_relu[(N+E)-1 : N + SR -1] == 0) //{(E -SR){1'b0}})
+//      d_ovf <= d_relu;
+//   else
+//      begin
+//      d_ovf[ (N+E)-1    : N + SR ] <= {( ((N+E)-1   )- (N + SR ) + 1){1'b0}};
+//      d_ovf[ N + SR - 1 :      0 ] <= {( (N + SR - 1)-           + 1){1'b1}};
+//      end
 
 
 //always @(d_relu) 

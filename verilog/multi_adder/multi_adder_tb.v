@@ -3,8 +3,8 @@
  module multi_adder_tb ();
     parameter CL_IN = 8;  // number of inputs features
     parameter RELU  = 0;
-    parameter N     = 3;  // input/output data width
-    parameter SR    = 2;  // data shift right before output
+    parameter N     = 4;  // input/output data width
+    parameter SR    = 1;  // data shift right before output
 
 
     reg               clk   ;
