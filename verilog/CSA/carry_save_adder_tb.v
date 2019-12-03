@@ -1,5 +1,5 @@
 module carry_save_adder_tb;
-parameter N = 5;  // 3+ number of busses 
+parameter N = 9;  // 3+ number of busses 
 parameter W = 4;  //    input data width
 
 
@@ -39,12 +39,12 @@ $display($time, " << Starting the Simulation >>");
   //#100 a= 4'd7;  b=4'd6;  c=4'd12; d=4'd8;
   //#100 a= 4'd15; b=4'd15; c=4'd15; d=4'd15;
  
-  aa[W*N-1:0] <= 10'd231;
+  aa[W*N-1:0] <= 100'd5677990231;
   err1 <= 0;
   #100;
   // $monitor("aa= %d",aa);
 $display($time, "  aa= %d",aa);
-  for(j=0; j<100; j=j+1) 
+  for(j=0; j<10000; j=j+1) 
   begin
      aa <= { aa[W*N-2:0], (aa[W*N-1] ^ aa[W*N-2] ) };
      if (err)
@@ -62,20 +62,20 @@ $display($time, " << ENd of the Simulation >>");
 end
 //assign aa = {a,b,c,d};
 assign total_sum = {cout,sum };
-assign ref_sum = aa[0*W +: N] + 
-                 aa[1*W +: N] + 
-                 aa[2*W +: N] + 
-                 aa[3*W +: N] + 
-                 aa[4*W +: N] //+ 
-                 //aa[5*W +: N] + 
-                 //aa[6*W +: N] + 
-                 //aa[7*W +: N] + 
-                 //aa[8*W +: N] + 
-                 //aa[9*W +: N] 
+assign ref_sum = aa[0*W +: W] + 
+                 aa[1*W +: W] + 
+                 aa[2*W +: W] + 
+                 aa[3*W +: W] + 
+                 aa[4*W +: W] + 
+                 aa[5*W +: W] + 
+                 aa[6*W +: W] + 
+                 aa[7*W +: W] + 
+                 aa[8*W +: W] //+ 
+                 //aa[9*W +: W] 
                  ; //a+b+c+d;
 assign err = (total_sum == ref_sum) ? 0 : 1;
 
 
-initial
-  $monitor("A=%d, B=%d, C=%d,D=%d, || Sum= %d, Cout=%d, | Total= %d | Ref= %d || Err= %d",a,b,c,d,sum,cout,total_sum,ref_sum,err);
+//initial
+//  $monitor("A=%d, B=%d, C=%d,D=%d, || Sum= %d, Cout=%d, | Total= %d | Ref= %d || Err= %d",a,b,c,d,sum,cout,total_sum,ref_sum,err);
 endmodule
