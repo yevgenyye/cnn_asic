@@ -1,20 +1,22 @@
 module carry_save_adder_tb;
-parameter N = 9;  // 3+ number of busses 
+parameter N = 25;  // 3+ number of busses 
+parameter E = 3;  // bit extention ( N=9 -> E=2)
 parameter W = 4;  //    input data width
 
 
-wire [N:0] sum;//output
+wire [W+E-1:0] sum;//output
 wire cout;//output
-reg [W-1:0] a,b,c,d;//input
-wire [N+1:0] ref_sum, total_sum;
+reg  [W-1:0] a,b,c,d;//input
+wire [W+E:0] ref_sum, total_sum;
 wire err;
-reg [W*N-1:0] aa; 
+reg  [W*N-1:0] aa; 
 wire  axor; 
 integer           i,j;
 reg err1;
 
 carry_save_adder #(
 .N (N) , 
+.E (E) , 
 .W (W)     
 ) 
 uut
@@ -39,12 +41,13 @@ $display($time, " << Starting the Simulation >>");
   //#100 a= 4'd7;  b=4'd6;  c=4'd12; d=4'd8;
   //#100 a= 4'd15; b=4'd15; c=4'd15; d=4'd15;
  
-  aa[W*N-1:0] <= 100'd5677990231;
+  //aa[W*N-1:0] <= 100'd5677990231;
+  aa[W*N-1:0] <= 100'hfffffffffff;
   err1 <= 0;
   #100;
   // $monitor("aa= %d",aa);
 $display($time, "  aa= %d",aa);
-  for(j=0; j<10000; j=j+1) 
+  for(j=0; j<100000; j=j+1) 
   begin
      aa <= { aa[W*N-2:0], (aa[W*N-1] ^ aa[W*N-2] ) };
      if (err)
@@ -61,17 +64,34 @@ else
 $display($time, " << ENd of the Simulation >>");
 end
 //assign aa = {a,b,c,d};
-assign total_sum = {cout,sum };
-assign ref_sum = aa[0*W +: W] + 
-                 aa[1*W +: W] + 
-                 aa[2*W +: W] + 
-                 aa[3*W +: W] + 
-                 aa[4*W +: W] + 
-                 aa[5*W +: W] + 
-                 aa[6*W +: W] + 
-                 aa[7*W +: W] + 
-                 aa[8*W +: W] //+ 
-                 //aa[9*W +: W] 
+//assign total_sum = {cout,sum };
+assign total_sum [W+E-1:0] = sum;
+assign total_sum [W+E]     = cout;
+assign ref_sum = aa[ 0*W +: W] + 
+                 aa[ 1*W +: W] + 
+                 aa[ 2*W +: W] + 
+                 aa[ 3*W +: W] + 
+                 aa[ 4*W +: W] + 
+                 aa[ 5*W +: W] + 
+                 aa[ 6*W +: W] + 
+                 aa[ 7*W +: W] + 
+                 aa[ 8*W +: W] + 
+                 aa[ 9*W +: W] +
+                 aa[10*W +: W] + 
+                 aa[11*W +: W] + 
+                 aa[12*W +: W] + 
+                 aa[13*W +: W] + 
+                 aa[14*W +: W] + 
+                 aa[15*W +: W] + 
+                 aa[16*W +: W] + 
+                 aa[17*W +: W] + 
+                 aa[18*W +: W] + 
+                 aa[19*W +: W] +
+                 aa[20*W +: W] + 
+                 aa[21*W +: W] + 
+                 aa[22*W +: W] + 
+                 aa[23*W +: W] + 
+                 aa[24*W +: W] 
                  ; //a+b+c+d;
 assign err = (total_sum == ref_sum) ? 0 : 1;
 
