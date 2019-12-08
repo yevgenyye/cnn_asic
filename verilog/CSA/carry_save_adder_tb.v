@@ -1,6 +1,6 @@
 module carry_save_adder_tb;
-parameter N = 49; // 3; // 4; // 5; // 6; // 7; // 9; // 25; // 3+ number of busses 
-parameter E = 4 ; // 1; // 1; // 2; // 2; // 2; // 3; // 4;  // bit extention ( N=9 -> E=3, N=25 -> E=4)
+parameter N = 9; // 3; // 4; // 5; // 6; // 7; // 9; // 25; // 49; //  3+ number of busses 
+parameter E = 3 ; // 1; // 1; // 2; // 2; // 2; // 3; // 4;  // 5 ; //  bit extention ( N=9 -> E=3, N=25 -> E=4)
 parameter W = 4;  //    input data width
 
 
@@ -24,8 +24,8 @@ uut
 (
 .a(aa),
 .sum(sum),
-.cout(cout),
-.cla_sum(cla_sum)
+.cout(cout)//,
+//.cla_sum(cla_sum)
 );
 
 
@@ -44,8 +44,8 @@ $display($time, " << Starting the Simulation >>");
   //aa[W*N-1:0] <= 100'd5677990231;
   //aa[W*N-1:0] <= 100'hfffffffffff;
   //aa[W*N-1:0] <= 100'hfffffffffffffffffffffffff;
-  //aa[W*N-1:0] <= 100'd5677990543656541214231;
-  aa[W*N-1:0] <= 200'hfffffffffffffffffffffffffffffffffffffffffffffffff;
+  aa[W*N-1:0] <= 100'd5677990543656541214231;
+  //aa[W*N-1:0] <= 200'hfffffffffffffffffffffffffffffffffffffffffffffffff;
   err1 <= 0;
   #100;
   // $monitor("aa= %d",aa);
@@ -98,7 +98,7 @@ assign ref_sum = (N == 49)  ? aa[ 0*W +: W] + aa[ 1*W +: W] + aa[ 2*W +: W] + aa
 
 //assign err = (total_sum == ref_sum) ? 0 : 1;
 assign err = (total_sum != ref_sum) ? 1 :
-             (  cla_sum != ref_sum) ? 1 :
+           //  (  cla_sum != ref_sum) ? 1 :
                                       0 ;
 
 //initial

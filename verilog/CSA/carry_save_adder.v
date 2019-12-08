@@ -1,52 +1,18 @@
 module carry_save_adder #(
-	parameter N      =  3, // 3; // 4; // 5; // 6; // 7; // 9; // 25; // 3+ number of busses 
-	parameter E      =  1, // 1; // 1; // 2; // 2; // 2; // 3; // 4;  // bit extention ( N=9 -> E=3, N=25 -> E=4)
+	parameter N      =  9, // 3; // 4; // 5; // 6; // 7; // 9; // 25; // 49; // 3+ number of busses 
+	parameter E      =  3, // 1; // 1; // 2; // 2; // 2; // 3; // 4;  // 5 ; // bit extention ( N=9 -> E=3, N=25 -> E=4)
     parameter W      =  4  //    input data width
 )
 //(a,b,c,d, sum,cout);
-(a, sum, cout, cla_sum);
+(a, sum, cout);
 input  [N*W-1 :0] a; //, b,c,d;
 output [W+E-1 :0] sum;
 output cout;
-output [W+E :0] cla_sum;
 
-//// inputs 1-4
-//wire [W-1:0] s0, s1;
-//wire [W-1:0] c0, c1;
-//
-//
-/////////
-//wire [W:0] sum1, sum2, sum3;
-//wire [W:0] ca1 , ca2 , ca3 ;
-//
-//
-//wire [W+1:0] sum4, sum5;
-//wire [W+1:0] ca4 , ca5 ;
-//
-////wire [W+2:0] sum6;
-////wire [W+2:0] ca6 ;
-//
-//
-//wire [W+5:0] sum7;
-//wire [W+5:0] ca7 ;
-//wire [W+5:0] sum_7test, c7test;
-//
-//wire [W+5:0] sum7test;
-//wire [W+5:0] ca7test ;
-//
-//wire [W+4:0] test1, test2, test3, test4, test1_18;
-//wire [W+3:0] sum1_9  , c1_9  ;
-//wire [W+3:0] sum10_18, c10_18;
-//wire [W+3:0] sum19_25, c19_25;
-//
-//
-//wire [W:0] sum18_20, c18_20;
-//wire [W:0] sum21_23, c21_23;
-//wire [W+1:0] sum_3, c3;
-//wire [W+3:0] sum_4, c4;
-//wire [W+3:0] sum_4test, c4test;
-///
-//wire [W+E+1:0] cs_sum, cs_c ;
+wire [W+E :0] cla_sum;
+
+localparam use_cla = 1; // 0 - use RCA
+
 wire [W-1+E:0] cs_sum, cs_c ;
 
 genvar i,j;
@@ -68,12 +34,20 @@ genvar i,j;
        carry_save_4inputs #(W)   cs_4in (.a(a), .sum(cs_sum), .cout(cs_c)  );
     else if (N == 3) 
        carry_save_3inputs #(W)   cs_3in (.a(a), .sum(cs_sum), .cout(cs_c)  );
+
+
+  
+
+    if (use_cla)
+    begin
+       carry_lookahead_adder #(W+E) CLA ( .i_add1(cs_sum), .i_add2(cs_c), .o_result(cla_sum) );
+       assign sum   = cla_sum[W+E-1 :0];
+       assign cout  = cla_sum[W+E];
+    end
+    else
+       ripple_carry #(W+E) rca1 (.a(cs_sum),.b(cs_c), .cin(1'b0),.sum(sum), .cout(cout));
+
   endgenerate
-
-  ripple_carry #(W+E) rca1 (.a(cs_sum),.b(cs_c), .cin(1'b0),.sum(sum), .cout(cout));
-
-  carry_lookahead_adder #(W+E) CLA ( .i_add1(cs_sum), .i_add2(cs_c), .o_result(cla_sum) );
-
 
 //carry_save_3inputs #(W) cs_3in_1 (.a(a[0*W +: 3*W ]), .sum(sum1), .cout(ca1)  );
 //carry_save_3inputs #(W) cs_3in_2 (.a(a[3*W +: 3*W ]), .sum(sum2), .cout(ca2)  );
@@ -309,19 +283,35 @@ module carry_save_49inputs #(
 )
 (a, sum, cout);
 input  [49*W-1:0] a; //, b,c,d;
-output [W+6  :0] sum;
-output [W+6  :0] cout;
+output [W+5  :0] sum;
+output [W+5  :0] cout;
 
-wire [W+5:0] sum1_25, sum26_49;
-wire [W+5:0] c1_25  , c26_49  ;
-//wire [W-1 :0] zeros;
-//
-//assign zeros = {(N){1'b0}};
+wire [W+3:0] sum1_25, sum26_49;
+wire [W+3:0] c1_25  , c26_49  ;
+
+wire [W+7:0] test1_25_in, test26_49_in, test1_25_out, test26_49_out, test_out, test_in;
 
 carry_save_25inputs #(W)  cs_25in1 (.a(                a[  0*W +: 25*W ]   ), .sum(sum1_25)  , .cout(c1_25 ) );
 carry_save_25inputs #(W)  cs_25in2 (.a( { {(W){1'b0}}, a[ 25*W +: 24*W ] } ), .sum(sum26_49) , .cout(c26_49) );
 
-carry_save_4inputs #(W+3) cs_4in (.a({sum1_25 ,sum26_49 ,c1_25,c26_49 }), .sum(sum), .cout(cout)  );
+carry_save_4inputs #(W+4) cs_4in (.a({sum1_25 ,sum26_49 ,c1_25,c26_49 }), .sum(sum), .cout(cout)  );
+
+//assign test1_25_in = a[ 0*W +: W] + a[ 1*W +: W] + a[ 2*W +: W] + a[ 3*W +: W] + a[ 4*W +: W] + 
+//                     a[ 5*W +: W] + a[ 6*W +: W] + a[ 7*W +: W] + a[ 8*W +: W] + a[ 9*W +: W] + 
+//                     a[10*W +: W] + a[11*W +: W] + a[12*W +: W] + a[13*W +: W] + a[14*W +: W] + 
+//                     a[15*W +: W] + a[16*W +: W] + a[17*W +: W] + a[18*W +: W] + a[19*W +: W] + 
+//                     a[20*W +: W] + a[21*W +: W] + a[22*W +: W] + a[23*W +: W] + a[24*W +: W];
+// 
+//assign test26_49_in = a[25*W +: W] + a[26*W +: W] + a[27*W +: W] + a[28*W +: W] + a[29*W +: W] + 
+//                      a[30*W +: W] + a[31*W +: W] + a[32*W +: W] + a[33*W +: W] + a[34*W +: W] + 
+//                      a[35*W +: W] + a[36*W +: W] + a[37*W +: W] + a[38*W +: W] + a[39*W +: W] + 
+//                      a[40*W +: W] + a[41*W +: W] + a[42*W +: W] + a[43*W +: W] + a[44*W +: W] + 
+//                      a[45*W +: W] + a[46*W +: W] + a[47*W +: W] + a[48*W +: W];
+//
+//assign test1_25_out  = sum1_25  + c1_25;
+//assign test26_49_out = sum26_49 + c26_49;
+//assign test_in       = test1_25_out + test26_49_out;
+//assign test_out      = sum + cout;
 
 endmodule
 
@@ -349,31 +339,7 @@ endgenerate
 assign c1[0] = cin;
 assign cout  = c1[W];
 
-//full_adder fa0(.a(a[0]), .b(b[0]),.cin(cin), .sum(sum[0]),.cout(c1));
-//full_adder fa1(.a(a[1]), .b(b[1]), .cin(c1), .sum(sum[1]),.cout(c2));
-//full_adder fa2(.a(a[2]), .b(b[2]), .cin(c2), .sum(sum[2]),.cout(c3));
-//full_adder fa3(.a(a[3]), .b(b[3]), .cin(c3), .sum(sum[3]),.cout(cout));
 endmodule
- 
-
-//////////////////////////////////////
-////4-bit Ripple Carry Adder
-//////////////////////////////////////
-// 
-//module ripple_carry_4_bit(a, b, cin, sum, cout);
-//input [3:0] a,b;
-//input cin;
-//wire c1,c2,c3;
-//output [3:0] sum;
-//output cout;
-//
-//
-//full_adder fa0(.a(a[0]), .b(b[0]),.cin(cin), .sum(sum[0]),.cout(c1));
-//full_adder fa1(.a(a[1]), .b(b[1]), .cin(c1), .sum(sum[1]),.cout(c2));
-//full_adder fa2(.a(a[2]), .b(b[2]), .cin(c2), .sum(sum[2]),.cout(c3));
-//full_adder fa3(.a(a[3]), .b(b[3]), .cin(c3), .sum(sum[3]),.cout(cout));
-//endmodule
- 
 
 ////////////////////////////////////////////
 //1bit Full Adder
