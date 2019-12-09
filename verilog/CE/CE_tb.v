@@ -2,7 +2,7 @@
 
  module CE_tb (); 
 
-    parameter CL_IN  = 3;  // 2...64, number of inputs features
+    parameter CL_IN  = 9;  // 3...64, number of inputs features
     parameter KERNEL = 3;  // 1/3/5/7
     parameter RELU   = 1;  // 0 - no relu, 1 - relu, only positive output values
     parameter N      = 4;  // input data width
@@ -11,9 +11,9 @@
 
     reg                        clk       ;
     reg                        rst       ;
-    reg  [KERNEL*KERNEL*N-1:0] data2conv ;
+    reg  [CL_IN*KERNEL*KERNEL*N-1:0] data2conv ;
     reg                        en_in     ;
-    reg  [KERNEL*KERNEL*M-1:0] w         ;
+    reg  [CL_IN*KERNEL*KERNEL*M-1:0] w         ;
     wire [N-1:0]               d_out     ;
     wire                       en_out    ;
 
@@ -58,6 +58,8 @@ end
           en_in <= 1'b0;
           d_val <= { {(N-1){1'b0}}, 1'd1 };
           w_val <= { {(M-1){1'b0}}, 1'd1 };
+          data2conv <= { (CL_IN*KERNEL*KERNEL*N){1'd1} };
+          w         <= { (CL_IN*KERNEL*KERNEL*N){1'd1} }; 
           #20;
           rst <= 1'b0; 
           #20;
@@ -65,12 +67,12 @@ end
 
           for(j=0; j<10; j=j+1) 
           begin
-             for(i=0; i<KERNEL**2; i=i+1) 
-                data2conv[i*N +: N] <= d_val + i;
-             for(i=0; i<KERNEL**2; i=i+1) 
-                w        [i*M +: M] <= w_val + i + 1;
-             d_val <= d_val + 1;
-             w_val <= w_val + 1;
+   //          for(i=0; i<CL_IN*KERNEL**2; i=i+1) 
+   //             data2conv[i*N +: N] <= d_val + i;
+   //          for(i=0; i<CL_IN*KERNEL**2; i=i+1) 
+   //             w        [i*M +: M] <= w_val + i + 1;
+   //          d_val <= d_val + 1;
+   //          w_val <= w_val + 1;
              #20;
           end
 
