@@ -2,20 +2,25 @@
 
  module CE_tb (); 
 
-    parameter CL_IN  = 9;  // 3...64, number of inputs features
+    parameter CL_IN  = 4;  // 3...64, number of inputs features
     parameter KERNEL = 3;  // 1/3/5/7
     parameter RELU   = 1;  // 0 - no relu, 1 - relu, only positive output values
     parameter N      = 4;  // input data width
     parameter M      = 4;  // input weight width
     parameter SR     = 2;  // data shift right before output
 
-    reg                        clk       ;
-    reg                        rst       ;
+    parameter  E = (KERNEL == 3) ? 3 :
+                   (KERNEL == 5) ? 4 :
+                   (KERNEL == 7) ? 5 :
+                                   1 ;
+
+    reg                              clk       ;
+    reg                              rst       ;
     reg  [CL_IN*KERNEL*KERNEL*N-1:0] data2conv ;
-    reg                        en_in     ;
+    reg                              en_in     ;
     reg  [CL_IN*KERNEL*KERNEL*M-1:0] w         ;
-    wire [N-1:0]               d_out     ;
-    wire                       en_out    ;
+    wire [N+M+E+3-1:0]                 d_out     ;
+    wire                             en_out    ;
 
 integer           i,j;
 reg    [N-1:0] d_val; 
@@ -23,6 +28,9 @@ reg    [M-1:0] w_val;
 
     localparam period = 20;
 
+ initial begin
+    $display($time, " TB, d_out port size | width= %d", N+M+E+3-1 );
+ end
 
 CE  #(
   .CL_IN (CL_IN) ,

@@ -2,7 +2,8 @@
 
  module ConvLayer_calc_tb (); 
 
-    parameter KERNEL = 1; // 1/3/5/7
+    parameter KERNEL = 3; // 1/3/5/7 ^2  // 9; // 25; // 49; //  
+    parameter E      = 3;                // 3; // 4;  // 5 ; // bit extention ( N=9 -> E=3, N=25 -> E=4)
     parameter N      = 4; // input data width
     parameter M      = 4; // input weight width
 
@@ -11,7 +12,7 @@
     reg  [KERNEL*KERNEL*N-1:0] data2conv ;
     reg                        en_in     ;
     reg  [KERNEL*KERNEL*M-1:0] w         ;
-    wire [N+M+5:0]             d_out     ;
+    wire [N+M+E:0]           d_out     ;
     wire                       en_out    ;
 
 integer           i,j;
@@ -22,6 +23,7 @@ reg    [M-1:0] w_val;
 
  ConvLayer_calc #(
 .KERNEL(KERNEL), 
+.E     (E)     , 
 .N     (N)     , 
 .M     (M)     
 ) 

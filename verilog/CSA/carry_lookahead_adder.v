@@ -1,7 +1,9 @@
 //`include "full_adder.v"
  
 module carry_lookahead_adder
-  #(parameter W)
+  #(
+   parameter W = 4
+  )
   (
    input [W-1:0] i_add1,
    input [W-1:0] i_add2,
@@ -15,7 +17,7 @@ module carry_lookahead_adder
   genvar             ii;
   generate
     for (ii=0; ii<W; ii=ii+1) 
-      begin
+      begin : for_fa
         full_adder full_adder_inst
             ( 
               .a(i_add1[ii]),
@@ -34,7 +36,7 @@ module carry_lookahead_adder
   genvar             jj;
   generate
     for (jj=0; jj<W; jj=jj+1) 
-      begin
+      begin : for_gpc
         assign w_G[jj]   = i_add1[jj] & i_add2[jj];
         assign w_P[jj]   = i_add1[jj] | i_add2[jj];
         assign w_C[jj+1] = w_G[jj] | (w_P[jj] & w_C[jj]);

@@ -43,13 +43,15 @@ $display($time, " << Starting the Simulation >>");
  
   //aa[W*N-1:0] <= 100'd5677990231;
   //aa[W*N-1:0] <= 100'hfffffffffff;
-  //aa[W*N-1:0] <= 100'hfffffffffffffffffffffffff;
-  aa[W*N-1:0] <= 100'd5677990543656541214231;
+  aa[W*N-1:0] <= 100'hfffffffffffffffffffffffff;
+  //aa[W*N-1:0] <= 100'd5677990543656541214231;
   //aa[W*N-1:0] <= 200'hfffffffffffffffffffffffffffffffffffffffffffffffff;
   err1 <= 0;
   #100;
   // $monitor("aa= %d",aa);
-$display($time, "  aa= %d",aa);
+  //$display($time, "  aa= %d",aa);
+  $display($time, " TB output sum | width= %d ",W+E  );
+
   for(j=0; j<100000; j=j+1) 
   begin
      aa <= { aa[W*N-2:0], (aa[W*N-1] ^ aa[W*N-2] ) };

@@ -19,9 +19,9 @@
 
     genvar          i;
 
- localparam  E1 = (KERNEL == 3) ? 4 : //3 :
-                  (KERNEL == 5) ? 4 :
-                  (KERNEL == 7) ? 5 :
+ localparam  E1 = (KERNEL == 3) ? 3 : //YY FIXXXX
+                  (KERNEL == 5) ? 5 :
+                  (KERNEL == 7) ? 6 :
                                  1 ;
 
  localparam  E2 = (CL_IN ==  3 || CL_IN == 4) ? 1 :
@@ -34,13 +34,19 @@
  localparam D_MSB = N+M+E1-1;
  wire [D_MSB:0]      csa_d_out; 
 
-
-wire [CL_IN*(N+M+E1-1)-1:0]     d_calc;
+localparam D_CALC_1 = N+M+E1;
+wire [CL_IN*(D_CALC_1)-1:0]     d_calc;
 //wire [CL_IN*N-1:0] d_calc;
 wire  [CL_IN-1:0]      en_calc;
 
+ initial begin
+    $display(" CE, outout d_out | width = %d", N+10-1);
+    $display(" CE, outout csa_d_out | width = %d", D_MSB-1);
+    $display(" CE, ConvLayer_calc output,d_calc | width= %d, step aa= %d",CL_IN*(D_CALC_1),D_CALC_1 );
+ end
+
  generate 
-    for (i = 0; i < CL_IN; i = i + 1) begin
+    for (i = 0; i < CL_IN; i = i + 1) begin : gen_calc
        ConvLayer_calc #(
         .KERNEL(KERNEL), 
         .E     (E1    ),
@@ -54,7 +60,7 @@ wire  [CL_IN-1:0]      en_calc;
         .data2conv (data2conv [i*KERNEL*KERNEL*N +: KERNEL*KERNEL*N]), 
         .en_in     (en_in     ), 
         .w         (w         [i*KERNEL*KERNEL*M +: KERNEL*KERNEL*M]), 
-        .d_out     (d_calc [i*(N+M+E1-1) +: N+M+E1-1] ), 
+        .d_out     (d_calc [i*D_CALC_1 +: D_CALC_1] ), 
         .en_out    (en_calc[i]) 
        );
     end
@@ -86,6 +92,6 @@ carry_save_adder #(
                   .sum (csa_d_out [D_MSB-1:0]), 
                   .cout(csa_d_out [D_MSB    ])  );
 
-assign d_out = csa_d_out;
+assign d_out[D_MSB-1:0] = csa_d_out;
 
  endmodule  
