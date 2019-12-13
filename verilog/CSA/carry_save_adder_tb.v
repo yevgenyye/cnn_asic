@@ -1,6 +1,6 @@
 module carry_save_adder_tb;
-parameter N = 9; // 3; // 4; // 5; // 6; // 7; // 9; // 25; // 49; //  3+ number of busses 
-parameter E = 3 ; // 1; // 1; // 2; // 2; // 2; // 3; // 4;  // 5 ; //  bit extention ( N=9 -> E=3, N=25 -> E=4)
+parameter N = 9;  // 3; // 4; // 5; // 6; // 7; // 9; // 25; // 49; //  3+ number of busses 
+parameter E = 3 ; // 1; // 2; // 2; // 2; // 2; // 3; // 4;  // 5 ; //  bit extention ( N=9 -> E=3, N=25 -> E=4)
 parameter W = 4;  //    input data width
 
 

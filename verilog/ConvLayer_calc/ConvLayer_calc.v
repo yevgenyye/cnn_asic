@@ -11,7 +11,7 @@
     input wire                       en_in     ,
     input wire [KERNEL*KERNEL*M-1:0] w         ,
 
-    output wire [N+M+E:0]            d_out     ,
+    output wire [N+M+E-1:0]            d_out     ,
     output wire                      en_out    
 );
  ////----------Output Ports--------------
