@@ -67,11 +67,11 @@ parameter NMP5 = N + M + 5;
 //    $display(" ConvLayer_calc output | width= %d ", D_MSB );
 // end
  
- initial begin
-    $display(" ConvLayer_calc output d_out | width= %d ",N+M+E  ); 
-    $display(" ConvLayer_calc csa_d_out   | width= %d ",D_MSB+1  ); 
-    $display(" ConvLayer_calc D_MSB   | width= %d ",D_MSB  ); 
- end
+// initial begin
+//    $display(" ConvLayer_calc output d_out | width= %d ",N+M+E  ); 
+//    $display(" ConvLayer_calc csa_d_out   | width= %d ",D_MSB+1  ); 
+//    $display(" ConvLayer_calc D_MSB   | width= %d ",D_MSB  ); 
+// end
 
  //-------------Code Starts Here-------
  always @(posedge clk)

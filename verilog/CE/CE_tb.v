@@ -2,24 +2,31 @@
 
  module CE_tb (); 
 
-    parameter CL_IN  = 4;  // 3...64, number of inputs features
+    parameter CL_IN  = 49;  // 3...64, number of inputs features (fails 5,7, No - 1,2,8)
     parameter KERNEL = 3;  // 1/3/5/7
     parameter RELU   = 1;  // 0 - no relu, 1 - relu, only positive output values
     parameter N      = 4;  // input data width
     parameter M      = 4;  // input weight width
     parameter SR     = 2;  // data shift right before output
 
-    parameter  E = (KERNEL == 3) ? 3 :
-                   (KERNEL == 5) ? 4 :
-                   (KERNEL == 7) ? 5 :
-                                   1 ;
+ parameter  E1 = (KERNEL == 3) ? 3 :
+                 (KERNEL == 5) ? 4 :
+                 (KERNEL == 7) ? 5 :
+                                 1 ;
+
+ parameter  E2 = (CL_IN ==  3) ? 1 :
+                 (CL_IN ==  4 || CL_IN ==  5 || CL_IN == 6 || CL_IN == 7 ) ? 2 :
+                 (CL_IN ==  9) ? 3 :
+                 (CL_IN == 25) ? 4 :
+                 (CL_IN == 49) ? 5 :
+                                 0 ;
 
     reg                              clk       ;
     reg                              rst       ;
     reg  [CL_IN*KERNEL*KERNEL*N-1:0] data2conv ;
     reg                              en_in     ;
     reg  [CL_IN*KERNEL*KERNEL*M-1:0] w         ;
-    wire [N+M+E+3-1:0]                 d_out     ;
+    wire [N+M+15-1:0]                 d_out     ;
     wire                             en_out    ;
 
 integer           i,j;
@@ -29,7 +36,7 @@ reg    [M-1:0] w_val;
     localparam period = 20;
 
  initial begin
-    $display($time, " TB, d_out port size | width= %d", N+M+E+3-1 );
+    $display($time, " TB, d_out port size | width= %d", N+M+E1+E2);
  end
 
 CE  #(
@@ -75,12 +82,12 @@ end
 
           for(j=0; j<10; j=j+1) 
           begin
-   //          for(i=0; i<CL_IN*KERNEL**2; i=i+1) 
-   //             data2conv[i*N +: N] <= d_val + i;
-   //          for(i=0; i<CL_IN*KERNEL**2; i=i+1) 
-   //             w        [i*M +: M] <= w_val + i + 1;
-   //          d_val <= d_val + 1;
-   //          w_val <= w_val + 1;
+             for(i=0; i<CL_IN*KERNEL**2; i=i+1) 
+                data2conv[i*N +: N] <= d_val + i;
+             for(i=0; i<CL_IN*KERNEL**2; i=i+1) 
+                w        [i*M +: M] <= w_val + i + 1;
+             d_val <= d_val + 1;
+             w_val <= w_val + 1;
              #20;
           end
 
