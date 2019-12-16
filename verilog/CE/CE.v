@@ -1,6 +1,6 @@
  module CE    #(
-    parameter CL_IN  = 49,  // 1...9, 25, 49, number of inputs features
-    parameter KERNEL = 3,  // 1/3/5/7
+    parameter CL_IN  = 4,  // 1...9, 25, 49, number of inputs features
+    parameter KERNEL = 7,  // 1/3/5/7
     parameter RELU   = 1,  // 0 - no relu, 1 - relu, only positive output values
     parameter N      = 4,  // input data width
     parameter M      = 4,  // input weight width
@@ -14,15 +14,16 @@
     input wire [CL_IN*KERNEL*KERNEL*M-1:0] w         ,
 
     output wire [N+M+15-1:0]      d_out ,
-    output wire              en_out   
+    output wire                   en_out   
 );
 
     genvar          i;
 
- localparam  E1 = (KERNEL == 3) ? 3 :
-                  (KERNEL == 5) ? 4 :
-                  (KERNEL == 7) ? 5 :
-                                 1 ;
+ localparam  E1 = (KERNEL == 1) ? 0 :
+                  (KERNEL == 3) ? 3 :
+                  (KERNEL == 5) ? 5 :
+                  (KERNEL == 7) ? 6 :
+                                  0 ;
 
  localparam  E2 = (CL_IN ==  2 ) ? 0 :
                   (CL_IN ==  3 ) ? 1 :
@@ -92,5 +93,6 @@ wire  [CL_IN-1:0]      en_calc;
       assign d_out[N+M+EXT-1 : D_MSB+1] = { (N+M+EXT-D_MSB+1) {1'b0} };
     end
 
+assign en_out = en_calc[0];
 
  endmodule  

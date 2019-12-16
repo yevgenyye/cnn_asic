@@ -100,7 +100,7 @@ parameter NMP5 = N + M + 5;
 
 
 generate
-   if (use_cla == 1)
+   if (use_cla == 1 && KERNEL != 1)
       begin : gen_cla
       carry_save_adder #(
                         .N (KERNEL*KERNEL) , 
@@ -267,7 +267,7 @@ generate
    if (use_cla == 1)
    begin  : gen_cla_outs
       assign en_out = en_prod;
-      assign d_out  = csa_d_out;
+      assign d_out  = (KERNEL == 1) ? prod : csa_d_out;
    end
 endgenerate //use_old
 
