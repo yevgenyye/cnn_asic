@@ -1,9 +1,9 @@
  module CE    #(
-    parameter CL_IN  = 4,  // 1...9, 25, 49, number of inputs features
-    parameter KERNEL = 7,  // 1/3/5/7
+    parameter CL_IN  = 32,  // 1...9, 25, 49, number of inputs features
+    parameter KERNEL = 1,  // 1/3/5/7
     parameter RELU   = 1,  // 0 - no relu, 1 - relu, only positive output values
-    parameter N      = 4,  // input data width
-    parameter M      = 4,  // input weight width
+    parameter N      = 1,  // input data width
+    parameter M      = 1,  // input weight width
     parameter SR     = 2   // data shift right before output
 
 ) (
@@ -13,8 +13,8 @@
     input wire                             en_in     ,
     input wire [CL_IN*KERNEL*KERNEL*M-1:0] w         ,
 
-    output wire [N+M+15-1:0]      d_out ,
-    output wire                   en_out   
+    output reg [N+M+15-1:0]      d_out ,
+    output reg                   en_out   
 );
 
     genvar          i;
@@ -32,20 +32,21 @@
                    CL_IN == 12 || CL_IN == 13 || CL_IN == 14 || CL_IN == 15 ) ? 3 :
                   (CL_IN == 16 ) ? 4 :
                   (CL_IN == 25 ) ? 5 :
+                  (CL_IN == 32 ) ? 4 :
                   (CL_IN == 49 ) ? 6 :
                                   0 ;
  localparam EXT = 15;
 
-//localparam D_CALC_1 = N+M+E1+1;
 localparam D_CALC_1 = N+M+E1;
 wire [CL_IN*(D_CALC_1)-1:0]     d_calc;
+reg  [CL_IN*(D_CALC_1)-1:0]     d_calc_d;
 
-//localparam D_MSB = N+M+E1-1;
 localparam D_MSB = D_CALC_1 + E2;
 wire [D_MSB:0]      csa_d_out; 
 
 //wire [CL_IN*N-1:0] d_calc;
 wire  [CL_IN-1:0]      en_calc;
+reg                   en_calc_d;
 
  initial begin
     $display(" CE, outout d_out | width = %d", N+10-1);
@@ -74,25 +75,53 @@ wire  [CL_IN-1:0]      en_calc;
     end
  endgenerate
 
+always @(posedge clk)
+ if (rst) begin
+   en_calc_d <= 1'b0;
+ end else begin
+   en_calc_d <= en_calc[0];
+ end 
+
+always @(posedge clk)
+   d_calc_d  <= d_calc;
+
+
  if (CL_IN == 1) 
     begin : gen_N_1
-      assign d_out[D_CALC_1-1:0] = d_calc;
-      assign d_out[N+M+EXT-1 : D_CALC_1] = { (N + M + EXT - D_CALC_1) {1'b0} };
+       always @(d_calc_d)
+         begin
+          d_out[D_CALC_1-1:0] <= d_calc_d;
+          d_out[N+M+EXT-1 : D_CALC_1] <= { (N + M + EXT - D_CALC_1) {1'b0} };
+         end
+       always @(en_calc_d)
+          en_out <= en_calc_d;
     end
- else if (N != 1)
+ else //if (CL_IN != 1)
     begin
       carry_save_adder #(
                         .N (CL_IN   ) , 
                         .E (E2      ) , 
                         .W (D_CALC_1)     
                      )   csa (
-                        .a   (d_calc               ), 
+                        .a   (d_calc_d             ), 
                         .sum (csa_d_out [D_MSB-1:0]), 
                         .cout(csa_d_out [D_MSB    ])  );
-      assign d_out[   D_MSB :       0] = csa_d_out;
-      assign d_out[N+M+EXT-1 : D_MSB+1] = { (N+M+EXT-D_MSB+1) {1'b0} };
+      //assign d_out[   D_MSB :       0] = csa_d_out;
+      //assign d_out[N+M+EXT-1 : D_MSB+1] = { (N+M+EXT-D_MSB+1) {1'b0} };
+      //assign en_out = en_calc_d;
+      always @(posedge clk)
+       if (rst) begin
+         en_out <= 1'b0;
+       end else begin
+         en_out <= en_calc_d;
+       end 
+      
+      always @(posedge clk)
+       begin
+         d_out[   D_MSB :       0]  <= csa_d_out;
+         d_out[N+M+EXT-1 : D_MSB+1] <= { (N+M+EXT-D_MSB+1) {1'b0} };
+       end
     end
 
-assign en_out = en_calc[0];
 
  endmodule  
