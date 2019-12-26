@@ -1,13 +1,15 @@
 module carry_save_adder_tb;
-parameter N = 9;  // 3; // 4; // 5; // 6; // 7; // 9; // 25; // 49; //  3+ number of busses 
-parameter E = 3 ; // 1; // 2; // 2; // 2; // 2; // 3; // 4;  // 5 ; //  bit extention ( N=9 -> E=3, N=25 -> E=4)
+parameter N = 32;  // 3; // 4; // 5; // 6; // 7; // 9; // 12; // 14; // 25; // 49; //  3+ number of busses 
+parameter E =  5;  // 1; // 2; // 2; // 2; // 2; // 3; //  3; //  3; // 4;  // 5 ; //  bit extention ( N=9 -> E=3, N=25 -> E=4)
 parameter W = 4;  //    input data width
 
 
 wire [W+E-1:0] sum;//output
 wire cout;//output
 reg  [W-1:0] a,b,c,d;//input
-wire [W+E:0] ref_sum, total_sum;
+wire  [W+E:0] ref_sum;
+//wire [W+E:0] acc;
+wire [W+E:0] total_sum;
 wire err;
 reg  [W*N-1:0] aa;
 wire [W+E :0] cla_sum; 
@@ -55,6 +57,9 @@ $display($time, " << Starting the Simulation >>");
   for(j=0; j<100000; j=j+1) 
   begin
      aa <= { aa[W*N-2:0], (aa[W*N-1] ^ aa[W*N-2] ) };
+     //acc <= 0;
+     //for (int i=0; i<N-1; i=i+1) 
+     //  ref_sum <= ref_sum + aa[ 0*W +: W];
      if (err)
       err1 <= 1;
      #100;
@@ -72,6 +77,7 @@ end
 //assign total_sum = {cout,sum };
 assign total_sum [W+E-1:0] = sum;
 assign total_sum [W+E]     = cout;
+
 assign ref_sum = (N == 49)  ? aa[ 0*W +: W] + aa[ 1*W +: W] + aa[ 2*W +: W] + aa[ 3*W +: W] + aa[ 4*W +: W] + 
                               aa[ 5*W +: W] + aa[ 6*W +: W] + aa[ 7*W +: W] + aa[ 8*W +: W] + aa[ 9*W +: W] + 
                               aa[10*W +: W] + aa[11*W +: W] + aa[12*W +: W] + aa[13*W +: W] + aa[14*W +: W] + 
@@ -87,6 +93,26 @@ assign ref_sum = (N == 49)  ? aa[ 0*W +: W] + aa[ 1*W +: W] + aa[ 2*W +: W] + aa
                               aa[10*W +: W] + aa[11*W +: W] + aa[12*W +: W] + aa[13*W +: W] + aa[14*W +: W] + 
                               aa[15*W +: W] + aa[16*W +: W] + aa[17*W +: W] + aa[18*W +: W] + aa[19*W +: W] + 
                               aa[20*W +: W] + aa[21*W +: W] + aa[22*W +: W] + aa[23*W +: W] + aa[24*W +: W]                 :
+                 (N == 15)  ? aa[ 0*W +: W] + aa[ 1*W +: W] + aa[ 2*W +: W] + aa[ 3*W +: W] + aa[ 4*W +: W] + 
+                              aa[ 5*W +: W] + aa[ 6*W +: W] + aa[ 7*W +: W] + aa[ 8*W +: W] + aa[ 9*W +: W] + 
+                              aa[10*W +: W] + aa[11*W +: W] + aa[12*W +: W] + aa[13*W +: W] + aa[14*W +: W]                 : 
+                 (N == 14)  ? aa[ 0*W +: W] + aa[ 1*W +: W] + aa[ 2*W +: W] + aa[ 3*W +: W] + aa[ 4*W +: W] + 
+                              aa[ 5*W +: W] + aa[ 6*W +: W] + aa[ 7*W +: W] + aa[ 8*W +: W] + aa[ 9*W +: W] + 
+                              aa[10*W +: W] + aa[11*W +: W] + aa[12*W +: W] + aa[13*W +: W]                                 : 
+                 (N == 13)  ? aa[ 0*W +: W] + aa[ 1*W +: W] + aa[ 2*W +: W] + aa[ 3*W +: W] + aa[ 4*W +: W] + 
+                              aa[ 5*W +: W] + aa[ 6*W +: W] + aa[ 7*W +: W] + aa[ 8*W +: W] + aa[ 9*W +: W] + 
+                              aa[10*W +: W] + aa[11*W +: W] + aa[12*W +: W]                                                 :
+                 (N == 12)  ? aa[ 0*W +: W] + aa[ 1*W +: W] + aa[ 2*W +: W] + aa[ 3*W +: W] + aa[ 4*W +: W] + 
+                              aa[ 5*W +: W] + aa[ 6*W +: W] + aa[ 7*W +: W] + aa[ 8*W +: W] + aa[ 9*W +: W] + 
+                              aa[10*W +: W] + aa[11*W +: W]                                                                 : 
+
+                 (N == 11)  ? aa[ 0*W +: W] + aa[ 1*W +: W] + aa[ 2*W +: W] + aa[ 3*W +: W] + aa[ 4*W +: W] + 
+                              aa[ 5*W +: W] + aa[ 6*W +: W] + aa[ 7*W +: W] + aa[ 8*W +: W] + aa[ 9*W +: W] + 
+                              aa[10*W +: W]                                                                                 : 
+
+                 (N == 10)  ? aa[ 0*W +: W] + aa[ 1*W +: W] + aa[ 2*W +: W] + aa[ 3*W +: W] + aa[ 4*W +: W] + 
+                              aa[ 5*W +: W] + aa[ 6*W +: W] + aa[ 7*W +: W] + aa[ 8*W +: W] + aa[ 9*W +: W]                 :  
+
                  (N == 9)   ? aa[ 0*W +: W] + aa[ 1*W +: W] + aa[ 2*W +: W] + aa[ 3*W +: W] + aa[ 4*W +: W] + 
                               aa[ 5*W +: W] + aa[ 6*W +: W] + aa[ 7*W +: W] + aa[ 8*W +: W]                                 :
                  (N == 7)   ? aa[ 0*W +: W] + aa[ 1*W +: W] + aa[ 2*W +: W] + aa[ 3*W +: W] + aa[ 4*W +: W] + 

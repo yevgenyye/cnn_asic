@@ -30,6 +30,16 @@ genvar i,j;
       carry_save_25inputs #(W)   cs_25in(.a(a), .sum(cs_sum), .cout(cs_c)  ); end
     else if (N == 16) begin : gen_N_16
        carry_save_16inputs #(W)  cs_16in(.a(a), .sum(cs_sum), .cout(cs_c)  ); end
+    else if (N == 15) begin : gen_N_15
+       carry_save_15inputs #(W)  cs_15in(.a(a), .sum(cs_sum), .cout(cs_c)  ); end
+    else if (N == 14) begin : gen_N_14
+       carry_save_14inputs #(W)  cs_14in(.a(a), .sum(cs_sum), .cout(cs_c)  ); end
+    else if (N == 13) begin : gen_N_13
+       carry_save_13inputs #(W)  cs_13in(.a(a), .sum(cs_sum), .cout(cs_c)  ); end
+    else if (N == 12) begin : gen_N_12
+       carry_save_12inputs #(W)  cs_12in(.a(a), .sum(cs_sum), .cout(cs_c)  ); end
+    else if (N == 11) begin : gen_N_11
+       carry_save_11inputs #(W)  cs_11in(.a(a), .sum(cs_sum), .cout(cs_c)  ); end
     else if (N == 10) begin : gen_N_10
        carry_save_10inputs #(W)  cs_10in(.a(a), .sum(cs_sum), .cout(cs_c)  ); end
     else if (N == 9) begin : gen_N_9
@@ -346,11 +356,11 @@ module carry_save_10inputs #(
  wire [W+1:0] sum_1 , c_1   , sum_2  , c_2;
  wire [W+3:0] sum5  , cout5;
 
-wire [W+5:0] test10_0, test10_1, test10_2, test10_3 ;
-assign test10_0 = a[ 0*W +: W] + a[ 1*W +: W] + a[ 2*W +: W] + a[ 3*W +: W] + a[ 4*W +: W] + a[ 5*W +: W] + a[ 6*W +: W] + a[ 7*W +: W]+ a[ 8*W +: W] + a[ 9*W +: W];
-assign test10_1 = sum1_3   + c1_3   + sum4_6   + c4_6   + sum7_9   + c7_9  + a[9*W +: W ] ;
-assign test10_2 = sum_1 + c_1 + sum_2 + c_2 + a[9*W +: W ] ;
-assign test10_3 = cout + sum;
+//wire [W+5:0] test10_0, test10_1, test10_2, test10_3 ;
+//assign test10_0 = a[ 0*W +: W] + a[ 1*W +: W] + a[ 2*W +: W] + a[ 3*W +: W] + a[ 4*W +: W] + a[ 5*W +: W] + a[ 6*W +: W] + a[ 7*W +: W]+ a[ 8*W +: W] + a[ 9*W +: W];
+//assign test10_1 = sum1_3   + c1_3   + sum4_6   + c4_6   + sum7_9   + c7_9  + a[9*W +: W ] ;
+//assign test10_2 = sum_1 + c_1 + sum_2 + c_2 + a[9*W +: W ] ;
+//assign test10_3 = cout + sum;
 
  carry_save_3inputs #(W) cs_3in_1 (.a(a[ 0*W +: 3*W ]), .sum(sum1_3  ), .cout(c1_3  )  );
  carry_save_3inputs #(W) cs_3in_2 (.a(a[ 3*W +: 3*W ]), .sum(sum4_6  ), .cout(c4_6  )  );
@@ -365,6 +375,197 @@ assign sum  = sum5 [W+2  :0];
 // initial begin
 //    $display(" CS 9ins | Win = %d , Wout = %d", W, W+3 );
 // end
+
+endmodule
+
+
+////////////////////////////////////
+// Carry Save 11 inputs (four stages)
+////////////////////////////////////
+
+module carry_save_11inputs #(
+    parameter W      = 4  //    input data width
+)
+(a, sum, cout);
+ input  [11*W-1:0] a; //, b,c,d;
+ output [W+2  :0] sum;   
+ output [W+2  :0] cout;  
+ 
+ wire [W:0]   sum1_3, sum4_6, sum7_9;
+ wire [W:0]   c1_3  , c4_6  , c7_9  ;
+ wire [W+1:0] sum_1 , c_1   , sum_2  , c_2;
+ wire [W+3:0] sum5  , cout5;
+
+//wire [W+5:0] test10_0, test10_1, test10_2, test10_3 ;
+//assign test10_0 = a[ 0*W +: W] + a[ 1*W +: W] + a[ 2*W +: W] + a[ 3*W +: W] + a[ 4*W +: W] + a[ 5*W +: W] + a[ 6*W +: W] + a[ 7*W +: W]+ a[ 8*W +: W] + a[ 9*W +: W];
+//assign test10_1 = sum1_3   + c1_3   + sum4_6   + c4_6   + sum7_9   + c7_9  + a[9*W +: W ] ;
+//assign test10_2 = sum_1 + c_1 + sum_2 + c_2 + a[9*W +: W ] ;
+//assign test10_3 = cout + sum;
+
+ carry_save_3inputs #(W) cs_3in_1 (.a(a[ 0*W +: 3*W ]), .sum(sum1_3  ), .cout(c1_3  )  );
+ carry_save_3inputs #(W) cs_3in_2 (.a(a[ 3*W +: 3*W ]), .sum(sum4_6  ), .cout(c4_6  )  );
+ carry_save_3inputs #(W) cs_3in_3 (.a(a[ 6*W +: 3*W ]), .sum(sum7_9  ), .cout(c7_9  )  );  // a(10,11) do not added
+
+ carry_save_3inputs #(W+1) cs_3in_4(.a({ sum1_3, sum4_6, sum7_9 }), .sum(sum_1), .cout(c_1) );
+ carry_save_3inputs #(W+1) cs_3in_5(.a({ c1_3, c4_6, c7_9 }),       .sum(sum_2), .cout(c_2) );
+
+ carry_save_6inputs #(W+2) cs_6in (.a({sum_1, sum_2, c_1, c_2 , { 2'b00, a[ 9*W +: W ]} , { 2'b00, a[10*W +: W ]}  }), .sum(sum5), .cout(cout5)  );
+assign cout = cout5[W+2  :0];
+assign sum  = sum5 [W+2  :0];
+// initial begin
+//    $display(" CS 9ins | Win = %d , Wout = %d", W, W+3 );
+// end
+
+endmodule
+
+////////////////////////////////////
+// Carry Save 12 inputs (four stages)
+////////////////////////////////////
+
+module carry_save_12inputs #(
+    parameter W      = 4  //    input data width
+)
+(a, sum, cout);
+ input  [12*W-1:0] a; //, b,c,d;
+ output [W+2  :0] sum;   
+ output [W+2  :0] cout;  
+ 
+ wire [W:0]   sum1_3, sum4_6, sum7_9, sum10_12;
+ wire [W:0]   c1_3  , c4_6  , c7_9  , c10_12  ;
+ wire [W+1:0] sum_1 , c_1   , sum_2  , c_2;
+ wire [W+3:0] sum6  , cout6;
+
+//wire [W+5:0] test12_0, test12_1, test12_2, test12_3 ;
+//assign test12_0 = a[ 0*W +: W] + a[ 1*W +: W] + a[ 2*W +: W] + a[ 3*W +: W] + a[ 4*W +: W] + a[ 5*W +: W] + a[ 6*W +: W] + a[ 7*W +: W]+ a[ 8*W +: W] + a[ 9*W +: W]+ a[10*W +: W] + a[11*W +: W];
+//assign test12_1 = sum1_3   + c1_3   + sum4_6   + c4_6   + sum7_9   + c7_9  + sum10_12 + c10_12;
+//assign test12_2 = sum_1 + c_1 + sum_2 + c_2 + sum10_12 + c10_12 ;
+//assign test12_3 = cout + sum;
+
+ carry_save_3inputs #(W) cs_3in_1 (.a(a[ 0*W +: 3*W ]), .sum(sum1_3  ), .cout(c1_3  )  );
+ carry_save_3inputs #(W) cs_3in_2 (.a(a[ 3*W +: 3*W ]), .sum(sum4_6  ), .cout(c4_6  )  );
+ carry_save_3inputs #(W) cs_3in_3 (.a(a[ 6*W +: 3*W ]), .sum(sum7_9  ), .cout(c7_9  )  );
+ carry_save_3inputs #(W) cs_3in_4 (.a(a[ 9*W +: 3*W ]), .sum(sum10_12), .cout(c10_12)  );
+
+ carry_save_3inputs #(W+1) cs_3in_5(.a({ sum1_3, sum4_6, sum7_9 }), .sum(sum_1), .cout(c_1) );
+ carry_save_3inputs #(W+1) cs_3in_6(.a({ c1_3, c4_6, c7_9 }),       .sum(sum_2), .cout(c_2) ); // sum10_12, c10_12 do not added
+
+ carry_save_6inputs #(W+2) cs_6in (.a({sum_1, sum_2, c_1, c_2, {1'b0,sum10_12}, {1'b0,c10_12}  }), .sum(sum6), .cout(cout6)  );
+assign cout = cout6[W+2  :0];
+assign sum  = sum6 [W+2  :0];
+// initial begin
+//    $display(" CS 9ins | Win = %d , Wout = %d", W, W+3 );
+// end
+
+endmodule
+
+////////////////////////////////////
+// Carry Save 13 inputs (four stages)
+////////////////////////////////////
+
+module carry_save_13inputs #(
+    parameter W      = 4  //    input data width
+)
+(a, sum, cout);
+ input  [13*W-1:0] a; //, b,c,d;
+ output [W+2  :0] sum;   
+ output [W+2  :0] cout;  
+ 
+ wire [W:0]   sum1_3, sum4_6, sum7_9, sum10_12;
+ wire [W:0]   c1_3  , c4_6  , c7_9  , c10_12  ;
+ wire [W+1:0] sum_1 , c_1   , sum_2  , c_2, sum_3  , c_3;
+ wire [W+3:0] sum6  , cout6;
+
+ carry_save_3inputs #(W) cs_3in_1 (.a(a[ 0*W +: 3*W ]), .sum(sum1_3  ), .cout(c1_3  )  );
+ carry_save_3inputs #(W) cs_3in_2 (.a(a[ 3*W +: 3*W ]), .sum(sum4_6  ), .cout(c4_6  )  );
+ carry_save_3inputs #(W) cs_3in_3 (.a(a[ 6*W +: 3*W ]), .sum(sum7_9  ), .cout(c7_9  )  );
+ carry_save_3inputs #(W) cs_3in_4 (.a(a[ 9*W +: 3*W ]), .sum(sum10_12), .cout(c10_12)  );// a[12*W +: W]  do not added
+
+ carry_save_3inputs #(W+1) cs_3in_5(.a({ sum1_3  , sum4_6 , sum7_9              }), .sum(sum_1), .cout(c_1) );
+ carry_save_3inputs #(W+1) cs_3in_6(.a({ c1_3    , c4_6   , c7_9                }), .sum(sum_2), .cout(c_2) ); 
+ carry_save_3inputs #(W+1) cs_3in_7(.a({ sum10_12, c10_12 , {1'b0,a[12*W +: W]} }), .sum(sum_3), .cout(c_3) );
+
+ carry_save_6inputs #(W+2) cs_6in (.a({sum_1, sum_2, sum_3, c_1, c_2, c_3 }), .sum(sum6), .cout(cout6)  );
+assign cout = cout6[W+2  :0];
+assign sum  = sum6 [W+2  :0];
+
+endmodule
+
+////////////////////////////////////
+// Carry Save 14 inputs (four stages)
+////////////////////////////////////
+
+module carry_save_14inputs #(
+    parameter W      = 4  //    input data width
+)
+(a, sum, cout);
+ input  [14*W-1:0] a; //, b,c,d;
+ output [W+2  :0] sum;   
+ output [W+2  :0] cout;  
+ 
+ wire [W:0]   sum1_3, sum4_6, sum7_9, sum10_12;
+ wire [W:0]   c1_3  , c4_6  , c7_9  , c10_12  ;
+ wire [W+1:0] sum_1 , c_1   , sum_2  , c_2, sum_3  , c_3;
+ wire [W+3:0] sum6  , cout6;
+
+//wire [W+5:0] test14_0, test14_1, test14_2, test14_3 ;
+//assign test14_0 = a[ 0*W +: W] + a[ 1*W +: W] + a[ 2*W +: W] + a[ 3*W +: W] + a[ 4*W +: W] + a[ 5*W +: W] + a[ 6*W +: W] 
+//                + a[ 7*W +: W] + a[ 8*W +: W] + a[ 9*W +: W] + a[10*W +: W] + a[11*W +: W] + a[12*W +: W] + a[13*W +: W];
+//assign test14_1 = sum1_3   + c1_3   + sum4_6   + c4_6   + sum7_9   + c7_9  + sum10_12 + c10_12  + a[12*W +: W] + a[13*W +: W];
+//assign test14_2 = sum_1 + c_1 + sum_2 + c_2 + sum_3 + c_3 + c10_12;
+//assign test14_3 = cout + sum;
+
+ carry_save_3inputs #(W) cs_3in_1 (.a(a[ 0*W +: 3*W ]), .sum(sum1_3  ), .cout(c1_3  )  );
+ carry_save_3inputs #(W) cs_3in_2 (.a(a[ 3*W +: 3*W ]), .sum(sum4_6  ), .cout(c4_6  )  );
+ carry_save_3inputs #(W) cs_3in_3 (.a(a[ 6*W +: 3*W ]), .sum(sum7_9  ), .cout(c7_9  )  );
+ carry_save_3inputs #(W) cs_3in_4 (.a(a[ 9*W +: 3*W ]), .sum(sum10_12), .cout(c10_12)  );// a[12*W +: W] + a[13*W +: W] do not added
+
+ carry_save_3inputs #(W+1) cs_3in_5(.a({ sum1_3  , sum4_6             , sum7_9              }), .sum(sum_1), .cout(c_1) );
+ carry_save_3inputs #(W+1) cs_3in_6(.a({ c1_3    , c4_6               , c7_9                }), .sum(sum_2), .cout(c_2) ); 
+ carry_save_3inputs #(W+1) cs_3in_7(.a({ sum10_12, {1'b0,a[12*W +: W]}, {1'b0,a[13*W +: W]} }), .sum(sum_3), .cout(c_3) ); // c10_12 do not added
+
+ carry_save_7inputs #(W+2) cs_7in (.a({sum_1, sum_2, sum_3, c_1, c_2, c_3, {1'b0,c10_12}  }), .sum(sum6), .cout(cout6)  );
+assign cout = cout6[W+2  :0];
+assign sum  = sum6 [W+2  :0];
+
+endmodule
+
+////////////////////////////////////
+// Carry Save 15 inputs (four stages)
+////////////////////////////////////
+
+module carry_save_15inputs #(
+    parameter W      = 4  //    input data width
+)
+(a, sum, cout);
+ input  [15*W-1:0] a; //, b,c,d;
+ output [W+2  :0] sum;   
+ output [W+2  :0] cout;  
+ 
+ wire [W:0]   sum1_3, sum4_6, sum7_9, sum10_12, sum13_15;
+ wire [W:0]   c1_3  , c4_6  , c7_9  , c10_12  , c13_15  ;
+ wire [W+1:0] sum_1 , c_1   , sum_2  , c_2, sum_3  , c_3;
+ wire [W+3:0] sum6  , cout6;
+
+//wire [W+5:0] test14_0, test14_1, test14_2, test14_3 ;
+//assign test14_0 = a[ 0*W +: W] + a[ 1*W +: W] + a[ 2*W +: W] + a[ 3*W +: W] + a[ 4*W +: W] + a[ 5*W +: W] + a[ 6*W +: W] 
+//                + a[ 7*W +: W] + a[ 8*W +: W] + a[ 9*W +: W] + a[10*W +: W] + a[11*W +: W] + a[12*W +: W] + a[13*W +: W];
+//assign test14_1 = sum1_3   + c1_3   + sum4_6   + c4_6   + sum7_9   + c7_9  + sum10_12 + c10_12  + a[12*W +: W] + a[13*W +: W];
+//assign test14_2 = sum_1 + c_1 + sum_2 + c_2 + sum_3 + c_3 + c10_12;
+//assign test14_3 = cout + sum;
+
+ carry_save_3inputs #(W) cs_3in_1 (.a(a[ 0*W +: 3*W ]), .sum(sum1_3  ), .cout(c1_3  )  );
+ carry_save_3inputs #(W) cs_3in_2 (.a(a[ 3*W +: 3*W ]), .sum(sum4_6  ), .cout(c4_6  )  );
+ carry_save_3inputs #(W) cs_3in_3 (.a(a[ 6*W +: 3*W ]), .sum(sum7_9  ), .cout(c7_9  )  );
+ carry_save_3inputs #(W) cs_3in_4 (.a(a[ 9*W +: 3*W ]), .sum(sum10_12), .cout(c10_12)  );
+ carry_save_3inputs #(W) cs_3in_5 (.a(a[12*W +: 3*W ]), .sum(sum13_15), .cout(c13_15)  );
+
+ carry_save_3inputs #(W+1) cs_3in_6(.a({ sum1_3  , sum4_6  , sum7_9 }), .sum(sum_1), .cout(c_1) );
+ carry_save_3inputs #(W+1) cs_3in_7(.a({ c1_3    , c4_6    , c7_9   }), .sum(sum_2), .cout(c_2) ); 
+ carry_save_3inputs #(W+1) cs_3in_8(.a({ sum10_12, sum13_15, c10_12 }), .sum(sum_3), .cout(c_3) ); // c13_15 do not added
+
+ carry_save_7inputs #(W+2) cs_7in (.a({sum_1, sum_2, sum_3, c_1, c_2, c_3, {1'b0,c13_15}  }), .sum(sum6), .cout(cout6)  );
+assign cout = cout6[W+2  :0];
+assign sum  = sum6 [W+2  :0];
 
 endmodule
 
@@ -419,26 +620,58 @@ module carry_save_25inputs #(
 )
 (a, sum, cout);
 input  [25*W-1:0] a; //, b,c,d;
-output [W+4  :0] sum;
-output [W+4  :0] cout;
+output [W+3  :0] sum;
+output [W+3  :0] cout;
 
-wire [W+1:0] sum19_25;
-wire [W+1:0] c19_25  ;
-wire [W+2:0] sum1_9, sum10_18;
-wire [W+2:0] c1_9  , c10_18  ;
 
-//wire [W+5:0] test6_0, test6_1, test6_2 ;
-//assign test6_0 = a[ 0*W +: W] + a[ 1*W +: W] + a[ 2*W +: W] + a[ 3*W +: W] + a[ 4*W +: W] + a[ 5*W +: W] + a[ 6*W +: W] + a[ 7*W +: W]+ a[ 8*W +: W] + a[ 9*W +: W] + 
-//                 a[10*W +: W] + a[11*W +: W] + a[12*W +: W] + a[13*W +: W] + a[14*W +: W] + a[15*W +: W] + a[16*W +: W] + a[17*W +: W]+ a[18*W +: W] + a[19*W +: W] + 
-//                 a[20*W +: W] + a[21*W +: W] + a[22*W +: W] + a[23*W +: W] + a[24*W +: W];
-//assign test6_1 = sum1_9 + sum10_18 + sum19_25 + c1_9 + c10_18 + c19_25;
-//assign test6_2 = cout + sum;
+wire [W:0] sum01_03, c01_03, sum04_06, c04_06, sum07_09, c07_09, sum10_12, c10_12, sum13_15, c13_15, sum16_18, c16_18, sum19_21, c19_21, sum22_24, c22_24;
+wire [W+1:0] sum_1,  c_1,  sum_2,  c_2,  sum_3,  c_3,  sum_4,  c_4,  sum_5,  c_5;
+wire [W+2:0] sum_11, c_11, sum_12, c_12, sum_13, c_13, sum_14, c_14;
+wire [W+5:0] sum8, cout8;
 
-carry_save_9inputs #(W)  cs_9in1 (.a( a[ 0*W +: 9*W ] ), .sum(sum1_9)  , .cout(c1_9)   );
-carry_save_9inputs #(W)  cs_9in2 (.a( a[ 9*W +: 9*W ] ), .sum(sum10_18), .cout(c10_18) );
-carry_save_7inputs #(W)  cs_7in  (.a( a[18*W +: 7*W ] ), .sum(sum19_25), .cout(c19_25) );
+// wire [W+1:0] sum19_25;
+// wire [W+1:0] c19_25  ;
+// wire [W+2:0] sum1_9, sum10_18;
+// wire [W+2:0] c1_9  , c10_18  ;
+// wire [W+5:0] test6_0, test6_1, test6_2, test6_3, test6_4  ;
+// assign test6_0 = a[ 0*W +: W] + a[ 1*W +: W] + a[ 2*W +: W] + a[ 3*W +: W] + a[ 4*W +: W] + a[ 5*W +: W] + a[ 6*W +: W] + a[ 7*W +: W]+ a[ 8*W +: W] + a[ 9*W +: W] + 
+//                  a[10*W +: W] + a[11*W +: W] + a[12*W +: W] + a[13*W +: W] + a[14*W +: W] + a[15*W +: W] + a[16*W +: W] + a[17*W +: W]+ a[18*W +: W] + a[19*W +: W] + 
+//                  a[20*W +: W] + a[21*W +: W] + a[22*W +: W] + a[23*W +: W] + a[24*W +: W];
+// assign test6_1 = sum_1 + sum_2 + sum_3 + sum_4 + sum_5 + c_1 + c_2 + c_3 + c_4 + c_5 + c22_24 + a[24*W +: W];
+// assign test6_2 = sum_11 + sum_12 + sum_13 + sum_14 + c_11 + c_12 + c_13 + c_14;
+// assign test6_3 = sum8 + cout8; 
+// assign test6_4 = cout + sum;
 
-carry_save_6inputs #(W+3) cs_6in (.a({sum1_9, sum10_18, { 1'b0, sum19_25}, c1_9  , c10_18  , { 1'b0, c19_25} }), .sum(sum), .cout(cout)  );
+ carry_save_3inputs #(W) cs_3in_01 (.a(a[ 0*W +: 3*W ]), .sum(sum01_03), .cout(c01_03)  );
+ carry_save_3inputs #(W) cs_3in_02 (.a(a[ 3*W +: 3*W ]), .sum(sum04_06), .cout(c04_06)  );
+ carry_save_3inputs #(W) cs_3in_03 (.a(a[ 6*W +: 3*W ]), .sum(sum07_09), .cout(c07_09)  );
+ carry_save_3inputs #(W) cs_3in_04 (.a(a[ 9*W +: 3*W ]), .sum(sum10_12), .cout(c10_12)  );
+ carry_save_3inputs #(W) cs_3in_05 (.a(a[12*W +: 3*W ]), .sum(sum13_15), .cout(c13_15)  );
+ carry_save_3inputs #(W) cs_3in_06 (.a(a[15*W +: 3*W ]), .sum(sum16_18), .cout(c16_18)  );
+ carry_save_3inputs #(W) cs_3in_07 (.a(a[18*W +: 3*W ]), .sum(sum19_21), .cout(c19_21)  );
+ carry_save_3inputs #(W) cs_3in_08 (.a(a[21*W +: 3*W ]), .sum(sum22_24), .cout(c22_24)  ); // a(25) do not added
+
+carry_save_3inputs #(W+1) cs_3in_11 (.a({ sum01_03, sum04_06, sum07_09 }), .sum(sum_1), .cout(c_1)  );
+carry_save_3inputs #(W+1) cs_3in_12 (.a({ sum10_12, sum13_15, sum16_18 }), .sum(sum_2), .cout(c_2)  );
+carry_save_3inputs #(W+1) cs_3in_13 (.a({ c01_03  , c04_06  , c07_09   }), .sum(sum_3), .cout(c_3)  );
+carry_save_3inputs #(W+1) cs_3in_14 (.a({ c10_12  , c13_15  , c16_18   }), .sum(sum_4), .cout(c_4)  );
+carry_save_3inputs #(W+1) cs_3in_15 (.a({ sum19_21, c19_21  , sum22_24 }), .sum(sum_5), .cout(c_5)  );//c22_24 and  a(25) do not added
+
+ carry_save_3inputs #(W+2) cs_3in_21 (.a({ sum_1, sum_2, sum_3                            }), .sum(sum_11), .cout(c_11)  );
+ carry_save_3inputs #(W+2) cs_3in_22 (.a({ c_1  , c_2  , c_3                              }), .sum(sum_12), .cout(c_12)  );
+ carry_save_3inputs #(W+2) cs_3in_23 (.a({ sum_4, c_4  , sum_5                            }), .sum(sum_13), .cout(c_13)  );
+ carry_save_3inputs #(W+2) cs_3in_24 (.a({ c_5  , {1'b0, c22_24}, { 2'b00, a[24*W +: W] } }), .sum(sum_14), .cout(c_14)  );
+
+
+ carry_save_8inputs #(W+3) cs_8in (.a({ sum_11, sum_12, sum_13, sum_14, c_11, c_12, c_13 , c_14 }), .sum(sum8), .cout(cout8)  );
+assign cout = cout8[W+3  :0];
+assign sum  = sum8 [W+3  :0];
+
+//carry_save_9inputs #(W)  cs_9in1 (.a( a[ 0*W +: 9*W ] ), .sum(sum1_9)  , .cout(c1_9)   );
+//carry_save_9inputs #(W)  cs_9in2 (.a( a[ 9*W +: 9*W ] ), .sum(sum10_18), .cout(c10_18) );
+//carry_save_7inputs #(W)  cs_7in  (.a( a[18*W +: 7*W ] ), .sum(sum19_25), .cout(c19_25) );
+//
+//carry_save_6inputs #(W+3) cs_6in (.a({sum1_9, sum10_18, { 1'b0, sum19_25}, c1_9  , c10_18  , { 1'b0, c19_25} }), .sum(sum), .cout(cout)  );
 
 endmodule
 

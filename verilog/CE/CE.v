@@ -1,9 +1,9 @@
  module CE    #(
-    parameter CL_IN  = 32,  // 1...9, 25, 49, number of inputs features
-    parameter KERNEL = 1,  // 1/3/5/7
+    parameter CL_IN  = 14,  // 1...10, 16, 25, 49, number of inputs features
+    parameter KERNEL = 3,  // 1/3/5/7
     parameter RELU   = 1,  // 0 - no relu, 1 - relu, only positive output values
-    parameter N      = 1,  // input data width
-    parameter M      = 1,  // input weight width
+    parameter N      = 2,  // input data width
+    parameter M      = 2,  // input weight width
     parameter SR     = 2   // data shift right before output
 
 ) (
@@ -28,10 +28,10 @@
  localparam  E2 = (CL_IN ==  2 ) ? 0 :
                   (CL_IN ==  3 ) ? 1 :
                   (CL_IN ==  4 || CL_IN ==  5 || CL_IN ==  6 || CL_IN ==  7 ) ? 2 :
-                  (CL_IN ==  8 || CL_IN ==  9 || CL_IN == 10 || CL_IN == 11 ||
-                   CL_IN == 12 || CL_IN == 13 || CL_IN == 14 || CL_IN == 15 ) ? 3 :
+                  (CL_IN ==  8 || CL_IN ==  9 || CL_IN == 10 || CL_IN == 12 ) ? 3 :
+                  (CL_IN == 11 || CL_IN == 13 || CL_IN == 14 || CL_IN == 15 ) ? 3 :
                   (CL_IN == 16 ) ? 4 :
-                  (CL_IN == 25 ) ? 5 :
+                  (CL_IN == 25 ) ? 4 :
                   (CL_IN == 32 ) ? 4 :
                   (CL_IN == 49 ) ? 6 :
                                   0 ;
