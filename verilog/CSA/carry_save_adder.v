@@ -1,6 +1,6 @@
 module carry_save_adder #(
 	parameter N      =  9, // 2; // 3; // 4; // 5; // 6; // 7; // 8; // 9; // 10; // 16; // 25; // 49; // 3+ number of busses 
-	parameter E      =  3, // 0; // 1; // 2; // 2; // 2; // 2; // 3; // 3; //  3; // 4;  // 5;  // 6 ; // bit extention ( N=9 -> E=3, N=25 -> E=4)
+	parameter E      =  3, // 0; // 1; // 2; // 2; // 2; // 2; // 3; // 3; //  3; // 4;  // 4;  // 5 ; // bit extention ( N=9 -> E=3, N=25 -> E=4)
   parameter W      =  4  //    input data width
 )
 //(a,b,c,d, sum,cout);
@@ -685,8 +685,8 @@ module carry_save_32inputs #(
 )
 (a, sum, cout);
 input  [32*W-1:0] a; //, b,c,d;
-output [W+3  :0] sum;
-output [W+3  :0] cout;
+output [W+4  :0] sum;
+output [W+4  :0] cout;
 
 wire [W:0] sum01_03, c01_03, sum04_06, c04_06, sum07_09, c07_09, sum10_12, c10_12, sum13_15, c13_15, sum16_18, c16_18, sum19_21, c19_21, sum22_24, c22_24;
 wire [W:0] sum25_27, c25_27, sum28_30, c28_30;
@@ -751,8 +751,8 @@ module carry_save_49inputs #(
 )
 (a, sum, cout);
 input  [49*W-1:0] a; //, b,c,d;
-output [W+5  :0] sum;
-output [W+5  :0] cout;
+output [W+4  :0] sum;
+output [W+4  :0] cout;
 
 wire [W:0] sum01_03, c01_03, sum04_06, c04_06, sum07_09, c07_09, sum10_12, c10_12, sum13_15, c13_15, sum16_18, c16_18, sum19_21, c19_21, sum22_24, c22_24;
 wire [W:0] sum25_27, c25_27, sum28_30, c28_30, sum31_33, c31_33, sum34_36, c34_36, sum37_39, c37_39, sum40_42, c40_42, sum43_45, c43_45, sum46_48, c46_48;

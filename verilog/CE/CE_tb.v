@@ -2,7 +2,7 @@
 
  module CE_tb (); 
 
-    parameter CL_IN  = 14;  // 1,2,3...10,16, 25, 49, number of inputs features 
+    parameter CL_IN  = 2;  // 1, 2 ... 16, 25,32, 49 number of inputs features 
     parameter KERNEL = 7;  // 1/3/5/7
     parameter RELU   = 1;  // 0 - no relu, 1 - relu, only positive output values
     parameter N      = 4;  // input data width

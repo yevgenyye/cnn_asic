@@ -1,5 +1,5 @@
  module CE    #(
-    parameter CL_IN  = 14,  // 1...10, 16, 25, 49, number of inputs features
+    parameter CL_IN  = 8,  // 1...10, 16, 25, 49, number of inputs features
     parameter KERNEL = 3,  // 1/3/5/7
     parameter RELU   = 1,  // 0 - no relu, 1 - relu, only positive output values
     parameter N      = 2,  // input data width
@@ -21,8 +21,8 @@
 
  localparam  E1 = (KERNEL == 1) ? 0 :
                   (KERNEL == 3) ? 3 :
-                  (KERNEL == 5) ? 5 :
-                  (KERNEL == 7) ? 6 :
+                  (KERNEL == 5) ? 4 :
+                  (KERNEL == 7) ? 5 :
                                   0 ;
 
  localparam  E2 = (CL_IN ==  2 ) ? 0 :
@@ -32,8 +32,8 @@
                   (CL_IN == 11 || CL_IN == 13 || CL_IN == 14 || CL_IN == 15 ) ? 3 :
                   (CL_IN == 16 ) ? 4 :
                   (CL_IN == 25 ) ? 4 :
-                  (CL_IN == 32 ) ? 4 :
-                  (CL_IN == 49 ) ? 6 :
+                  (CL_IN == 32 ) ? 5 :
+                  (CL_IN == 49 ) ? 5 :
                                   0 ;
  localparam EXT = 15;
 
