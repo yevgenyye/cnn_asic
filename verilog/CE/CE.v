@@ -1,5 +1,5 @@
  module CE    #(
-    parameter CL_IN  = 8,  // 1...10, 16, 25, 49, number of inputs features
+    parameter CL_IN  = 32,  // 1...8, 16 (25, 49), number of inputs features
     parameter KERNEL = 3,  // 1/3/5/7
     parameter RELU   = 1,  // 0 - no relu, 1 - relu, only positive output values
     parameter N      = 2,  // input data width
@@ -39,10 +39,16 @@
 
 localparam D_CALC_1 = N+M+E1;
 wire [CL_IN*(D_CALC_1)-1:0]     d_calc;
+wire [CL_IN*(D_CALC_1)-1:0]     c_calc;
 reg  [CL_IN*(D_CALC_1)-1:0]     d_calc_d;
+reg  [CL_IN*(D_CALC_1)-1:0]     c_calc_d;
 
 localparam D_MSB = D_CALC_1 + E2;
-wire [D_MSB:0]      csa_d_out; 
+wire [D_MSB:0]      csa_s_sum ; 
+wire [D_MSB:0]      csa_s_cout; 
+wire [D_MSB:0]      csa_c_sum ; 
+wire [D_MSB:0]      csa_c_cout; 
+wire [D_MSB:0]      csa_s_res; 
 
 //wire [CL_IN*N-1:0] d_calc;
 wire  [CL_IN-1:0]      en_calc;
@@ -69,7 +75,9 @@ reg                   en_calc_d;
         .data2conv (data2conv [i*KERNEL*KERNEL*N +: KERNEL*KERNEL*N]), 
         .en_in     (en_in     ), 
         .w         (w         [i*KERNEL*KERNEL*M +: KERNEL*KERNEL*M]), 
-        .d_out     (d_calc [i*D_CALC_1 +: D_CALC_1] ), 
+        //.d_out     (d_calc [i*D_CALC_1 +: D_CALC_1] ), 
+        .sum       (d_calc [i*D_CALC_1 +: D_CALC_1] ), 
+        .cout      (c_calc [i*D_CALC_1 +: D_CALC_1] ), 
         .en_out    (en_calc[i]) 
        );
     end
@@ -83,8 +91,10 @@ always @(posedge clk)
  end 
 
 always @(posedge clk)
-   d_calc_d  <= d_calc;
-
+  begin
+    d_calc_d  <= d_calc;
+    c_calc_d  <= c_calc;
+  end
 
  if (CL_IN == 1) 
     begin : gen_N_1
@@ -99,13 +109,33 @@ always @(posedge clk)
  else //if (CL_IN != 1)
     begin
       carry_save_adder #(
-                        .N (CL_IN   ) , 
-                        .E (E2      ) , 
-                        .W (D_CALC_1)     
-                     )   csa (
-                        .a   (d_calc_d             ), 
-                        .sum (csa_d_out [D_MSB-1:0]), 
-                        .cout(csa_d_out [D_MSB    ])  );
+                  .N (2*CL_IN   ) , 
+                  .E (E2      ) , 
+                  .W (D_CALC_1)     
+               )   csa_sum (
+                  .a   ({ d_calc_d,c_calc_d }), 
+                  .sum (  csa_s_sum          ), 
+                  .cout(  csa_s_cout         ) );
+
+
+      carry_lookahead_adder #(
+                  .W (D_MSB)      
+               )   cla (
+                  .i_add1  ( csa_s_sum  ), 
+                  .i_add2  ( csa_s_cout ), 
+                  .o_result( csa_s_res  ) );
+
+    //  carry_save_adder #(
+    //              .N (CL_IN   ) , 
+    //              .E (E2      ) , 
+    //              .W (D_CALC_1)     
+    //            )  csa_cout (
+    //              .a   (c_calc_d  ) , 
+    //              .sum (csa_c_sum ) , 
+    //              .cout(csa_c_cout) );
+
+
+
       //assign d_out[   D_MSB :       0] = csa_d_out;
       //assign d_out[N+M+EXT-1 : D_MSB+1] = { (N+M+EXT-D_MSB+1) {1'b0} };
       //assign en_out = en_calc_d;
@@ -118,7 +148,7 @@ always @(posedge clk)
       
       always @(posedge clk)
        begin
-         d_out[   D_MSB :       0]  <= csa_d_out;
+         d_out[   D_MSB :       0]  <= csa_s_res;
          d_out[N+M+EXT-1 : D_MSB+1] <= { (N+M+EXT-D_MSB+1) {1'b0} };
        end
     end
