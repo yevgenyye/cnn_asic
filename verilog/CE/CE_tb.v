@@ -2,11 +2,11 @@
 
  module CE_tb (); 
 
-    parameter CL_IN  = 2;  // 1, 2 ... 16, 25,32, 49 number of inputs features 
+    parameter CL_IN  = 4;  // 1, 2 ...8, 16, 25,32, 49 number of inputs features 
     parameter KERNEL = 7;  // 1/3/5/7
     parameter RELU   = 1;  // 0 - no relu, 1 - relu, only positive output values
-    parameter N      = 4;  // input data width
-    parameter M      = 4;  // input weight width
+    parameter N      = 2;  // input data width
+    parameter M      = 2;  // input weight width
     parameter SR     = 2;  // data shift right before output
 
  parameter  E1 = (KERNEL == 3) ? 3 :

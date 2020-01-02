@@ -1,6 +1,6 @@
  module CE    #(
-    parameter CL_IN  = 32,  // 1...8, 16 (25, 49), number of inputs features
-    parameter KERNEL = 3,  // 1/3/5/7
+    parameter CL_IN  = 4,  // 1, 2...8, 16, 32, 64, 128 (25, 49), number of inputs features
+    parameter KERNEL = 7,  // 1/3/5/7
     parameter RELU   = 1,  // 0 - no relu, 1 - relu, only positive output values
     parameter N      = 2,  // input data width
     parameter M      = 2,  // input weight width
@@ -25,16 +25,28 @@
                   (KERNEL == 7) ? 5 :
                                   0 ;
 
- localparam  E2 = (CL_IN ==  2 ) ? 0 :
-                  (CL_IN ==  3 ) ? 1 :
-                  (CL_IN ==  4 || CL_IN ==  5 || CL_IN ==  6 || CL_IN ==  7 ) ? 2 :
-                  (CL_IN ==  8 || CL_IN ==  9 || CL_IN == 10 || CL_IN == 12 ) ? 3 :
-                  (CL_IN == 11 || CL_IN == 13 || CL_IN == 14 || CL_IN == 15 ) ? 3 :
-                  (CL_IN == 16 ) ? 4 :
-                  (CL_IN == 25 ) ? 4 :
-                  (CL_IN == 32 ) ? 5 :
-                  (CL_IN == 49 ) ? 5 :
-                                  0 ;
+ parameter CL_IN_DBL  = 2 * CL_IN;
+
+ localparam  E2 = (CL_IN_DBL ==  2 ) ? 0 :
+                  (CL_IN_DBL ==  4 || CL_IN_DBL ==  6 ) ? 2 :
+                  (CL_IN_DBL ==  8 || CL_IN_DBL == 10 || CL_IN_DBL == 12 || CL_IN_DBL == 14  ) ? 3 :
+                  (CL_IN_DBL == 16 ) ? 4 :
+                  (CL_IN_DBL == 32 ) ? 5 :
+                  (CL_IN_DBL == 64 ) ? 6 :
+                  (CL_IN_DBL ==128 ) ? 7 :
+                  (CL_IN_DBL ==256 ) ? 8 :
+                                       0;
+
+// localparam  E2 = (CL_IN ==  2 ) ? 0 :
+//                  (CL_IN ==  3 ) ? 1 :
+//                  (CL_IN ==  4 || CL_IN ==  5 || CL_IN ==  6 || CL_IN ==  7 ) ? 2 :
+//                  (CL_IN ==  8 || CL_IN ==  9 || CL_IN == 10 || CL_IN == 12 ) ? 3 :
+//                  (CL_IN == 11 || CL_IN == 13 || CL_IN == 14 || CL_IN == 15 ) ? 3 :
+//                  (CL_IN == 16 ) ? 4 :
+//                  (CL_IN == 25 ) ? 4 :
+//                  (CL_IN == 32 ) ? 5 :
+//                  (CL_IN == 49 ) ? 5 :
+//                                  0 ;
  localparam EXT = 15;
 
 localparam D_CALC_1 = N+M+E1;
@@ -43,12 +55,12 @@ wire [CL_IN*(D_CALC_1)-1:0]     c_calc;
 reg  [CL_IN*(D_CALC_1)-1:0]     d_calc_d;
 reg  [CL_IN*(D_CALC_1)-1:0]     c_calc_d;
 
-localparam D_MSB = D_CALC_1 + E2;
-wire [D_MSB:0]      csa_s_sum ; 
-wire [D_MSB:0]      csa_s_cout; 
-wire [D_MSB:0]      csa_c_sum ; 
-wire [D_MSB:0]      csa_c_cout; 
-wire [D_MSB:0]      csa_s_res; 
+localparam D_MSB = D_CALC_1 + E2 - 1;
+wire [D_MSB  :0]      csa_s_sum ; 
+wire [D_MSB  :0]      csa_s_cout; 
+wire [D_MSB  :0]      csa_c_sum ; 
+wire [D_MSB  :0]      csa_c_cout; 
+wire [D_MSB+1:0]      csa_s_res; 
 
 //wire [CL_IN*N-1:0] d_calc;
 wire  [CL_IN-1:0]      en_calc;
@@ -109,9 +121,9 @@ always @(posedge clk)
  else //if (CL_IN != 1)
     begin
       carry_save_adder #(
-                  .N (2*CL_IN   ) , 
-                  .E (E2      ) , 
-                  .W (D_CALC_1)     
+                  .N (CL_IN_DBL) , 
+                  .E (E2       ) , 
+                  .W (D_CALC_1 )     
                )   csa_sum (
                   .a   ({ d_calc_d,c_calc_d }), 
                   .sum (  csa_s_sum          ), 
@@ -119,7 +131,7 @@ always @(posedge clk)
 
 
       carry_lookahead_adder #(
-                  .W (D_MSB)      
+                  .W (D_MSB+1)      
                )   cla (
                   .i_add1  ( csa_s_sum  ), 
                   .i_add2  ( csa_s_cout ), 
@@ -148,8 +160,8 @@ always @(posedge clk)
       
       always @(posedge clk)
        begin
-         d_out[   D_MSB :       0]  <= csa_s_res;
-         d_out[N+M+EXT-1 : D_MSB+1] <= { (N+M+EXT-D_MSB+1) {1'b0} };
+         d_out[D_MSB +1  :       0]  <= csa_s_res;
+         d_out[N+M+EXT-1 : D_MSB+2] <= { (N+M+EXT-D_MSB+1) {1'b0} };
        end
     end
 
