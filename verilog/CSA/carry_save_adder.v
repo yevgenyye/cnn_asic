@@ -1556,7 +1556,7 @@ wire [W:0] sum399, c399, sum402, c402, sum405, c405, sum408, c408, sum411, c411,
 wire [W:0] sum423, c423, sum426, c426, sum429, c429, sum432, c432, sum435, c435, sum438, c438, sum441, c441, sum444, c444;  
 wire [W:0] sum447, c447, sum450, c450, sum453, c453, sum456, c456, sum459, c459, sum462, c462, sum465, c465, sum468, c468;  
 wire [W:0] sum471, c471, sum474, c474, sum477, c477, sum480, c480, sum483, c483, sum486, c486, sum489, c489, sum492, c492;  
-wire [W:0] sum495, c495, sum508, c508, sum501, c501, sum504, c504, sum507, c507;
+wire [W:0] sum495, c495, sum498, c498,  sum501, c501, sum504, c504, sum507, c507; //sum508, c508,
 
 wire [W+1:0] sum_01, c_01, sum_02, c_02, sum_03, c_03, sum_04, c_04, sum_05, c_05, sum_06, c_06, sum_07, c_07, sum_08, c_08;
 wire [W+1:0] sum_09, c_09, sum_10, c_10, sum_11, c_11, sum_12, c_12, sum_13, c_13, sum_14, c_14, sum_15, c_15, sum_16, c_16;
@@ -1692,7 +1692,7 @@ assign test_1_stage =
          sum423 + c423 + sum426 + c426 + sum429 + c429 + sum432 + c432 + sum435 + c435 + sum438 + c438 + sum441 + c441 + sum444 + c444 +  
          sum447 + c447 + sum450 + c450 + sum453 + c453 + sum456 + c456 + sum459 + c459 + sum462 + c462 + sum465 + c465 + sum468 + c468 +  
          sum471 + c471 + sum474 + c474 + sum477 + c477 + sum480 + c480 + sum483 + c483 + sum486 + c486 + sum489 + c489 + sum492 + c492 +  
-         sum495 + c495 + sum508 + c508 + sum501 + c501 + sum504 + c504 + sum507 + c507;
+         sum495 + c495 + sum498 + c498  + sum501 + c501 + sum504 + c504 + sum507 + c507;       //+ sum508 + c508
 
 assign test_2_stage = 
          sum_01 + c_01 + sum_02 + c_02 + sum_03 + c_03 + sum_04 + c_04 + sum_05 + c_05 + sum_06 + c_06 + sum_07 + c_07 + sum_08 + c_08 + 
@@ -1708,7 +1708,7 @@ assign test_2_stage =
          sum_74 + c_74 + sum_75 + c_75 + sum_76 + c_76 + sum_77 + c_77 + sum_78 + c_78 + sum_79 + c_79 + sum_80 + c_80 + sum_81 + c_81 + 
          sum_82 + c_82 + sum_83 + c_83 + sum_84 + c_84 + sum_85 + c_85 + sum_86 + c_86 + sum_87 + c_87 + sum_88 + c_88 + sum_89 + c_89 + 
          sum_90 + c_90 + sum_91 + c_91 + sum_92 + c_92 + sum_93 + c_93 + sum_94 + c_94 + sum_95 + c_95 + sum_96 + c_96 + sum_97 + c_97 + 
-         sum_98 + c_98 + sum_99 + c_99 + sum_a0 + c_a0 + sum_a1 + c_a1 + sum_a2 + c_a2 + sum_a3 + c_a3 + sum_a4 + c_a4 + sum_a5 + c_a5 + 
+         sum_98 + c_98 + sum_99 + c_99 + sum_a0 + c_a0 + sum_a1 + c_a1 + sum_a2 + c_a2 + sum_a3 + c_a3 + sum_a4 + c_a4 + sum_a5 + c_a5 + sum498 + c498 +
          sum_a6 + c_a6 + sum_a7 + c_a7 + sum_a8 + c_a8 + sum_a9 + c_a9 + sum_b0 + c_b0 + sum_b1 + c_b1 + sum_b2 + c_b2 + sum_b3 + c_b3 + sum_b4 + c_b4; 
 
 assign test_3_stage = 
@@ -1922,10 +1922,11 @@ assign test_out    = sum + cout;
  carry_save_3inputs #(W) cs_3in_489 (.a(a[489*W +: 3*W ]), .sum(sum489), .cout(c489) );
  carry_save_3inputs #(W) cs_3in_492 (.a(a[492*W +: 3*W ]), .sum(sum492), .cout(c492) );
  carry_save_3inputs #(W) cs_3in_495 (.a(a[495*W +: 3*W ]), .sum(sum495), .cout(c495) );
- carry_save_3inputs #(W) cs_3in_508 (.a(a[508*W +: 3*W ]), .sum(sum508), .cout(c508) );
+ carry_save_3inputs #(W) cs_3in_498 (.a(a[498*W +: 3*W ]), .sum(sum498), .cout(c498) ); // new add sum498), .cout(c498
  carry_save_3inputs #(W) cs_3in_501 (.a(a[501*W +: 3*W ]), .sum(sum501), .cout(c501) );
  carry_save_3inputs #(W) cs_3in_504 (.a(a[504*W +: 3*W ]), .sum(sum504), .cout(c504) );
  carry_save_3inputs #(W) cs_3in_507 (.a(a[507*W +: 3*W ]), .sum(sum507), .cout(c507) ); // a(510), a(511) do not added
+ //carry_save_3inputs #(W) cs_3in_508 (.a(a[508*W +: 3*W ]), .sum(sum508), .cout(c508) );
 
 
  carry_save_3inputs #(W+1) cs_3in_01(.a({ sum000, sum003, sum006 }),               .sum(sum_01), .cout(c_01) );
@@ -1983,7 +1984,7 @@ assign test_out    = sum + cout;
  carry_save_3inputs #(W+1) cs_3in_53(.a({ sum468, sum471, sum474 }),               .sum(sum_53), .cout(c_53) );
  carry_save_3inputs #(W+1) cs_3in_54(.a({ sum477, sum480, sum483 }),               .sum(sum_54), .cout(c_54) );
  carry_save_3inputs #(W+1) cs_3in_55(.a({ sum486, sum489, sum492 }),               .sum(sum_55), .cout(c_55) );
- carry_save_3inputs #(W+1) cs_3in_56(.a({ sum495, sum508, sum501 }),               .sum(sum_56), .cout(c_56) );
+ carry_save_3inputs #(W+1) cs_3in_56(.a({ sum495, sum498, sum501 }),               .sum(sum_56), .cout(c_56) );
  carry_save_3inputs #(W+1) cs_3in_57(.a({ c000,   c003,   c006   }),               .sum(sum_57), .cout(c_57) );
 
  carry_save_3inputs #(W+1) cs_3in_58(.a({ c009,   c012,   c015   }),               .sum(sum_58), .cout(c_58) );
@@ -2040,9 +2041,9 @@ assign test_out    = sum + cout;
  carry_save_3inputs #(W+1) cs_3in_a9(.a({ c468,   c471,   c474   }),               .sum(sum_a9), .cout(c_a9) );
  carry_save_3inputs #(W+1) cs_3in_b0(.a({ c477,   c480,   c483   }),               .sum(sum_b0), .cout(c_b0) );
  carry_save_3inputs #(W+1) cs_3in_b1(.a({ c486,   c489,   c492   }),               .sum(sum_b1), .cout(c_b1) );
- carry_save_3inputs #(W+1) cs_3in_b2(.a({ c495,   c508,   c501   }),               .sum(sum_b2), .cout(c_b2) );
+ carry_save_3inputs #(W+1) cs_3in_b2(.a({ c495,   c498,   c501   }),               .sum(sum_b2), .cout(c_b2) );
  carry_save_3inputs #(W+1) cs_3in_b3(.a({ sum504, c504, {1'b0, a[510*W +: W ]} }), .sum(sum_b3), .cout(c_b3) );
- carry_save_3inputs #(W+1) cs_3in_b4(.a({ sum507, c507, {1'b0, a[511*W +: W ]} }), .sum(sum_b4), .cout(c_b4) );
+ carry_save_3inputs #(W+1) cs_3in_b4(.a({ sum507, c507, {1'b0, a[511*W +: W ]} }), .sum(sum_b4), .cout(c_b4) ); // NNOOO sum498 c498  do not added
 
 
  carry_save_3inputs #(W+2) cs_3in_a161(.a({ sum_01, sum_02, sum_03 }), .sum(sum_161), .cout(c_161) );
@@ -2261,7 +2262,7 @@ assign test_out    = sum + cout;
  carry_save_3inputs #(W+7) cs_3in_a471(.a({ c_374, c_375, c_376          }), .sum(sum_471), .cout(c_471) );
  carry_save_3inputs #(W+7) cs_3in_a472(.a({ c_377, c_460, c_461          }), .sum(sum_472), .cout(c_472) );
  carry_save_3inputs #(W+7) cs_3in_a473(.a({ c_462, c_463, c_464          }), .sum(sum_473), .cout(c_473) );
- carry_save_3inputs #(W+7) cs_3in_a474(.a({ c_465, c_466, {1'b0,c_446}   }), .sum(sum_474), .cout(c_474) ); // c_467 do not added
+ carry_save_3inputs #(W+7) cs_3in_a474(.a({ c_465, c_466, {1'b0,c_45a}   }), .sum(sum_474), .cout(c_474) ); // c_467 do not added
 
 
  carry_save_3inputs #(W+8) cs_3in_a391(.a({ sum_381, sum_382, sum_383    }), .sum(sum_391), .cout(c_391) );
