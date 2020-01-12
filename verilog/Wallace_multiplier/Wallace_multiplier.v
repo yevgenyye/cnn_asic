@@ -1,6 +1,6 @@
 module wallace_gen #(
     parameter N      =  10, // 1 N 4 input A data width N>= W
-    parameter W      =   4  // 1 2 4 input B data width
+    parameter W      =   5  // 1 2 4 input B data width
 )
 
 (a, b, prod);
@@ -56,7 +56,7 @@ module wallaceNx5 #(
     wire [N+4 :0] cs_sum, cs_cout ; 
 
     wire [N+4 : 0] adder_sum;
-
+    wire           not_connect;
 
     wire [N+4  :0] test_cs_in,  test_cs_out, test_adder_out ;
 
@@ -70,7 +70,7 @@ module wallaceNx5 #(
     assign  pe0 = {  {4{p0[N-1]}}, p0[N-1:1]           };
     assign  pe1 = {  {3{p1[N-1]}}, p1[N-1:0]           };
     assign  pe2 = {  {2{p2[N-1]}}, p2[N-1:0], {1'b0}   };
-    assign  pe3 = {  {  p2[N-1]} , p3[N-1:0], {2'b00}  };
+    assign  pe3 = {  {  p3[N-1]} , p3[N-1:0], {2'b00}  };
     assign  pe4 = {             { ~p4 }     , {3'b000} };
 
   assign test_cs_in[N+4 :1] = {{2{pe0[N]}},pe0} + {{2{pe1[N]}},pe1} + {{2{pe2[N]}},pe2} + {{2{pe3[N]}},pe3} + {{2{pe4[N]}},pe4} + {4'b1000};
@@ -79,7 +79,7 @@ module wallaceNx5 #(
 carry_save_6inputs #(
     .W(N+3)
     ) csa (
-    .a   ({{(N){1'b0}},4'b1000,pe4,pe3,pe2,pe1,pe0}),
+    .a   ({{(N-1){1'b0}},4'b1000,pe4,pe3,pe2,pe1,pe0}),
     .sum (cs_sum ),
     .cout(cs_cout)
     );
@@ -94,8 +94,8 @@ w_adder #(
     .a   (cs_sum [N+4 :0]  ), // MSB of  cs_sum is not in use
     .b   (cs_cout[N+4 :0]  ), // MSB of  cs_cout is not in use
     .cin ({1'b0}           ), 
-    .sum (adder_sum[N+3:0] ), 
-    .cout(adder_sum[N+4  ] ) ); // always 0
+    .sum (adder_sum[N+4:0] ), 
+    .cout(not_connect      ) ); // always 0
 
     assign prod[0]   = p0[0];
     assign prod[N+3:1] = adder_sum[N+3:0];

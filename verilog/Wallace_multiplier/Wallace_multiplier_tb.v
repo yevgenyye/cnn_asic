@@ -1,5 +1,5 @@
 module wallace_multiplier_tb;
-    parameter N      =  8; // X X X X 4 input A data width N>= W
+    parameter N      =  16; // X X X X 4 input A data width N>= W
     parameter W      =  5; // 1 2 3 4 4 input B data width
 
 reg [  N-1 :0] a; 
