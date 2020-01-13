@@ -1,6 +1,8 @@
  module CE    #(
-    parameter CL_IN  = 4,  // 1, 2...8, 16, 32, 64, 128 (25, 49), number of inputs features
-    parameter KERNEL = 7,  // 1/3/5/7
+    parameter MULT   = 1, // 1/0 -> Multiplier by FullAdders / * (default) 
+    parameter useCLA = 0, // 0/1  -> use ripleCarry/CLA
+    parameter CL_IN  = 5,  // 1, 2...8, 16, 32, 64, 128, 256 (25, 49), number of inputs features
+    parameter KERNEL = 3,  // 1/3/5/7
     parameter RELU   = 1,  // 0 - no relu, 1 - relu, only positive output values
     parameter N      = 2,  // input data width
     parameter M      = 2,  // input weight width
@@ -35,6 +37,7 @@
                   (CL_IN_DBL == 64 ) ? 6 :
                   (CL_IN_DBL ==128 ) ? 7 :
                   (CL_IN_DBL ==256 ) ? 8 :
+                  (CL_IN_DBL ==512 ) ? 9 :
                                        0;
 
 // localparam  E2 = (CL_IN ==  2 ) ? 0 :
@@ -75,6 +78,8 @@ reg                   en_calc_d;
  generate 
     for (i = 0; i < CL_IN; i = i + 1) begin : gen_calc
        ConvLayer_calc #(
+        .MULT  (MULT  ), 
+        .useCLA(useCLA),
         .KERNEL(KERNEL), 
         .E     (E1    ),
         .N     (N     ), 

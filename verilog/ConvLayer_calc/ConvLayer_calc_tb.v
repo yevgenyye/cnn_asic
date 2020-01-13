@@ -2,6 +2,8 @@
 
  module ConvLayer_calc_tb (); 
 
+    parameter MULT   = 1; // 1/0 -> Multiplier by FullAdders / * (default) 
+    parameter useCLA = 0;  // 0/1  -> use ripleCarry/CLA
     parameter KERNEL = 3; // 1/3/5/7 ^2  // 9; // 25; // 49; //  
     parameter E      = 3;                // 3; // 4;  // 5 ; // bit extention ( N=9 -> E=3, N=25 -> E=4)
     parameter N      = 4; // input data width
@@ -12,7 +14,9 @@
     reg  [KERNEL*KERNEL*N-1:0] data2conv ;
     reg                        en_in     ;
     reg  [KERNEL*KERNEL*M-1:0] w         ;
-    wire [N+M+E:0]           d_out     ;
+    //wire [N+M+E:0]           d_out     ;
+    wire [N+M+E-1:0]            sum      ;
+    wire [N+M+E-1:0]            cout     ;
     wire                       en_out    ;
 
 integer           i,j;
@@ -22,6 +26,8 @@ reg    [M-1:0] w_val;
     localparam period = 20;
 
  ConvLayer_calc #(
+.MULT  (MULT)  ,
+.useCLA(useCLA),
 .KERNEL(KERNEL), 
 .E     (E)     , 
 .N     (N)     , 
@@ -34,9 +40,11 @@ reg    [M-1:0] w_val;
 .data2conv (data2conv), 
 .en_in     (en_in    ), 
 .w         (w        ), 
-.d_out     (d_out    ), 
+.sum       (sum      ), 
+.cout      (cout     ), 
 .en_out    (en_out   ) 
   );
+ 
 
 always 
 begin

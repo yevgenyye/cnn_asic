@@ -1,6 +1,6 @@
 module carry_save_adder #(
 	parameter N      =  256, // 2; // 3; // 4; // 5; // 6; // 7; // 8; // 9 ... 15; // 16; // 25; // 49; //64; //128; //256;  3+ number of busses 
-	parameter E      =    8, // 0; // 1; // 2; // 2; // 2; // 2; // 3; // 3 ...  3; // 4;  // 4;  // 5 ; // 6; //  7; //  8; bit extention ( N=9 -> E=3, N=25 -> E=4)
+	parameter E      =    8, // 0; // 1; // 2; // 2; // 2; // 2; // 3; // 3 ...  3; // 4;  // 4;  // 6 ; // 6; //  7; //  8; bit extention ( N=9 -> E=3, N=25 -> E=4)
   parameter W      =  4  //    input data width
 )
 
@@ -24,6 +24,8 @@ output [W+E-1 :0] cout;
       carry_save_32inputs #(W)   cs_32in(.a(a), .sum(sum), .cout(cout)  ); end
     else if (N == 25) begin : gen_N_25
       carry_save_25inputs #(W)   cs_25in(.a(a), .sum(sum), .cout(cout)  ); end
+    else if (N == 17) begin : gen_N_17
+       carry_save_17inputs #(W)  cs_17in(.a(a), .sum(sum), .cout(cout)  ); end
     else if (N == 16) begin : gen_N_16
        carry_save_16inputs #(W)  cs_16in(.a(a), .sum(sum), .cout(cout)  ); end
     else if (N == 15) begin : gen_N_15
@@ -541,6 +543,48 @@ assign sum  = sum8 [W+3  :0];
 endmodule
 
 ////////////////////////////////////
+// Carry Save 17 inputs 
+////////////////////////////////////
+
+module carry_save_17inputs #(
+    parameter W      = 4  //    input data width
+)
+(a, sum, cout);
+ input  [17*W-1:0] a; //, b,c,d;
+ output [W+3  :0] sum;   
+ output [W+3  :0] cout;  
+ 
+ wire [W:0] sum1_3, sum4_6, sum7_9, sum10_12, c10_12;
+ wire [W:0] c1_3  , c4_6  , c7_9  , sum13_15, c13_15;
+
+ wire [W+1:0] sum_1, c_1, sum_2, c_2, sum_3, c_3, sum_4, c_4;
+ wire [W+4:0] sum8, cout8;
+
+//wire [W+5:0] test9_0, test9_1, test9_2, test9_3 ;
+//
+//assign test9_0 = a[ 0*W +: W] + a[ 1*W +: W] + a[ 2*W +: W] + a[ 3*W +: W] + a[ 4*W +: W] + a[ 5*W +: W] + a[ 6*W +: W] + a[ 7*W +: W]+ a[ 8*W +: W] + a[ 9*W +: W] + 
+//                 a[10*W +: W] + a[11*W +: W] + a[12*W +: W] + a[13*W +: W] + a[14*W +: W] + a[15*W +: W];
+//assign test9_1 = sum1_3   + c1_3   + sum4_6   + c4_6   + sum7_9   + c7_9   + sum10_12 + c10_12 + sum13_15 + c13_15 + a[15*W +: W ] ;
+//assign test9_2 = sum_1 + c_1 + sum_2 + c_2 + sum_3 + c_3 + c13_15 +a[15*W +: W ];
+//assign test9_3 = cout + sum;
+
+ carry_save_3inputs #(W) cs_3in_1 (.a(a[ 0*W +: 3*W ]), .sum(sum1_3  ), .cout(c1_3  )  );
+ carry_save_3inputs #(W) cs_3in_2 (.a(a[ 3*W +: 3*W ]), .sum(sum4_6  ), .cout(c4_6  )  );
+ carry_save_3inputs #(W) cs_3in_3 (.a(a[ 6*W +: 3*W ]), .sum(sum7_9  ), .cout(c7_9  )  );
+ carry_save_3inputs #(W) cs_3in_4 (.a(a[ 9*W +: 3*W ]), .sum(sum10_12), .cout(c10_12)  );
+ carry_save_3inputs #(W) cs_3in_5 (.a(a[12*W +: 3*W ]), .sum(sum13_15), .cout(c13_15)  ); // a(15) a(16)  do not added
+
+ carry_save_3inputs #(W+1) cs_3in_11(.a({ sum1_3  , c1_3  , sum4_6                    }), .sum(sum_1), .cout(c_1) );
+ carry_save_3inputs #(W+1) cs_3in_12(.a({ c4_6    , sum7_9, c7_9                      }), .sum(sum_2), .cout(c_2) );
+ carry_save_3inputs #(W+1) cs_3in_13(.a({ sum10_12, c10_12, sum13_15                  }), .sum(sum_3), .cout(c_3) );
+ carry_save_3inputs #(W+1) cs_3in_14(.a({ c13_15, {1'b0,a[15*W+:W]}, {1'b0,a[16*W+:W]}}), .sum(sum_4), .cout(c_4) );
+
+ carry_save_8inputs #(W+2) cs_8in (.a({  sum_1, c_1, sum_2, c_2, sum_3, c_3,sum_4 , c_4 }), .sum(sum8), .cout(cout8)  );
+assign cout = cout8[W+3  :0];
+assign sum  = sum8 [W+3  :0];
+
+endmodule
+////////////////////////////////////
 // Carry Save 25 inputs (seven stages)
 ////////////////////////////////////
 
@@ -703,8 +747,8 @@ module carry_save_49inputs #(
 )
 (a, sum, cout);
 input  [49*W-1:0] a; //, b,c,d;
-output [W+4  :0] sum;
-output [W+4  :0] cout;
+output [W+5  :0] sum;
+output [W+5  :0] cout;
 
 wire [W:0] sum01_03, c01_03, sum04_06, c04_06, sum07_09, c07_09, sum10_12, c10_12, sum13_15, c13_15, sum16_18, c16_18, sum19_21, c19_21, sum22_24, c22_24;
 wire [W:0] sum25_27, c25_27, sum28_30, c28_30, sum31_33, c31_33, sum34_36, c34_36, sum37_39, c37_39, sum40_42, c40_42, sum43_45, c43_45, sum46_48, c46_48;
@@ -715,26 +759,26 @@ wire [W+4:0] sum_31, c_31, sum_32, c_32, sum_33, c_33;
 wire [W+5:0] sum_41, c_41, sum_42, c_42;
 wire [W+7:0] sum5, cout5;
 
-//wire [W+7:0]  test_in, test_1_stage, test_2_stage, test_3_stage, test_4_stage, test_5_stage, test_6_stage, test_7_preout, test_8_out;
-//assign test_in = a[ 0*W +: W] + a[ 1*W +: W] + a[ 2*W +: W] + a[ 3*W +: W] + a[ 4*W +: W] + 
-//                 a[ 5*W +: W] + a[ 6*W +: W] + a[ 7*W +: W] + a[ 8*W +: W] + a[ 9*W +: W] + 
-//                 a[10*W +: W] + a[11*W +: W] + a[12*W +: W] + a[13*W +: W] + a[14*W +: W] + 
-//                 a[15*W +: W] + a[16*W +: W] + a[17*W +: W] + a[18*W +: W] + a[19*W +: W] + 
-//                 a[20*W +: W] + a[21*W +: W] + a[22*W +: W] + a[23*W +: W] + a[24*W +: W] +
-//                 a[25*W +: W] + a[26*W +: W] + a[27*W +: W] + a[28*W +: W] + a[29*W +: W] + 
-//                 a[30*W +: W] + a[31*W +: W] + a[32*W +: W] + a[33*W +: W] + a[34*W +: W] + 
-//                 a[35*W +: W] + a[36*W +: W] + a[37*W +: W] + a[38*W +: W] + a[39*W +: W] + 
-//                 a[40*W +: W] + a[41*W +: W] + a[42*W +: W] + a[43*W +: W] + a[44*W +: W] + 
-//                 a[45*W +: W] + a[46*W +: W] + a[47*W +: W] + a[48*W +: W];
-//assign test_1_stage = sum01_03 + c01_03 + sum04_06 + c04_06 + sum07_09 + c07_09 + sum10_12 + c10_12 + sum13_15 + c13_15 + sum16_18 + c16_18 + sum19_21 + c19_21 + sum22_24 + c22_24 + a[48*W +: W ] +
-//                      sum25_27 + c25_27 + sum28_30 + c28_30 + sum31_33 + c31_33 + sum34_36 + c34_36 + sum37_39 + c37_39 + sum40_42 + c40_42 + sum43_45 + c43_45 + sum46_48 + c46_48;
-//assign test_2_stage = sum_1 + c_1 + sum_2 + c_2 + sum_3 + c_3 + sum_4 + c_4 + sum_5 + c_5 + sum_6 + c_6 + sum_7 + c_7 + sum_8 + c_8 + sum_9 + c_9 + sum_A + c_A + sum_B + c_B;
-//assign test_3_stage = sum_11+ c_11+ sum_12+ c_12+ sum_13+ c_13+ sum_14+ c_14+ sum_15+ c_15+ sum_16+ c_16+ sum_17+ c_17 + c_B;
-//assign test_4_stage = sum_21 + c_21 + sum_22 + c_22 + sum_23 + c_23 + sum_24 + c_24 + sum_25 + c_25;
-//assign test_5_stage = sum_31 + c_31 + sum_32 + c_32 + sum_33 + c_33 + c_25;
-//assign test_6_stage = sum_41 + c_41 + sum_42 + c_42 + c_25;
-//assign test_7_preout = sum5 + cout5;
-//assign test_8_out    = sum + cout;
+wire [W+7:0]  test_in, test_1_stage, test_2_stage, test_3_stage, test_4_stage, test_5_stage, test_6_stage, test_7_preout, test_8_out;
+assign test_in = a[ 0*W +: W] + a[ 1*W +: W] + a[ 2*W +: W] + a[ 3*W +: W] + a[ 4*W +: W] + 
+                 a[ 5*W +: W] + a[ 6*W +: W] + a[ 7*W +: W] + a[ 8*W +: W] + a[ 9*W +: W] + 
+                 a[10*W +: W] + a[11*W +: W] + a[12*W +: W] + a[13*W +: W] + a[14*W +: W] + 
+                 a[15*W +: W] + a[16*W +: W] + a[17*W +: W] + a[18*W +: W] + a[19*W +: W] + 
+                 a[20*W +: W] + a[21*W +: W] + a[22*W +: W] + a[23*W +: W] + a[24*W +: W] +
+                 a[25*W +: W] + a[26*W +: W] + a[27*W +: W] + a[28*W +: W] + a[29*W +: W] + 
+                 a[30*W +: W] + a[31*W +: W] + a[32*W +: W] + a[33*W +: W] + a[34*W +: W] + 
+                 a[35*W +: W] + a[36*W +: W] + a[37*W +: W] + a[38*W +: W] + a[39*W +: W] + 
+                 a[40*W +: W] + a[41*W +: W] + a[42*W +: W] + a[43*W +: W] + a[44*W +: W] + 
+                 a[45*W +: W] + a[46*W +: W] + a[47*W +: W] + a[48*W +: W];
+assign test_1_stage = sum01_03 + c01_03 + sum04_06 + c04_06 + sum07_09 + c07_09 + sum10_12 + c10_12 + sum13_15 + c13_15 + sum16_18 + c16_18 + sum19_21 + c19_21 + sum22_24 + c22_24 + a[48*W +: W ] +
+                      sum25_27 + c25_27 + sum28_30 + c28_30 + sum31_33 + c31_33 + sum34_36 + c34_36 + sum37_39 + c37_39 + sum40_42 + c40_42 + sum43_45 + c43_45 + sum46_48 + c46_48;
+assign test_2_stage = sum_1 + c_1 + sum_2 + c_2 + sum_3 + c_3 + sum_4 + c_4 + sum_5 + c_5 + sum_6 + c_6 + sum_7 + c_7 + sum_8 + c_8 + sum_9 + c_9 + sum_A + c_A + sum_B + c_B;
+assign test_3_stage = sum_11+ c_11+ sum_12+ c_12+ sum_13+ c_13+ sum_14+ c_14+ sum_15+ c_15+ sum_16+ c_16+ sum_17+ c_17 + c_B;
+assign test_4_stage = sum_21 + c_21 + sum_22 + c_22 + sum_23 + c_23 + sum_24 + c_24 + sum_25 + c_25;
+assign test_5_stage = sum_31 + c_31 + sum_32 + c_32 + sum_33 + c_33 + c_25;
+assign test_6_stage = sum_41 + c_41 + sum_42 + c_42 + c_25;
+assign test_7_preout = sum5 + cout5;
+assign test_8_out    = sum + cout;
 
  carry_save_3inputs #(W) cs_3in_01 (.a(a[ 0*W +: 3*W ]), .sum(sum01_03), .cout(c01_03)  );
  carry_save_3inputs #(W) cs_3in_02 (.a(a[ 3*W +: 3*W ]), .sum(sum04_06), .cout(c04_06)  );
@@ -2967,49 +3011,49 @@ assign sum  = sum5 [W+8  :0];
 endmodule
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////////////
-//Generic Ripple Carry Adder
-////////////////////////////////////
- 
-module ripple_carry#(
-    parameter W      = 4  //    input data width
-)
-(a, b, cin, sum, cout);
-input  [W-1:0] a,b;
-input          cin;
-wire   [W  :0] c1;
-output [W-1:0] sum;
-output cout;
-
-genvar i;
-
-generate
-   for (i=0; i<=W-1; i=i+1) begin  :gen_rca
-      full_adder fa1 ( .a(a[i]), .b(b[i]),  .cin(c1[i]), .sum(sum[i]), .cout(c1[i+1])  );
-   end 
-endgenerate
-assign c1[0] = cin;
-assign cout  = c1[W];
-
-endmodule
-
-////////////////////////////////////////////
-//1bit Full Adder
-///////////////////////////////////////////
-module full_adder(a,b,cin,sum, cout);
-input a,b,cin;
-output sum, cout;
-wire x,y,z;
-half_adder  h1(.a(a), .b(b), .sum(x), .cout(y));
-half_adder  h2(.a(x), .b(cin), .sum(sum), .cout(z));
-assign cout= y|z;
-endmodule
-///////////////////////////////////////////
-// 1 bit Half Adder
-////////////////////////////////////////////
-module half_adder( a,b, sum, cout );
-input a,b;
-output sum,  cout;
-assign sum= a^b;
-assign cout= a & b;
-endmodule
+//////////////////////////////////////
+////Generic Ripple Carry Adder
+//////////////////////////////////////
+// 
+//module ripple_carry#(
+//    parameter W      = 4  //    input data width
+//)
+//(a, b, cin, sum, cout);
+//input  [W-1:0] a,b;
+//input          cin;
+//wire   [W  :0] c1;
+//output [W-1:0] sum;
+//output cout;
+//
+//genvar i;
+//
+//generate
+//   for (i=0; i<=W-1; i=i+1) begin  :gen_rca
+//      full_adder fa1 ( .a(a[i]), .b(b[i]),  .cin(c1[i]), .sum(sum[i]), .cout(c1[i+1])  );
+//   end 
+//endgenerate
+//assign c1[0] = cin;
+//assign cout  = c1[W];
+//
+//endmodule
+//
+//////////////////////////////////////////////
+////1bit Full Adder
+/////////////////////////////////////////////
+//module full_adder(a,b,cin,sum, cout);
+//input a,b,cin;
+//output sum, cout;
+//wire x,y,z;
+//half_adder  h1(.a(a), .b(b), .sum(x), .cout(y));
+//half_adder  h2(.a(x), .b(cin), .sum(sum), .cout(z));
+//assign cout= y|z;
+//endmodule
+/////////////////////////////////////////////
+//// 1 bit Half Adder
+//////////////////////////////////////////////
+//module half_adder( a,b, sum, cout );
+//input a,b;
+//output sum,  cout;
+//assign sum= a^b;
+//assign cout= a & b;
+//endmodule

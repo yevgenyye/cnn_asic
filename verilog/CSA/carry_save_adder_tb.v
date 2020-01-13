@@ -1,7 +1,7 @@
 module carry_save_adder_tb;
-parameter N = 256;  // 3; // 4; // 5; // 6; // 7; // 9; // 12; // 14; // 16; // 25; // 32; // 49; //256; //512;  3+ number of busses 
-parameter E =   8;  // 1; // 2; // 2; // 2; // 2; // 3; //  3; //  3; // 4;  // 4;  // 5 ; // 5 ; //  8; //  9;  bit extention ( N=9 -> E=3, N=25 -> E=4)
-parameter W = 4;  //    input data width
+parameter N =   17; // 3; // 4; 5;  6;  7; 8; // 9; 12; 14; // 16; 25; // 32; // 49;  64; //128; //256; //512;  3+ number of busses 
+parameter E =    4; // 1; // 2; 2;  2;  2; 2; // 3;  3;  3; // 4;  4;  // 5 ; // 6 ;   6; //  7; //  8; //  9;  bit extention ( N=9 -> E=3, N=25 -> E=4)
+parameter W =    3;  //    input data width
 
 
 wire [W+E-1:0] sum;//output
@@ -55,9 +55,9 @@ $display($time, " << Starting the Simulation >>");
   //aa[W*N-1:0] <= 512'hffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff; // 128 inputs
   //aa[W*N-1:0]   <= 512'hfffffffff948395843955a5a5a5a5a5a5a5a5a5aaaaaaaa7643756574316735963562fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff; // 128 inputs
   //aa[W*N-1:0]   <= {(1024){1'b1}}; // 256 inputs
-  aa[W*N-1:0]   <= {(1024/8){8'b11101100}}; // 256 inputs
+  //aa[W*N-1:0]   <= {(1024/8){8'b11101100}}; // 256 inputs
   //aa[W*N-1:0]   <= {(2*1024){1'b1}}; // 512 inputs
-  //aa[W*N-1:0]   <= {(2048/8){8'b11101100}}; // 512 inputs
+  aa[W*N-1:0]   <= {(2048/8){8'b11101100}}; // 512 inputs
   //aa[W*N-1:0]   <= {(2048/8){8'b00001100}}; // 512 inputs
 
   err1 <= 0;

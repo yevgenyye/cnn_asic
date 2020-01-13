@@ -2,13 +2,14 @@
 
  module CE_tb (); 
 
-    parameter CL_IN  = 4;  // 1, 2 ...8, 16, 25,32, 49 number of inputs features 
-    parameter KERNEL = 7;  // 1/3/5/7
+    parameter CL_IN  = 256;  // 1, 2 ...8, 16, 32, 64, 128, 256 number of inputs features 
+    parameter KERNEL = 3;  // 1/3/5/7
     parameter RELU   = 1;  // 0 - no relu, 1 - relu, only positive output values
     parameter N      = 2;  // input data width
     parameter M      = 2;  // input weight width
     parameter SR     = 2;  // data shift right before output
-
+    parameter MULT   = 1, // 1/0 -> Multiplier by FullAdders / * (default) 
+    parameter useCLA = 0, // 0/1  -> use ripleCarry/CLA
  parameter  E1 = (KERNEL == 3) ? 3 :
                  (KERNEL == 5) ? 4 :
                  (KERNEL == 7) ? 5 :
@@ -40,6 +41,8 @@ reg    [M-1:0] w_val;
  end
 
 CE  #(
+  .MULT  (MULT)  , 
+  .useCLA(useCLA),
   .CL_IN (CL_IN) ,
   .KERNEL(KERNEL), 
   .RELU  (RELU)  ,

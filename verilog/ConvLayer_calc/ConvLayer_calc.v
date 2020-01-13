@@ -1,4 +1,6 @@
  module ConvLayer_calc    #(
+    parameter MULT   = 1, // 1/0 -> Multiplier by FullAdders / * (default) 
+    parameter useCLA = 0, // 0/1  -> use ripleCarry/CLA
     parameter KERNEL = 3, // 1/3/5/7 ^2  // 9; // 25; // 49; //  
     parameter E      = 3,                // 3; // 4;  // 5 ; // bit extention ( N=9 -> E=3, N=25 -> E=4)
     parameter N      = 4, // input data width
@@ -13,17 +15,22 @@
 
     output wire [N+M+E-1:0]            sum     ,
     output wire [N+M+E-1:0]            cout    ,
-    output wire                      en_out    
+    output wire                        en_out    
 );
 
  integer i;
+ genvar  j;
+
  reg [7:0] out;
- reg [KERNEL*KERNEL*(N + M) -1 : 0] prod     ;
+ reg  [KERNEL*KERNEL*(N + M) -1 : 0] prod     ;
+ wire [KERNEL*KERNEL*(N + M) -1 : 0] prod_w   ;
 
  wire [N+M+E-1 :0] csa_sum;
  wire [N+M+E-1 :0] csa_cout;
 
  reg en_prod, en_sum, en_sum2, en_sum3;
+
+ wire [KERNEL*KERNEL*(N + M) -1 : 0]  prod_tmp;
 
 // initial begin
 //    $display(" ConvLayer_calc output | width= %d ", D_MSB );
@@ -36,12 +43,32 @@
 // end
 
  //-------------Code Starts Here-------
- always @(posedge clk)
- begin
-    for (i=0; i<KERNEL**2; i=i+1)
-       prod[i*(N + M) +: (N + M) ] <= w[i*M +: M] * data2conv[i*N +: N];
- end
-
+ generate
+   if (MULT == 0)
+      always @(posedge clk)
+      begin
+         for (i=0; i<KERNEL**2; i=i+1)
+            prod[i*(N + M) +: (N + M) ] <= w[i*M +: M] * data2conv[i*N +: N];
+      end
+   else
+      begin
+         for (j=0; j<KERNEL**2; j=j+1) begin : gen_mult
+            wallace_gen #(
+               .N      (N     ), 
+               .W      (M     ),
+               .useCLA (useCLA)
+            ) mult (
+               .a   (data2conv[j*N +: N])    , 
+               .b   (w        [j*M +: M])    , 
+               .prod(prod_w [j*(N + M) +: (N + M - 1) ]) );
+          end // for
+            always @(data2conv,w)
+               for (i=0; i<KERNEL**2; i=i+1) 
+               begin
+                  prod [i*(N + M) +: (N + M)] = {prod_w [i*(N + M) +: (N + M - 1) ] ,  prod_w [i*(N + M) +: (N + M - 1) ]};
+               end
+      end
+endgenerate 
 
 generate
    if (KERNEL != 1)
