@@ -23,6 +23,10 @@ integer           i,j;
 reg    [N-1:0] d_val; 
 reg    [M-1:0] w_val; 
 
+reg [3:0] tst_a, tst_b;
+wire [7:0] tst_ab, tst_mult;
+
+
     localparam period = 20;
 
  ConvLayer_calc #(
@@ -59,12 +63,24 @@ end
         begin
           rst   <= 1'b1; 
           en_in <= 1'b0;
-          d_val <= { {(N-1){1'b0}}, 1'd1 };
-          w_val <= { {(M-1){1'b0}}, 1'd1 };
+       // d_val <= { {(N-1){1'b1}}, 1'd0 };
+       // w_val <= { {(M-1){1'b1}}, 1'd1 };
+          d_val <= { 1'd0, {(N-1){1'b1}} };
+          w_val <= { 1'd0, {(M-1){1'b0}} };
           #20;
           rst <= 1'b0; 
           #20;
           en_in <= 1'b1;
+
+          //for(j=0; j<16; j=j+1) 
+          //begin
+          //   for(i=0; i<16; i=i+1)
+          //   begin 
+          //       tst_a <= i;
+          //       tst_b <= j;
+          //       #20;
+          //   end
+          //end
 
           for(j=0; j<10; j=j+1) 
           begin
@@ -80,4 +96,7 @@ end
   
          //   #period;
         end
+// assign  tst_mult = {{(4){tst_a[3]}},tst_a[3:0]}*{{(4){tst_b[3]}},tst_b[3:0]};
+// assign  tst_ab = (tst_a[3] == tst_b[3]) ? tst_a*tst_b : ;
+ //assign  tst_check = 
  endmodule  

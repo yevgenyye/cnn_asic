@@ -1,5 +1,5 @@
  module ConvLayer_calc    #(
-    parameter MULT   = 1, // 1/0 -> Multiplier by FullAdders / * (default) 
+    parameter MULT   = 1, // 1/0 -> Multiplier by FullAdders / * (both 2's compliment)
     parameter useCLA = 0, // 0/1  -> use ripleCarry/CLA
     parameter KERNEL = 3, // 1/3/5/7 ^2  // 9; // 25; // 49; //  
     parameter E      = 3,                // 3; // 4;  // 5 ; // bit extention ( N=9 -> E=3, N=25 -> E=4)
@@ -48,7 +48,8 @@
       always @(posedge clk)
       begin
          for (i=0; i<KERNEL**2; i=i+1)
-            prod[i*(N + M) +: (N + M) ] <= w[i*M +: M] * data2conv[i*N +: N];
+            prod[i*(N + M) +: (N + M) ] <= { {(N){        w[i*M + M]}},        w[i*M +: M] } * 
+                                           { {(M){data2conv[i*N + N]}},data2conv[i*N +: N] } ;
       end
    else
       begin
