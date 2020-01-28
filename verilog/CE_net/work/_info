@@ -1,0 +1,925 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 d/home/yyevgeny/hdd/asic/verilog/CE_net
+vcarry_lookahead_adder
+Z1 !s110 1580053343
+!i10b 1
+!s100 l4>`o_nZBJR@RlW7[C<Md2
+I8g9FHi<ONk1ZY12SOO@^20
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+R0
+w1578561776
+8/home/yyevgeny/hdd/asic/verilog/CLA/carry_lookahead_adder.v
+F/home/yyevgeny/hdd/asic/verilog/CLA/carry_lookahead_adder.v
+L0 3
+Z3 OV;L;10.6d;65
+r1
+!s85 0
+31
+Z4 !s108 1580053343.000000
+!s107 /home/yyevgeny/hdd/asic/verilog/CLA/carry_lookahead_adder.v|
+!s90 -reportprogress|300|-work|work|/home/yyevgeny/hdd/asic/verilog/CLA/carry_lookahead_adder.v|
+!i113 1
+Z5 o-work work
+Z6 tCvgOpt 0
+vcarry_save_1024inputs
+Z7 !s110 1580053345
+!i10b 1
+!s100 B0FOBLU3<A:F;LGU<;n8D2
+IYRADP>7fbEd6U[ZkH1]Ke3
+R2
+R0
+Z8 w1580030084
+Z9 8/home/yyevgeny/hdd/asic/verilog/CSA/carry_save_adder.v
+Z10 F/home/yyevgeny/hdd/asic/verilog/CSA/carry_save_adder.v
+L0 2692
+R3
+r1
+!s85 0
+31
+R4
+Z11 !s107 /home/yyevgeny/hdd/asic/verilog/CSA/carry_save_adder.v|
+Z12 !s90 -reportprogress|300|-work|work|/home/yyevgeny/hdd/asic/verilog/CSA/carry_save_adder.v|
+!i113 1
+R5
+R6
+vcarry_save_10inputs
+R1
+!i10b 1
+!s100 T_KMdBVa6>MX]P]3N^cU`3
+Iin0RHQCBmCIS9<Lh`7ZX10
+R2
+R0
+R8
+R9
+R10
+L0 279
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_11inputs
+R1
+!i10b 1
+!s100 =14K^>J?SXWRRhW@6QXKN1
+I15ZKfgR[GR[kFQn8]5;Sd1
+R2
+R0
+R8
+R9
+R10
+L0 319
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_128inputs
+R1
+!i10b 1
+!s100 ]Vg:oQVg=GQ=JZSFPCSfB3
+IdR4A1GQ5;eDBV<4DcHI=m0
+R2
+R0
+R8
+R9
+R10
+L0 1047
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_12inputs
+R1
+!i10b 1
+!s100 VbnB2ThWc4GP_<gTSmNc;2
+IY;Ebg_?;[3ei@@Ca^nRI01
+R2
+R0
+R8
+R9
+R10
+L0 358
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_13inputs
+R1
+!i10b 1
+!s100 N^i1VX1Z3o<Z2ZPMJoKki0
+IOBcX?oOG;N@_8KUO4?=@:3
+R2
+R0
+R8
+R9
+R10
+L0 398
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_14inputs
+R1
+!i10b 1
+!s100 bT?N36B;32db?nz@KBN292
+IhA08eL^^j^i<7>2Xl;o9>1
+R2
+R0
+R8
+R9
+R10
+L0 430
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_15inputs
+R1
+!i10b 1
+!s100 ?zUZESTdG=5@5XcXo?DKZ1
+I9^K<0V8<6=^0g=Mg4i^TY3
+R2
+R0
+R8
+R9
+R10
+L0 469
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_16inputs
+R1
+!i10b 1
+!s100 d4UUE3X:[0Sh93mOMcP2c0
+Ial?dO6FMKZ0Uh0gUZOZD32
+R2
+R0
+R8
+R9
+R10
+L0 509
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_17inputs
+R1
+!i10b 1
+!s100 aS8z<`P^6zdlh>7_PSo[12
+IC=hz<IDYFU6E[9D:M_ZOP1
+R2
+R0
+R8
+R9
+R10
+L0 551
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_256inputs
+!s110 1580053344
+!i10b 1
+!s100 JOcV7Ozff5R@m1Ak8lzLF0
+InWzAG;bF=BKIQcV:kVEJf2
+R2
+R0
+R8
+R9
+R10
+L0 1357
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_25inputs
+R1
+!i10b 1
+!s100 >h_@I;YLN1e?C_LbVcfC13
+II@lHHMTi;RG;51oTPF;9z3
+R2
+R0
+R8
+R9
+R10
+L0 593
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_32inputs
+R1
+!i10b 1
+!s100 d^G]CD8S0QAodTSB59fK41
+I:_SMSgT0jn<kbVL8?P@0b2
+R2
+R0
+R8
+R9
+R10
+L0 665
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_3inputs
+R1
+!i10b 1
+!s100 C89iWbHalX]49Z3TobdjN1
+I8FKXXOHMYUidYFZF[:T5>3
+R2
+R0
+R8
+R9
+R10
+L0 79
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_49inputs
+R1
+!i10b 1
+!s100 F3i]mD9hHl^hCB?eVG9S82
+IAS9CM6>SkBIa=IJo6Qe0z2
+R2
+R0
+R8
+R9
+R10
+L0 747
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_4inputs
+R1
+!i10b 1
+!s100 oM`g3<Wi45BYhJ^[HLHfW2
+Ina?Xi]2k[MnOCRRc[dQS?3
+R2
+R0
+R8
+R9
+R10
+L0 107
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_512inputs
+R7
+!i10b 1
+!s100 oz:Y6R^8fY^F96B37RZb81
+IK]HZC;embPT@13i46MWdi2
+R2
+R0
+R8
+R9
+R10
+L0 1928
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_5inputs
+R1
+!i10b 1
+!s100 zkZe0JCVG[R3J:0l@cIWf2
+IPXB1HULQob>R30K1SM6<H1
+R2
+R0
+R8
+R9
+R10
+L0 130
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_64inputs
+R1
+!i10b 1
+!s100 X[U7b6h=1Fe]FEJ8<W3F40
+IHbI>kXNQ1UQV^f9H6zLf;3
+R2
+R0
+R8
+R9
+R10
+L0 880
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_6inputs
+R1
+!i10b 1
+!s100 kD2YS[I_=`a7[EbPlSC;z2
+I74VVT<Zm0>=bR@jWhbma20
+R2
+R0
+R8
+R9
+R10
+L0 161
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_7inputs
+R1
+!i10b 1
+!s100 ;zE7:Q`Eid34jHeBnNQ<12
+IMzUX8=cGI_4BageAjUzOc0
+R2
+R0
+R8
+R9
+R10
+L0 190
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_8inputs
+R1
+!i10b 1
+!s100 Y;B9VZPR=;=jQOPJHgloE2
+I<GAfoTXAe<N1Bbh930I8X1
+R2
+R0
+R8
+R9
+R10
+L0 224
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_9inputs
+R1
+!i10b 1
+!s100 iBzI3j^O:0K^KklD4i@NX2
+IIzmK;TmCz[6a=RI^?2B@H3
+R2
+R0
+R8
+R9
+R10
+L0 251
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vcarry_save_adder
+R1
+!i10b 1
+!s100 DNQbOOXKgHW3;5317J8jh1
+IHfzPVJWVJ=hjoK[hXUb9:0
+R2
+R0
+R8
+R9
+R10
+L0 1
+R3
+r1
+!s85 0
+31
+R4
+R11
+R12
+!i113 1
+R5
+R6
+vCE
+Z13 !s110 1580053346
+!i10b 1
+!s100 AjN<hRDV[ZT5X:F`A1i5C3
+IbiDMZH10;5<oE_`=BPk;[2
+R2
+R0
+w1579681956
+8/home/yyevgeny/hdd/asic/verilog/CE/CE.v
+F/home/yyevgeny/hdd/asic/verilog/CE/CE.v
+L0 1
+R3
+r1
+!s85 0
+31
+Z14 !s108 1580053346.000000
+!s107 /home/yyevgeny/hdd/asic/verilog/CE/CE.v|
+!s90 -reportprogress|300|-work|work|/home/yyevgeny/hdd/asic/verilog/CE/CE.v|
+!i113 1
+R5
+R6
+n@c@e
+vCE_net
+R13
+!i10b 1
+!s100 ITP^gKEeVG[0SamPV8F2K3
+Ieb`l8G;SNi6EYh7_h5Q0B2
+R2
+R0
+w1580053052
+8/home/yyevgeny/hdd/asic/verilog/CE_net/CE_net.v
+F/home/yyevgeny/hdd/asic/verilog/CE_net/CE_net.v
+L0 1
+R3
+r1
+!s85 0
+31
+R14
+!s107 /home/yyevgeny/hdd/asic/verilog/CE_net/CE_net.v|
+!s90 -reportprogress|300|-work|work|/home/yyevgeny/hdd/asic/verilog/CE_net/CE_net.v|
+!i113 1
+R5
+R6
+n@c@e_net
+vCE_net_tb
+R13
+!i10b 1
+!s100 ]g:@AZeZLnY@Jzm@fJEHa1
+IA?L3B9Q6oU4<_Jb8?CJ4D3
+R2
+R0
+w1580053337
+8/home/yyevgeny/hdd/asic/verilog/CE_net/CE_net_tb.v
+F/home/yyevgeny/hdd/asic/verilog/CE_net/CE_net_tb.v
+L0 3
+R3
+r1
+!s85 0
+31
+R14
+!s107 /home/yyevgeny/hdd/asic/verilog/CE_net/CE_net_tb.v|
+!s90 -reportprogress|300|-work|work|/home/yyevgeny/hdd/asic/verilog/CE_net/CE_net_tb.v|
+!i113 1
+R5
+R6
+n@c@e_net_tb
+vConvLayer_calc
+R13
+!i10b 1
+!s100 kcX3@n>LM[=2=]<K47U:T3
+I^6LHgel^6b6K1giRM_=EM3
+R2
+R0
+w1579682198
+8/home/yyevgeny/hdd/asic/verilog/ConvLayer_calc/ConvLayer_calc.v
+F/home/yyevgeny/hdd/asic/verilog/ConvLayer_calc/ConvLayer_calc.v
+L0 1
+R3
+r1
+!s85 0
+31
+R14
+!s107 /home/yyevgeny/hdd/asic/verilog/ConvLayer_calc/ConvLayer_calc.v|
+!s90 -reportprogress|300|-work|work|/home/yyevgeny/hdd/asic/verilog/ConvLayer_calc/ConvLayer_calc.v|
+!i113 1
+R5
+R6
+n@conv@layer_calc
+vfull_adder
+R1
+!i10b 1
+!s100 @H8];YDUzFN5[5@L][1Z@2
+IXXc7XFG7lzbcO??kR;m0=0
+R2
+R0
+Z15 w1578494486
+Z16 8/home/yyevgeny/hdd/asic/verilog/ha_fa/ha_fa_ripple.v
+Z17 F/home/yyevgeny/hdd/asic/verilog/ha_fa/ha_fa_ripple.v
+L0 31
+R3
+r1
+!s85 0
+31
+R4
+Z18 !s107 /home/yyevgeny/hdd/asic/verilog/ha_fa/ha_fa_ripple.v|
+Z19 !s90 -reportprogress|300|-work|work|/home/yyevgeny/hdd/asic/verilog/ha_fa/ha_fa_ripple.v|
+!i113 1
+R5
+R6
+vhalf_adder
+R1
+!i10b 1
+!s100 SPeoejNCK:QHZ0T_K86>73
+IG4dREM=BbkJQ57[g:DIVW2
+R2
+R0
+R15
+R16
+R17
+L0 42
+R3
+r1
+!s85 0
+31
+R4
+R18
+R19
+!i113 1
+R5
+R6
+vripple_carry
+R1
+!i10b 1
+!s100 ITB17YmF7X3O2mMdL3FHQ0
+I2jlGTe^OQ[6n1fT`a37oB2
+R2
+R0
+R15
+R16
+R17
+L0 6
+R3
+r1
+!s85 0
+31
+R4
+R18
+R19
+!i113 1
+R5
+R6
+vw_adder
+R7
+!i10b 1
+!s100 RGm1:?2SC@cc<HVXQ;h_S1
+IQVf4^]cTFi5Ohn7:@?FX<0
+R2
+R0
+Z20 w1578926555
+Z21 8/home/yyevgeny/hdd/asic/verilog/Wallace_multiplier/Wallace_multiplier.v
+Z22 F/home/yyevgeny/hdd/asic/verilog/Wallace_multiplier/Wallace_multiplier.v
+L0 692
+R3
+r1
+!s85 0
+31
+Z23 !s108 1580053345.000000
+Z24 !s107 /home/yyevgeny/hdd/asic/verilog/Wallace_multiplier/Wallace_multiplier.v|
+Z25 !s90 -reportprogress|300|-work|work|/home/yyevgeny/hdd/asic/verilog/Wallace_multiplier/Wallace_multiplier.v|
+!i113 1
+R5
+R6
+vwallace4x4
+R7
+!i10b 1
+!s100 Rf2jkafG>2>k;odZ;AZ@K0
+If@]8cG9o2PS1zhW]cEldU3
+R2
+R0
+R20
+R21
+R22
+L0 619
+R3
+r1
+!s85 0
+31
+R23
+R24
+R25
+!i113 1
+R5
+R6
+vwallace_gen
+R7
+!i10b 1
+!s100 0iBLX;j76=gGYaRX5F<]=3
+I]SefK@R:J3L?j_gSHWRA<3
+R2
+R0
+R20
+R21
+R22
+L0 1
+R3
+r1
+!s85 0
+31
+R23
+R24
+R25
+!i113 1
+R5
+R6
+vwallaceNx16
+R7
+!i10b 1
+!s100 kE2amoPB3?;fR2zG@OeHQ1
+Ig7?lX^@UhIf[WIRaV_bEb2
+R2
+R0
+R20
+R21
+R22
+L0 51
+R3
+r1
+!s85 0
+31
+R23
+R24
+R25
+!i113 1
+R5
+R6
+nwallace@nx16
+vwallaceNx2
+R7
+!i10b 1
+!s100 R[mK>Q67QQl7L]2>DJN=M0
+IiUn4`zag3XPOdFElN6TXz2
+R2
+R0
+R20
+R21
+R22
+L0 566
+R3
+r1
+!s85 0
+31
+R23
+R24
+R25
+!i113 1
+R5
+R6
+nwallace@nx2
+vwallaceNx3
+R7
+!i10b 1
+!s100 IKa`3LdMhi>c3CHzJFZ?B2
+IbczO?9]@IhYALeQiJLoei1
+R2
+R0
+R20
+R21
+R22
+L0 496
+R3
+r1
+!s85 0
+31
+R23
+R24
+R25
+!i113 1
+R5
+R6
+nwallace@nx3
+vwallaceNx4
+R7
+!i10b 1
+!s100 TM]dfJaHgNPLn:YL`cNN]0
+Id>[EeOK0og=X9E2gJB:?Z0
+R2
+R0
+R20
+R21
+R22
+L0 429
+R3
+r1
+!s85 0
+31
+R23
+R24
+R25
+!i113 1
+R5
+R6
+nwallace@nx4
+vwallaceNx5
+R7
+!i10b 1
+!s100 kGEnLDbaZWiH[<WmCTRX02
+Io7L<`_^IcbD8ZaoCX@@_W2
+R2
+R0
+R20
+R21
+R22
+L0 361
+R3
+r1
+!s85 0
+31
+R23
+R24
+R25
+!i113 1
+R5
+R6
+nwallace@nx5
+vwallaceNx6
+R7
+!i10b 1
+!s100 G53mHaT1k2BB77:C6U@oT2
+I9eA@5Q3VIUfo?cl7co6lz0
+R2
+R0
+R20
+R21
+R22
+L0 290
+R3
+r1
+!s85 0
+31
+R23
+R24
+R25
+!i113 1
+R5
+R6
+nwallace@nx6
+vwallaceNx7
+R7
+!i10b 1
+!s100 Woa0G0`6Bzd5@o3m:A5>g1
+IV>FPa]JJ^1n0<bGSXPJ9V2
+R2
+R0
+R20
+R21
+R22
+L0 217
+R3
+r1
+!s85 0
+31
+R23
+R24
+R25
+!i113 1
+R5
+R6
+nwallace@nx7
+vwallaceNx8
+R7
+!i10b 1
+!s100 Om0E7WdS]5770Hj5Xid0D0
+I5[YQ;Ce<d7eYa3T7[46k@3
+R2
+R0
+R20
+R21
+R22
+L0 142
+R3
+r1
+!s85 0
+31
+R23
+R24
+R25
+!i113 1
+R5
+R6
+nwallace@nx8

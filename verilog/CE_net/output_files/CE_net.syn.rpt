@@ -1,0 +1,40 @@
+Synthesis report
+Tue Jan 28 11:37:01 2020
+Quartus Prime Version 19.1.0 Build 240 03/26/2019 SJ Pro Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Synthesis Messages
+
+
+
++--------------------+
+; Synthesis Messages ;
++--------------------+
+Info: *******************************************************************
+Info: Running Quartus Prime Synthesis
+    Info: Version 19.1.0 Build 240 03/26/2019 SJ Pro Edition
+    Info: Processing started: Tue Jan 28 11:36:59 2020
+Info: Command: quartus_syn --read_settings_files=on --write_settings_files=off CE_net -c CE_net
+Info: qis_default_flow_script.tcl version: #2
+Info: Initializing Synthesis...
+Info: Project = "CE_net"
+Info: Revision = "CE_net"
+Info: Analyzing source files
+Warning (13461): Verilog HDL Parameter Declaration warning at CE.v(30): Parameter Declaration in module "CE" behaves as a Local Parameter Declaration because the module has a Module Parameter Port List File: /home/yyevgeny/hdd/asic/verilog/CE/CE.v Line: 30
+Info: Elaborating from top-level entity "CE_net"
+Info (13230): Verilog HDL or VHDL information at CE.v(73):  CE, outout d_out | width =         13 File: /home/yyevgeny/hdd/asic/verilog/CE/CE.v Line: 73
+Info (13230): Verilog HDL or VHDL information at CE.v(74):  CE, outout csa_d_out | width =         14 File: /home/yyevgeny/hdd/asic/verilog/CE/CE.v Line: 74
+Info (13230): Verilog HDL or VHDL information at CE.v(75):  CE, ConvLayer_calc output,d_calc | width=         55, step aa=         11 File: /home/yyevgeny/hdd/asic/verilog/CE/CE.v Line: 75
+Error (13224): Verilog HDL or VHDL error at ConvLayer_calc.v(51): index 36 is out of range [35:0] for 'w' File: /home/yyevgeny/hdd/asic/verilog/ConvLayer_calc/ConvLayer_calc.v Line: 51
+Error (13224): Verilog HDL or VHDL error at ConvLayer_calc.v(52): index 36 is out of range [35:0] for 'data2conv' File: /home/yyevgeny/hdd/asic/verilog/ConvLayer_calc/ConvLayer_calc.v Line: 52
+Error (16186): Can't elaborate top-level user hierarchy
+Error: Flow failed: 
+Error: Quartus Prime Synthesis was unsuccessful. 4 errors, 1 warning
+    Error: Peak virtual memory: 1538 megabytes
+    Error: Processing ended: Tue Jan 28 11:37:01 2020
+    Error: Elapsed time: 00:00:02
+
+
