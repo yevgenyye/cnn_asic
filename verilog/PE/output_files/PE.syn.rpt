@@ -1,0 +1,603 @@
+Synthesis report
+Thu Feb  6 15:45:29 2020
+Quartus Prime Version 19.1.0 Build 240 03/26/2019 SJ Pro Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Synthesis Summary
+  2. Synthesis Settings
+  3. Synthesis Source Files Read
+  4. Synthesis Partition Summary
+  5. Parameter Settings for Top-Level Entity
+  6. Parameter Settings for User Entity Instance: cs_4in
+  7. Parameter Settings for User Entity Instance: cs_4in|cs1
+  8. Parameter Settings for User Entity Instance: cs_4in|cs2
+  9. Parameter Settings for User Entity Instance: cla_in
+ 10. Parameter Settings for User Entity Instance: d_w_fifo1
+ 11. Parameter Settings for User Entity Instance: CALC
+ 12. Parameter Settings for User Entity Instance: CALC|gen_cla.csa
+ 13. Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in
+ 14. Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_1
+ 15. Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_2
+ 16. Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_3
+ 17. Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in
+ 18. Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_11
+ 19. Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_12
+ 20. Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in
+ 21. Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs1
+ 22. Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs2
+ 23. Parameter Settings for User Entity Instance: cla
+ 24. Partition "root_partition" Resource Utilization by Entity
+ 25. Registers Removed During Synthesis
+ 26. General Register Statistics for Partition "root_partition"
+ 27. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 28. Post-Synthesis Netlist Statistics for Partition "root_partition"
+ 29. Synthesis Resource Usage Summary for Partition "root_partition"
+ 30. Synthesis DSP Block Usage Summary for Partition "root_partition"
+ 31. Synthesis Messages
+
+
+
++---------------------------------------------------------------+
+; Synthesis Summary                                             ;
++-----------------------+---------------------------------------+
+; Synthesis Status      ; Successful - Thu Feb  6 15:45:28 2020 ;
+; Revision Name         ; PE                                    ;
+; Top-level Entity Name ; PE                                    ;
+; Family                ; Stratix 10                            ;
++-----------------------+---------------------------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------+
+; Synthesis Settings                                                                                                        ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Option                                                                          ; Setting            ; Default Value      ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Device                                                                          ; 1SX280LU3F50I3VG   ;                    ;
+; Top-level entity name                                                           ; PE                 ; PE                 ;
+; Family name                                                                     ; Stratix 10         ; Cyclone 10 GX      ;
+; Enable parallel Assembler and Timing Analyzer during compilation                ; On                 ; On                 ;
+; Enable compact report table                                                     ; Off                ; Off                ;
+; Enable Design Assistant in the compilation flow                                 ; Off                ; Off                ;
+; Design Assistant include IP blocks                                              ; Off                ; Off                ;
+; Design Assistant limit on reported violations per rule                          ; 500                ; 500                ;
+; Optimization Mode                                                               ; Balanced           ; Balanced           ;
+; Allow Register Retiming                                                         ; On                 ; On                 ;
+; Allow RAM Retiming                                                              ; Off                ; Off                ;
+; Allow DSP Retiming                                                              ; Off                ; Off                ;
+; Restructure Multiplexers                                                        ; Auto               ; Auto               ;
+; MLAB Add Timing Constraints For Mixed-Port Feed-Through Mode Setting Don't Care ; Off                ; Off                ;
+; Preserve fewer node names                                                       ; On                 ; On                 ;
+; Intel FPGA IP Evaluation Mode                                                   ; Enable             ; Enable             ;
+; Verilog Version                                                                 ; Verilog_2001       ; Verilog_2001       ;
+; VHDL Version                                                                    ; VHDL_1993          ; VHDL_1993          ;
+; State Machine Processing                                                        ; Auto               ; Auto               ;
+; Safe State Machine                                                              ; Auto               ; Auto               ;
+; Iteration limit for constant Verilog loops                                      ; 5000               ; 5000               ;
+; Iteration limit for non-constant Verilog loops                                  ; 250                ; 250                ;
+; Infer RAMs from Raw Logic                                                       ; On                 ; On                 ;
+; DSP Block Balancing                                                             ; Auto               ; Auto               ;
+; NOT Gate Push-Back                                                              ; On                 ; On                 ;
+; Power-Up Don't Care                                                             ; On                 ; On                 ;
+; Remove Redundant Logic Cells                                                    ; Off                ; Off                ;
+; Remove Duplicate Registers                                                      ; On                 ; On                 ;
+; Ignore GLOBAL Buffers                                                           ; Off                ; Off                ;
+; Ignore LCELL Buffers                                                            ; Off                ; Off                ;
+; Ignore SOFT Buffers                                                             ; On                 ; On                 ;
+; Optimization Technique                                                          ; Balanced           ; Balanced           ;
+; Auto Open-Drain Pins                                                            ; On                 ; On                 ;
+; Perform WYSIWYG Primitive Resynthesis                                           ; Off                ; Off                ;
+; Auto ROM Replacement                                                            ; On                 ; On                 ;
+; Auto RAM Replacement                                                            ; On                 ; On                 ;
+; Auto DSP Block Replacement                                                      ; On                 ; On                 ;
+; Auto Shift Register Replacement                                                 ; Auto               ; Auto               ;
+; Allow Shift Register Merging across Hierarchies                                 ; Auto               ; Auto               ;
+; Auto Clock Enable Replacement                                                   ; On                 ; On                 ;
+; Strict RAM Replacement                                                          ; Off                ; Off                ;
+; Allow Synchronous Control Signals                                               ; On                 ; On                 ;
+; Force Use of Synchronous Clear Signals                                          ; Off                ; Off                ;
+; Auto Resource Sharing                                                           ; Off                ; Off                ;
+; Allow Any RAM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any ROM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any Shift Register Size For Recognition                                   ; Off                ; Off                ;
+; Ignore translate_off and synthesis_off directives                               ; Off                ; Off                ;
+; Timing-Driven Synthesis                                                         ; On                 ; On                 ;
+; Ignore Maximum Fan-Out Assignments                                              ; Off                ; Off                ;
+; Synchronization Register Chain Length                                           ; 3                  ; 3                  ;
+; Power Optimization During Synthesis                                             ; Normal compilation ; Normal compilation ;
+; HDL message level                                                               ; Level2             ; Level2             ;
+; Number of Protected Registers Reported in Synthesis Report                      ; 100                ; 100                ;
+; Number of Removed Registers Reported in Synthesis Report                        ; 5000               ; 5000               ;
+; Synthesis Migration Checks for Stratix 10                                       ; Off                ; Off                ;
+; Number of Swept Nodes Reported in Synthesis Report                              ; 5000               ; 5000               ;
+; Number of Inverted Registers Reported in Synthesis Report                       ; 100                ; 100                ;
+; Clock MUX Protection                                                            ; On                 ; On                 ;
+; Auto Gated Clock Conversion                                                     ; Off                ; Off                ;
+; Block Design Naming                                                             ; Auto               ; Auto               ;
+; SDC constraint protection                                                       ; Off                ; Off                ;
+; Synthesis Effort                                                                ; Auto               ; Auto               ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal                    ; On                 ; On                 ;
+; Analysis & Synthesis Message Level                                              ; Medium             ; Medium             ;
+; Disable Register Merging Across Hierarchies                                     ; Auto               ; Auto               ;
+; Resource Aware Inference For Block RAM                                          ; On                 ; On                 ;
+; Automatic Parallel Synthesis                                                    ; On                 ; On                 ;
+; Partial Reconfiguration Bitstream ID                                            ; Off                ; Off                ;
+; Disable DSP Negate Inferencing                                                  ; Off                ; Off                ;
+; Report Parameter Settings                                                       ; On                 ; On                 ;
+; Report Source Assignments                                                       ; On                 ; On                 ;
+; Size of the Latch Report                                                        ; 100                ; 100                ;
+; Enable State Machines Inference                                                 ; On                 ; On                 ;
+; Enable formal verification support during compilation                           ; Off                ; Off                ;
+; Size of the PR Initial Conditions Report                                        ; 15                 ; 15                 ;
+; Report PR Initial Values as Errors                                              ; Off                ; Off                ;
+; Fractal Synthesis                                                               ; Off                ; Off                ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Synthesis Source Files Read                                                                                                                                                               ;
++-----------------------------------------+------------------------------+-----------------------------------------------------------------+-------------+----------------------------------+
+; File Name with User-Entered Path        ; File Type                    ; File Name with Absolute Path                                    ; Library     ; MD5                              ;
++-----------------------------------------+------------------------------+-----------------------------------------------------------------+-------------+----------------------------------+
+; Saved_lines.v                           ; User Verilog HDL File        ; /home/yyevgeny/hdd/asic/verilog/PE/Saved_lines.v                ;             ; bda0974587a606c0f1687ccfd2b5f903 ;
+; ../CE/CE.v                              ; User Verilog HDL File        ; /home/yyevgeny/hdd/asic/verilog/CE/CE.v                         ;             ; 41dfaebf3d34eb5a945bd5d021e2a57f ;
+; ../ConvLayer_calc/ConvLayer_calc.v      ; User Verilog HDL File        ; /home/yyevgeny/hdd/asic/verilog/ConvLayer_calc/ConvLayer_calc.v ;             ; 35b21d2d62e02321a155d4653df75cf1 ;
+; ../CSA/carry_save_adder.v               ; User Verilog HDL File        ; /home/yyevgeny/hdd/asic/verilog/CSA/carry_save_adder.v          ;             ; c96abe9064083b933810addfd77326f9 ;
+; ../CLA/carry_lookahead_adder.v          ; User Verilog HDL File        ; /home/yyevgeny/hdd/asic/verilog/CLA/carry_lookahead_adder.v     ;             ; daa185b3f8e6e18d52bd1058071f5c83 ;
+; ../ha_fa/ha_fa_ripple.v                 ; User Verilog HDL File        ; /home/yyevgeny/hdd/asic/verilog/ha_fa/ha_fa_ripple.v            ;             ; fa465a166f5851c900da91b7f81c90f5 ;
+; /home/yyevgeny/hdd/asic/verilog/PE/PE.v ; Auto-Found Verilog HDL File  ; /home/yyevgeny/hdd/asic/verilog/PE/PE.v                         ; altera_work ; 1db444fc51f1dfbbea6cdf9de7dce116 ;
++-----------------------------------------+------------------------------+-----------------------------------------------------------------+-------------+----------------------------------+
+
+
++--------------------------------------------------------------------------------------------+
+; Synthesis Partition Summary                                                                ;
++----------------+----------------+---------+--------------+-------+-------------------------+
+; Partition Name ; Hierarchy Path ; Type    ; Preservation ; Empty ; Partition Database File ;
++----------------+----------------+---------+--------------+-------+-------------------------+
+; root_partition ; |              ; Default ;              ;       ;                         ;
++----------------+----------------+---------+--------------+-------+-------------------------+
+
+
++-----------------------------------------+
+; Parameter Settings for Top-Level Entity ;
++----------------+-------+----------------+
+; Parameter Name ; Value ; Type           ;
++----------------+-------+----------------+
+; LINES          ; 16    ; Signed Integer ;
+; MULT           ; 0     ; Signed Integer ;
+; useCLA         ; 1     ; Signed Integer ;
+; CL_IN          ; 4     ; Signed Integer ;
+; CL1            ; 2     ; Signed Integer ;
+; RELU           ; 1     ; Signed Integer ;
+; N              ; 4     ; Signed Integer ;
+; M              ; 4     ; Signed Integer ;
+; SR             ; 2     ; Signed Integer ;
++----------------+-------+----------------+
+
+
++-----------------------------------------------------+
+; Parameter Settings for User Entity Instance: cs_4in ;
++----------------+-------+----------------------------+
+; Parameter Name ; Value ; Type                       ;
++----------------+-------+----------------------------+
+; W              ; 4     ; Signed Integer             ;
++----------------+-------+----------------------------+
+
+
++---------------------------------------------------------+
+; Parameter Settings for User Entity Instance: cs_4in|cs1 ;
++----------------+-------+--------------------------------+
+; Parameter Name ; Value ; Type                           ;
++----------------+-------+--------------------------------+
+; W              ; 4     ; Signed Integer                 ;
++----------------+-------+--------------------------------+
+
+
++---------------------------------------------------------+
+; Parameter Settings for User Entity Instance: cs_4in|cs2 ;
++----------------+-------+--------------------------------+
+; Parameter Name ; Value ; Type                           ;
++----------------+-------+--------------------------------+
+; W              ; 5     ; Signed Integer                 ;
++----------------+-------+--------------------------------+
+
+
++-----------------------------------------------------+
+; Parameter Settings for User Entity Instance: cla_in ;
++----------------+-------+----------------------------+
+; Parameter Name ; Value ; Type                       ;
++----------------+-------+----------------------------+
+; W              ; 6     ; Signed Integer             ;
++----------------+-------+----------------------------+
+
+
++--------------------------------------------------------+
+; Parameter Settings for User Entity Instance: d_w_fifo1 ;
++----------------+-------+-------------------------------+
+; Parameter Name ; Value ; Type                          ;
++----------------+-------+-------------------------------+
+; LINES          ; 16    ; Signed Integer                ;
+; N              ; 6     ; Signed Integer                ;
+; M              ; 4     ; Signed Integer                ;
+; USE_MEM        ; 0     ; Signed Integer                ;
++----------------+-------+-------------------------------+
+
+
++---------------------------------------------------+
+; Parameter Settings for User Entity Instance: CALC ;
++----------------+-------+--------------------------+
+; Parameter Name ; Value ; Type                     ;
++----------------+-------+--------------------------+
+; MULT           ; 0     ; Signed Integer           ;
+; useCLA         ; 1     ; Signed Integer           ;
+; KERNEL         ; 3     ; Signed Integer           ;
+; E              ; 3     ; Signed Integer           ;
+; N              ; 6     ; Signed Integer           ;
+; M              ; 4     ; Signed Integer           ;
++----------------+-------+--------------------------+
+
+
++---------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: CALC|gen_cla.csa ;
++----------------+-------+--------------------------------------+
+; Parameter Name ; Value ; Type                                 ;
++----------------+-------+--------------------------------------+
+; N              ; 9     ; Signed Integer                       ;
+; E              ; 3     ; Signed Integer                       ;
+; W              ; 10    ; Signed Integer                       ;
++----------------+-------+--------------------------------------+
+
+
++------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in ;
++----------------+-------+-----------------------------------------------------+
+; Parameter Name ; Value ; Type                                                ;
++----------------+-------+-----------------------------------------------------+
+; W              ; 10    ; Signed Integer                                      ;
++----------------+-------+-----------------------------------------------------+
+
+
++---------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_1 ;
++----------------+-------+--------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                         ;
++----------------+-------+--------------------------------------------------------------+
+; W              ; 10    ; Signed Integer                                               ;
++----------------+-------+--------------------------------------------------------------+
+
+
++---------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_2 ;
++----------------+-------+--------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                         ;
++----------------+-------+--------------------------------------------------------------+
+; W              ; 10    ; Signed Integer                                               ;
++----------------+-------+--------------------------------------------------------------+
+
+
++---------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_3 ;
++----------------+-------+--------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                         ;
++----------------+-------+--------------------------------------------------------------+
+; W              ; 10    ; Signed Integer                                               ;
++----------------+-------+--------------------------------------------------------------+
+
+
++-------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in ;
++----------------+-------+------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                       ;
++----------------+-------+------------------------------------------------------------+
+; W              ; 11    ; Signed Integer                                             ;
++----------------+-------+------------------------------------------------------------+
+
+
++-----------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_11 ;
++----------------+-------+----------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                 ;
++----------------+-------+----------------------------------------------------------------------+
+; W              ; 11    ; Signed Integer                                                       ;
++----------------+-------+----------------------------------------------------------------------+
+
+
++-----------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_12 ;
++----------------+-------+----------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                 ;
++----------------+-------+----------------------------------------------------------------------+
+; W              ; 11    ; Signed Integer                                                       ;
++----------------+-------+----------------------------------------------------------------------+
+
+
++--------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in ;
++----------------+-------+-------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                              ;
++----------------+-------+-------------------------------------------------------------------+
+; W              ; 12    ; Signed Integer                                                    ;
++----------------+-------+-------------------------------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs1 ;
++----------------+-------+-----------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                  ;
++----------------+-------+-----------------------------------------------------------------------+
+; W              ; 12    ; Signed Integer                                                        ;
++----------------+-------+-----------------------------------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs2 ;
++----------------+-------+-----------------------------------------------------------------------+
+; Parameter Name ; Value ; Type                                                                  ;
++----------------+-------+-----------------------------------------------------------------------+
+; W              ; 13    ; Signed Integer                                                        ;
++----------------+-------+-----------------------------------------------------------------------+
+
+
++--------------------------------------------------+
+; Parameter Settings for User Entity Instance: cla ;
++----------------+-------+-------------------------+
+; Parameter Name ; Value ; Type                    ;
++----------------+-------+-------------------------+
+; W              ; 13    ; Signed Integer          ;
++----------------+-------+-------------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Partition "root_partition" Resource Utilization by Entity                                                                                                                                                                                         ;
++-------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------+-------------------------------------------------------------------+-----------------------+--------------+
+; Compilation Hierarchy Node          ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; IOPLLs ; Full Hierarchy Name                                               ; Entity Name           ; Library Name ;
++-------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------+-------------------------------------------------------------------+-----------------------+--------------+
+; |                                   ; 99 (22)             ; 166 (18)                  ; 0                 ; 9          ; 0    ; 0 (0)  ; |                                                                 ; PE                    ; altera_work  ;
+;    |CALC|                           ; 46 (0)              ; 54 (54)                   ; 0                 ; 9          ; 0    ; 0 (0)  ; CALC                                                              ; ConvLayer_calc        ; altera_work  ;
+;       |gen_cla.csa|                 ; 46 (0)              ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa                                                  ; carry_save_adder      ; altera_work  ;
+;          |gen_N_9.cs_9in|           ; 46 (0)              ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in                                   ; carry_save_9inputs    ; altera_work  ;
+;             |cs_3in_1|              ; 4 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_1                          ; carry_save_3inputs    ; altera_work  ;
+;                |gen_3[1].fa1|       ; 1 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_1|gen_3[1].fa1             ; full_adder            ; altera_work  ;
+;                   |h2|              ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_1|gen_3[1].fa1|h2          ; half_adder            ; altera_work  ;
+;                |gen_3[2].fa1|       ; 1 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_1|gen_3[2].fa1             ; full_adder            ; altera_work  ;
+;                   |h2|              ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_1|gen_3[2].fa1|h2          ; half_adder            ; altera_work  ;
+;                |gen_3[3].fa1|       ; 1 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_1|gen_3[3].fa1             ; full_adder            ; altera_work  ;
+;                   |h2|              ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_1|gen_3[3].fa1|h2          ; half_adder            ; altera_work  ;
+;                |gen_3[4].fa1|       ; 1 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_1|gen_3[4].fa1             ; full_adder            ; altera_work  ;
+;                   |h2|              ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_1|gen_3[4].fa1|h2          ; half_adder            ; altera_work  ;
+;             |cs_3in_2|              ; 9 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_2                          ; carry_save_3inputs    ; altera_work  ;
+;                |gen_3[0].fa1|       ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_2|gen_3[0].fa1             ; full_adder            ; altera_work  ;
+;                   |h2|              ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_2|gen_3[0].fa1|h2          ; half_adder            ; altera_work  ;
+;                |gen_3[1].fa1|       ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_2|gen_3[1].fa1             ; full_adder            ; altera_work  ;
+;                   |h2|              ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_2|gen_3[1].fa1|h2          ; half_adder            ; altera_work  ;
+;                |gen_3[2].fa1|       ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_2|gen_3[2].fa1             ; full_adder            ; altera_work  ;
+;                   |h2|              ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_2|gen_3[2].fa1|h2          ; half_adder            ; altera_work  ;
+;                |gen_3[3].fa1|       ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_2|gen_3[3].fa1             ; full_adder            ; altera_work  ;
+;                   |h2|              ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_2|gen_3[3].fa1|h2          ; half_adder            ; altera_work  ;
+;                |gen_3[4].fa1|       ; 1 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_2|gen_3[4].fa1             ; full_adder            ; altera_work  ;
+;                   |h2|              ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_2|gen_3[4].fa1|h2          ; half_adder            ; altera_work  ;
+;             |cs_3in_3|              ; 8 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_3                          ; carry_save_3inputs    ; altera_work  ;
+;                |gen_3[0].fa1|       ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_3|gen_3[0].fa1             ; full_adder            ; altera_work  ;
+;                   |h2|              ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_3|gen_3[0].fa1|h2          ; half_adder            ; altera_work  ;
+;                |gen_3[1].fa1|       ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_3|gen_3[1].fa1             ; full_adder            ; altera_work  ;
+;                   |h2|              ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_3|gen_3[1].fa1|h2          ; half_adder            ; altera_work  ;
+;                |gen_3[2].fa1|       ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_3|gen_3[2].fa1             ; full_adder            ; altera_work  ;
+;                   |h2|              ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_3|gen_3[2].fa1|h2          ; half_adder            ; altera_work  ;
+;                |gen_3[3].fa1|       ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_3|gen_3[3].fa1             ; full_adder            ; altera_work  ;
+;                   |h2|              ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_3in_3|gen_3[3].fa1|h2          ; half_adder            ; altera_work  ;
+;             |cs_6in|                ; 25 (0)              ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in                            ; carry_save_6inputs    ; altera_work  ;
+;                |cs_3in_11|          ; 8 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_11                  ; carry_save_3inputs    ; altera_work  ;
+;                   |gen_3[1].fa1|    ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_11|gen_3[1].fa1     ; full_adder            ; altera_work  ;
+;                      |h2|           ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_11|gen_3[1].fa1|h2  ; half_adder            ; altera_work  ;
+;                   |gen_3[2].fa1|    ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_11|gen_3[2].fa1     ; full_adder            ; altera_work  ;
+;                      |h2|           ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_11|gen_3[2].fa1|h2  ; half_adder            ; altera_work  ;
+;                   |gen_3[3].fa1|    ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_11|gen_3[3].fa1     ; full_adder            ; altera_work  ;
+;                      |h2|           ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_11|gen_3[3].fa1|h2  ; half_adder            ; altera_work  ;
+;                   |gen_3[4].fa1|    ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_11|gen_3[4].fa1     ; full_adder            ; altera_work  ;
+;                      |h2|           ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_11|gen_3[4].fa1|h2  ; half_adder            ; altera_work  ;
+;                |cs_3in_12|          ; 8 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_12                  ; carry_save_3inputs    ; altera_work  ;
+;                   |gen_3[0].fa1|    ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_12|gen_3[0].fa1     ; full_adder            ; altera_work  ;
+;                   |gen_3[1].fa1|    ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_12|gen_3[1].fa1     ; full_adder            ; altera_work  ;
+;                      |h2|           ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_12|gen_3[1].fa1|h2  ; half_adder            ; altera_work  ;
+;                   |gen_3[2].fa1|    ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_12|gen_3[2].fa1     ; full_adder            ; altera_work  ;
+;                      |h2|           ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_12|gen_3[2].fa1|h2  ; half_adder            ; altera_work  ;
+;                   |gen_3[3].fa1|    ; 1 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_12|gen_3[3].fa1     ; full_adder            ; altera_work  ;
+;                      |h2|           ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_12|gen_3[3].fa1|h2  ; half_adder            ; altera_work  ;
+;                   |gen_3[4].fa1|    ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_12|gen_3[4].fa1     ; full_adder            ; altera_work  ;
+;                      |h1|           ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_3in_12|gen_3[4].fa1|h1  ; half_adder            ; altera_work  ;
+;                |cs_4in|             ; 9 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in                     ; carry_save_4inputs    ; altera_work  ;
+;                   |cs1|             ; 5 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs1                 ; carry_save_3inputs    ; altera_work  ;
+;                      |gen_3[2].fa1| ; 1 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs1|gen_3[2].fa1    ; full_adder            ; altera_work  ;
+;                         |h1|        ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs1|gen_3[2].fa1|h1 ; half_adder            ; altera_work  ;
+;                      |gen_3[3].fa1| ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs1|gen_3[3].fa1    ; full_adder            ; altera_work  ;
+;                         |h1|        ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs1|gen_3[3].fa1|h1 ; half_adder            ; altera_work  ;
+;                      |gen_3[4].fa1| ; 2 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs1|gen_3[4].fa1    ; full_adder            ; altera_work  ;
+;                         |h1|        ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs1|gen_3[4].fa1|h1 ; half_adder            ; altera_work  ;
+;                   |cs2|             ; 4 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs2                 ; carry_save_3inputs    ; altera_work  ;
+;                      |gen_3[2].fa1| ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs2|gen_3[2].fa1    ; full_adder            ; altera_work  ;
+;                      |gen_3[3].fa1| ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs2|gen_3[3].fa1    ; full_adder            ; altera_work  ;
+;                         |h2|        ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs2|gen_3[3].fa1|h2 ; half_adder            ; altera_work  ;
+;                      |gen_3[4].fa1| ; 1 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs2|gen_3[4].fa1    ; full_adder            ; altera_work  ;
+;                         |h2|        ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; CALC|gen_cla.csa|gen_N_9.cs_9in|cs_6in|cs_4in|cs2|gen_3[4].fa1|h2 ; half_adder            ; altera_work  ;
+;    |cla_in|                         ; 8 (3)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla_in                                                            ; carry_lookahead_adder ; altera_work  ;
+;       |for_fa[1].full_adder_inst|   ; 1 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla_in|for_fa[1].full_adder_inst                                  ; full_adder            ; altera_work  ;
+;          |h1|                       ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla_in|for_fa[1].full_adder_inst|h1                               ; half_adder            ; altera_work  ;
+;       |for_fa[2].full_adder_inst|   ; 1 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla_in|for_fa[2].full_adder_inst                                  ; full_adder            ; altera_work  ;
+;          |h2|                       ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla_in|for_fa[2].full_adder_inst|h2                               ; half_adder            ; altera_work  ;
+;       |for_fa[3].full_adder_inst|   ; 1 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla_in|for_fa[3].full_adder_inst                                  ; full_adder            ; altera_work  ;
+;          |h2|                       ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla_in|for_fa[3].full_adder_inst|h2                               ; half_adder            ; altera_work  ;
+;       |for_fa[4].full_adder_inst|   ; 2 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla_in|for_fa[4].full_adder_inst                                  ; full_adder            ; altera_work  ;
+;          |h2|                       ; 2 (2)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla_in|for_fa[4].full_adder_inst|h2                               ; half_adder            ; altera_work  ;
+;    |cla|                            ; 10 (2)              ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla                                                               ; carry_lookahead_adder ; altera_work  ;
+;       |for_fa[2].full_adder_inst|   ; 1 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla|for_fa[2].full_adder_inst                                     ; full_adder            ; altera_work  ;
+;          |h1|                       ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla|for_fa[2].full_adder_inst|h1                                  ; half_adder            ; altera_work  ;
+;       |for_fa[4].full_adder_inst|   ; 1 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla|for_fa[4].full_adder_inst                                     ; full_adder            ; altera_work  ;
+;          |h2|                       ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla|for_fa[4].full_adder_inst|h2                                  ; half_adder            ; altera_work  ;
+;       |for_fa[5].full_adder_inst|   ; 6 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla|for_fa[5].full_adder_inst                                     ; full_adder            ; altera_work  ;
+;          |h2|                       ; 6 (6)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cla|for_fa[5].full_adder_inst|h2                                  ; half_adder            ; altera_work  ;
+;    |cs_4in|                         ; 13 (0)              ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in                                                            ; carry_save_4inputs    ; altera_work  ;
+;       |cs1|                         ; 8 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs1                                                        ; carry_save_3inputs    ; altera_work  ;
+;          |gen_3[0].fa1|             ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs1|gen_3[0].fa1                                           ; full_adder            ; altera_work  ;
+;             |h2|                    ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs1|gen_3[0].fa1|h2                                        ; half_adder            ; altera_work  ;
+;          |gen_3[1].fa1|             ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs1|gen_3[1].fa1                                           ; full_adder            ; altera_work  ;
+;             |h2|                    ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs1|gen_3[1].fa1|h2                                        ; half_adder            ; altera_work  ;
+;          |gen_3[2].fa1|             ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs1|gen_3[2].fa1                                           ; full_adder            ; altera_work  ;
+;             |h1|                    ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs1|gen_3[2].fa1|h1                                        ; half_adder            ; altera_work  ;
+;          |gen_3[3].fa1|             ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs1|gen_3[3].fa1                                           ; full_adder            ; altera_work  ;
+;             |h2|                    ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs1|gen_3[3].fa1|h2                                        ; half_adder            ; altera_work  ;
+;       |cs2|                         ; 5 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs2                                                        ; carry_save_3inputs    ; altera_work  ;
+;          |gen_3[0].fa1|             ; 1 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs2|gen_3[0].fa1                                           ; full_adder            ; altera_work  ;
+;             |h2|                    ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs2|gen_3[0].fa1|h2                                        ; half_adder            ; altera_work  ;
+;          |gen_3[1].fa1|             ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs2|gen_3[1].fa1                                           ; full_adder            ; altera_work  ;
+;          |gen_3[2].fa1|             ; 2 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs2|gen_3[2].fa1                                           ; full_adder            ; altera_work  ;
+;             |h2|                    ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs2|gen_3[2].fa1|h2                                        ; half_adder            ; altera_work  ;
+;          |gen_3[3].fa1|             ; 1 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs2|gen_3[3].fa1                                           ; full_adder            ; altera_work  ;
+;             |h2|                    ; 1 (1)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0 (0)  ; cs_4in|cs2|gen_3[3].fa1|h2                                        ; half_adder            ; altera_work  ;
+;    |d_w_fifo1|                      ; 0 (0)               ; 94 (94)                   ; 0                 ; 0          ; 0    ; 0 (0)  ; d_w_fifo1                                                         ; Saved_lines           ; altera_work  ;
++-------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------+-------------------------------------------------------------------+-----------------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
++----------------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                           ;
++-------------------------------------------------------------------------+--------------------+
+; Register name                                                           ; Reason for Removal ;
++-------------------------------------------------------------------------+--------------------+
+; CALC|en_prod                                                            ; Lost fanout        ;
+; CALC|prod[6..9,16..19,26..29,36..39,46..49,56..59,66..69,76..79,86..89] ; Lost fanout        ;
+; Total Number of Removed Registers = 37                                  ;                    ;
++-------------------------------------------------------------------------+--------------------+
+
+
++------------------------------------------------------------+
+; General Register Statistics for Partition "root_partition" ;
++----------------------------------------------+-------------+
+; Statistic                                    ; Value       ;
++----------------------------------------------+-------------+
+; Total registers                              ; 166         ;
+; Number of registers using Synchronous Clear  ; 0           ;
+; Number of registers using Synchronous Load   ; 0           ;
+; Number of registers using Asynchronous Clear ; 0           ;
+; Number of registers using Asynchronous Load  ; 0           ;
+; Number of registers using Clock Enable       ; 112         ;
+; Number of registers using Preset             ; 0           ;
++----------------------------------------------+-------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                           ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------+
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; i80                        ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+----------------------------+
+
+
++------------------------------------------------------------------+
+; Post-Synthesis Netlist Statistics for Partition "root_partition" ;
++------------------------+-----------------------------------------+
+; Type                   ; Count                                   ;
++------------------------+-----------------------------------------+
+; boundary_port          ; 65                                      ;
+; fourteennm_ff          ; 166                                     ;
+;     ENA                ; 112                                     ;
+;     plain              ; 54                                      ;
+; fourteennm_lcell_comb  ; 99                                      ;
+;     normal             ; 99                                      ;
+;         0 data inputs  ; 1                                       ;
+;         3 data inputs  ; 38                                      ;
+;         4 data inputs  ; 7                                       ;
+;         5 data inputs  ; 21                                      ;
+;         6 data inputs  ; 32                                      ;
+; fourteennm_mac         ; 9                                       ;
+;                        ;                                         ;
+; Number of carry chains ; 0                                       ;
+; Max carry chain length ; 0                                       ;
+;                        ;                                         ;
+; Max LUT depth          ; 5.00                                    ;
+; Average LUT depth      ; 2.22                                    ;
++------------------------+-----------------------------------------+
+
+
++-----------------------------------------------------------------+
+; Synthesis Resource Usage Summary for Partition "root_partition" ;
++---------------------------------------------+-------------------+
+; Resource                                    ; Usage             ;
++---------------------------------------------+-------------------+
+; Estimate of Logic utilization (ALMs needed) ; 115               ;
+;                                             ;                   ;
+; Combinational ALUT usage for logic          ; 99                ;
+;     -- 7 input functions                    ; 0                 ;
+;     -- 6 input functions                    ; 32                ;
+;     -- 5 input functions                    ; 21                ;
+;     -- 4 input functions                    ; 7                 ;
+;     -- <=3 input functions                  ; 39                ;
+;                                             ;                   ;
+; Dedicated logic registers                   ; 166               ;
+;                                             ;                   ;
+; I/O pins                                    ; 65                ;
+;                                             ;                   ;
+; Total DSP Blocks                            ; 9                 ;
+;     -- [A] Total Fixed Point DSP Blocks     ; 9                 ;
+;     -- [B] Total Floating Point DSP Blocks  ; 0                 ;
+;                                             ;                   ;
+; Maximum fan-out node                        ; clk               ;
+; Maximum fan-out                             ; 166               ;
+; Total fan-out                               ; 1004              ;
+; Average fan-out                             ; 2.96              ;
++---------------------------------------------+-------------------+
+
+
++------------------------------------------------------------------+
+; Synthesis DSP Block Usage Summary for Partition "root_partition" ;
++---------------------------------+--------------------------------+
+; Statistic                       ; Number Used                    ;
++---------------------------------+--------------------------------+
+; Two Independent 18x18           ; 9                              ;
+; Total number of DSP blocks      ; 9                              ;
+;                                 ;                                ;
+; Fixed Point Unsigned Multiplier ; 9                              ;
++---------------------------------+--------------------------------+
+
+
++--------------------+
+; Synthesis Messages ;
++--------------------+
+Info: *******************************************************************
+Info: Running Quartus Prime Synthesis
+    Info: Version 19.1.0 Build 240 03/26/2019 SJ Pro Edition
+    Info: Processing started: Thu Feb  6 15:45:26 2020
+Info: Command: quartus_syn --read_settings_files=on --write_settings_files=off PE -c PE
+Info: qis_default_flow_script.tcl version: #2
+Info: Initializing Synthesis...
+Info: Project = "PE"
+Info: Revision = "PE"
+Info: Analyzing source files
+Warning (13461): Verilog HDL Parameter Declaration warning at CE.v(30): Parameter Declaration in module "CE" behaves as a Local Parameter Declaration because the module has a Module Parameter Port List File: /home/yyevgeny/hdd/asic/verilog/CE/CE.v Line: 30
+Info: Elaborating from top-level entity "PE"
+Warning (16788): Net "en_in" does not have a driver at PE.v(114) File: /home/yyevgeny/hdd/asic/verilog/PE/PE.v Line: 114
+Info: Found 32 design entities
+Info: There are 334 partitions after elaboration.
+Info: Creating instance-specific data models and dissolving soft partitions
+Info (18299): Expanding entity and wildcard assignments.
+Info (18300): Expanded entity and wildcard assignments. Elapsed time: 00:00:00
+Info: found pre-synthesis snapshots for 1 partition(s)
+Info: Synthesizing partition "root_partition"
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "en_out" is stuck at GND File: /home/yyevgeny/hdd/asic/verilog/PE/PE.v Line: 22
+Info (17049): 37 registers lost all their fanouts during netlist optimizations.
+Info (21057): Implemented 333 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 34 input pins
+    Info (21059): Implemented 31 output pins
+    Info (21061): Implemented 259 logic cells
+    Info (21062): Implemented 9 DSP elements
+Info: Successfully synthesized partition
+Info: Saving post-synthesis snapshots for 1 partition(s)
+Info: Quartus Prime Synthesis was successful. 0 errors, 4 warnings
+    Info: Peak virtual memory: 1692 megabytes
+    Info: Processing ended: Thu Feb  6 15:45:29 2020
+    Info: Elapsed time: 00:00:03
+
+
