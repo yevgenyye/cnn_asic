@@ -10,9 +10,8 @@ set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 100
 set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"
 set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
-set_global_assignment -name VERILOG_FILE ../Wallace_multiplier/Wallace_multiplier.v
-set_global_assignment -name VERILOG_FILE ../CLA/carry_lookahead_adder.v
 set_global_assignment -name VERILOG_FILE ../ha_fa/ha_fa_ripple.v
+set_global_assignment -name VERILOG_FILE ../CLA/carry_lookahead_adder.v
 set_global_assignment -name VERILOG_FILE ../CSA/carry_save_adder.v
+set_global_assignment -name VERILOG_FILE ../Wallace_multiplier/Wallace_multiplier.v
 set_global_assignment -name VERILOG_FILE ../ConvLayer_calc/ConvLayer_calc.v
-set_global_assignment -name VERILOG_FILE ../multi_adder/multi_adder.v

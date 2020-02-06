@@ -1,11 +1,11 @@
  module CE    #(
-    parameter MULT   = 1, // 1/0 -> Multiplier by FullAdders / * (default) 
-    parameter useCLA = 0, // 0/1  -> use ripleCarry/CLA
-    parameter CL_IN  = 5,  // 1, 2...8, 16, 32, 64, 128, 256 (25, 49), number of inputs features
+    parameter MULT   = 1, // 1/0 -> Multiplier by FullAdders / * (both 2's compliment) 
+    parameter useCLA = 1, // 0/1  -> use ripleCarry/CLA
+    parameter CL_IN  = 2,  // 1, 2...8, 16, 32, 64, 128, 256 (25, 49), number of inputs features
     parameter KERNEL = 3,  // 1/3/5/7
     parameter RELU   = 1,  // 0 - no relu, 1 - relu, only positive output values
-    parameter N      = 2,  // input data width
-    parameter M      = 2,  // input weight width
+    parameter N      = 8,  // input data width
+    parameter M      = 8,  // input weight width
     parameter SR     = 2   // data shift right before output
 
 ) (
@@ -140,6 +140,7 @@ always @(posedge clk)
                )   cla (
                   .i_add1  ( csa_s_sum  ), 
                   .i_add2  ( csa_s_cout ), 
+                  .c_in    ( 1'b0       ) ,
                   .o_result( csa_s_res  ) );
 
     //  carry_save_adder #(
