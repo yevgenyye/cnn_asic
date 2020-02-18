@@ -75,20 +75,20 @@ generate
                            en_int   [ (j-1)*LIN_SIZE*CL_IN       +  1   *CL_IN       + 2         ]  ,
                            en_in    [ (j-1)   ]                                         } ) , //en_int   [  j   *LIN_SIZE*CL_IN       + (1-1)*CL_IN       + 3         ]  } ) , 
             .d_ch_in    (d_ch_in    [ (j-1)             *CL_IN   +: CL_IN  ]                                    ),//(d_ch_int   [  j   *(LIN_SIZE+1)*CL_IN   + (1-1)*CL_IN       +:  CL_IN   ] ), 
-            .d_ch_out   (d_ch_int   [  j   *(LIN_SIZE+1)*CL_IN   +  1   *CL_IN       +:  CL_IN   ] ),
-            .d_out      (d_int      [  j   *(LIN_SIZE+1)*CL_IN*N +  1   *CL_IN*N     +:  CL_IN*N ] ),  
+            .d_ch_out   (d_ch_int   [  j   *LIN_SIZE*CL_IN       +  1   *CL_IN       +:  CL_IN   ] ),
+            .d_out      (d_int      [  j   *LIN_SIZE*CL_IN*N     +  1   *CL_IN*N     +:  CL_IN*N ] ),  
             .en_out     ({ en_int   [  j   *LIN_SIZE*CL_IN       +  1   *CL_IN       + 0         ]  ,
                            en_int   [  j   *LIN_SIZE*CL_IN       +  1   *CL_IN       + 1         ]  ,
                            en_int   [  j   *LIN_SIZE*CL_IN       +  1   *CL_IN       + 2         ]  ,
                            en_int   [  j   *LIN_SIZE*CL_IN       +  1   *CL_IN       + 3         ]  }),
             .w_conf     (w_conf                                                                    ),
             .w_in       (w_in       [ (j-1)                   *M +:  M]), //(w_int      [  j   *(LIN_SIZE+1)*CL_IN*M + (1-1)*CL_IN*M     +:  CL_IN*M ] ), 
-            .w_out      (w_int      [  j   *(LIN_SIZE+1)      *M +:  M ] ), 
+            .w_out      (w_int      [  j   *LIN_SIZE          *M +:  M ] ), 
             .cntl_conf  (cntl_conf                                                                 ),
             .bp_ch_in   (bp_ch_in   [(j-1) *CL_IN +: CL_IN]  ), //(bp_ch_int  [ j    *(LIN_SIZE+1)*CL_IN   + (1-1)*CL_IN       +:  CL_IN   ] ),  
-            .bp_ch_out  (bp_ch_int  [ j    *(LIN_SIZE+1)*CL_IN   +  1   *CL_IN       +:  CL_IN   ] ),
+            .bp_ch_out  (bp_ch_int  [ j    *LIN_SIZE*CL_IN   +  1   *CL_IN       +:  CL_IN   ] ),
             .bp_src_in  (bp_src_in  [(j-1) * CL1 +: CL1] ), //(bp_src_int [ j    *(LIN_SIZE+1)*CL1     + (1-1)*CL1         +:  CL1     ] ),  
-            .bp_src_out (bp_src_int [ j    *(LIN_SIZE+1)*CL1     +  1   *CL1         +:  CL1     ] )
+            .bp_src_out (bp_src_int [ j    *LIN_SIZE*CL1     +  1   *CL1         +:  CL1     ] )
          );
   //    end // for
    end // for
@@ -116,21 +116,21 @@ generate
                            en_int   [  j   *LIN_SIZE*CL_IN       + (i+1)*CL_IN       + 1         ]  ,
                            en_int   [ (j-1)*LIN_SIZE*CL_IN       +  i   *CL_IN       + 2         ]  ,
                            en_int   [  j   *LIN_SIZE*CL_IN       + (i-1)*CL_IN       + 3         ]  } ) , 
-            .d_ch_in    (d_ch_int   [  j   *(LIN_SIZE+1)*CL_IN   + (i-1)*CL_IN       +:  CL_IN   ] ), 
-            .d_ch_out   (d_ch_int   [  j   *(LIN_SIZE+1)*CL_IN   +  i   *CL_IN       +:  CL_IN   ] ),
-            .d_out      (d_int      [  j   *(LIN_SIZE+1)*CL_IN*N +  i   *CL_IN*N     +:  CL_IN*N ] ),  
+            .d_ch_in    (d_ch_int   [  j   *LIN_SIZE*CL_IN       + (i-1)*CL_IN       +:  CL_IN   ] ), 
+            .d_ch_out   (d_ch_int   [  j   *LIN_SIZE*CL_IN       +  i   *CL_IN       +:  CL_IN   ] ),
+            .d_out      (d_int      [  j   *LIN_SIZE*CL_IN*N     +  i   *CL_IN*N     +:  CL_IN*N ] ),  
             .en_out     ({ en_int   [  j   *LIN_SIZE*CL_IN       +  i   *CL_IN       + 0         ]  ,
                            en_int   [  j   *LIN_SIZE*CL_IN       +  i   *CL_IN       + 1         ]  ,
                            en_int   [  j   *LIN_SIZE*CL_IN       +  i   *CL_IN       + 2         ]  ,
                            en_int   [  j   *LIN_SIZE*CL_IN       +  i   *CL_IN       + 3         ]  }),
             .w_conf     (w_conf                                                                    ),
-            .w_in       (w_int      [  j   *(LIN_SIZE+1)*M       + (i-1)*M           +:        M ] ), 
-            .w_out      (w_int      [  j   *(LIN_SIZE+1)*M       +  i   *M           +:        M ] ), 
+            .w_in       (w_int      [  j   *LIN_SIZE*M           + (i-1)*M           +:        M ] ), 
+            .w_out      (w_int      [  j   *LIN_SIZE*M           +  i   *M           +:        M ] ), 
             .cntl_conf  (cntl_conf                                                                 ),
-            .bp_ch_in   (bp_ch_int  [ j    *(LIN_SIZE+1)*CL_IN   + (i-1)*CL_IN       +:  CL_IN   ] ),  
-            .bp_ch_out  (bp_ch_int  [ j    *(LIN_SIZE+1)*CL_IN   +  i   *CL_IN       +:  CL_IN   ] ),
-            .bp_src_in  (bp_src_int [ j    *(LIN_SIZE+1)*CL1     + (i-1)*CL1         +:  CL1     ] ),  
-            .bp_src_out (bp_src_int [ j    *(LIN_SIZE+1)*CL1     +  i   *CL1         +:  CL1     ] )
+            .bp_ch_in   (bp_ch_int  [ j    *LIN_SIZE*CL_IN       + (i-1)*CL_IN       +:  CL_IN   ] ),  
+            .bp_ch_out  (bp_ch_int  [ j    *LIN_SIZE*CL_IN       +  i   *CL_IN       +:  CL_IN   ] ),
+            .bp_src_in  (bp_src_int [ j    *LIN_SIZE*CL1         + (i-1)*CL1         +:  CL1     ] ),  
+            .bp_src_out (bp_src_int [ j    *LIN_SIZE*CL1         +  i   *CL1         +:  CL1     ] )
          );
       end // for
 
