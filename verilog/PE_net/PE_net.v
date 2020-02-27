@@ -1,6 +1,6 @@
  module PE_net  #(
-    parameter LIN_SIZE = 8, // PE array size
-    parameter ROW_SIZE = 8, // PE array size
+    parameter LIN_SIZE = 4, // PE array size
+    parameter ROW_SIZE = 4, // PE array size
     parameter LINES  = 16, // line size of input frame
     parameter MULT   = 0, // 1/0 -> Multiplier by FullAdders / * (both 2's compliment) 
     parameter useCLA = 1, // 0/1  -> use ripleCarry/CLA
@@ -9,7 +9,7 @@
  //   parameter KERNEL = 3,  // 1/3/5/7
     parameter RELU   = 1,  // 0 - no relu, 1 - relu, only positive output values
     parameter N      = 4,  // input data width
-    parameter M      = 4,  // input weight width
+    parameter M      = 2,  // input weight width
     parameter SR     = 2   // data shift right before output
 
 ) (
@@ -82,8 +82,8 @@ generate
                            en_int   [  j   *LIN_SIZE*CL_IN       +  1   *CL_IN       + 2         ]  ,
                            en_int   [  j   *LIN_SIZE*CL_IN       +  1   *CL_IN       + 3         ]  }),
             .w_conf     (w_conf                                                                    ),
-            .w_in       (w_in       [ (j-1)                   *M +:  M]), //(w_int      [  j   *(LIN_SIZE+1)*CL_IN*M + (1-1)*CL_IN*M     +:  CL_IN*M ] ), 
-            .w_out      (w_int      [  j   *LIN_SIZE          *M +:  M ] ), 
+            .w_in       (w_in       [ (j-1)                   *M        +:  M]), //(w_int      [  j   *(LIN_SIZE+1)*CL_IN*M + (1-1)*CL_IN*M     +:  CL_IN*M ] ), 
+            .w_out      (w_int      [  j   *LIN_SIZE          *M + 1* M +:  M ] ), 
             .cntl_conf  (cntl_conf                                                                 ),
             .bp_ch_in   (bp_ch_in   [(j-1) *CL_IN +: CL_IN]  ), //(bp_ch_int  [ j    *(LIN_SIZE+1)*CL_IN   + (1-1)*CL_IN       +:  CL_IN   ] ),  
             .bp_ch_out  (bp_ch_int  [ j    *LIN_SIZE*CL_IN   +  1   *CL_IN       +:  CL_IN   ] ),
@@ -92,6 +92,7 @@ generate
          );
   //    end // for
    end // for
+
 
    for (j = 1; j <= ROW_SIZE; j = j + 1) begin : gen_row
       for (i = 2; i <= LIN_SIZE; i = i + 1) begin : gen_line

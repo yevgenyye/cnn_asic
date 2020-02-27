@@ -14,25 +14,26 @@
     input wire                clk      ,
     input wire                rst      ,
     input wire  [CL_IN*N-1:0] d_in     ,
-    input  wire [CL_IN-1:0]   d_ch_in    , // data input enable channel
+    input  wire [CL_IN  -1:0] en_in    , // data enable (operational)
+    input  wire [CL_IN  -1:0] d_ch_in  , // input enable channel (configurational)
  // input wire  [CL_IN*M-1:0] w_in     ,
     input wire  [      M-1:0] w_in     ,
 // data output
     output wire [CL_IN*N-1:0] d_out    ,
-    output wire               en_out   ,
+    output wire [CL_IN  -1:0] en_out   ,
 // configuration signals
     input  wire               w_conf    , // w_in configuration enable ( 9 clocks)
-    output wire [     M-1:0] w_out     ,
+    output wire [      M-1:0] w_out     ,
 
     input  wire               cntl_conf  , // control configuration enable ( 1 clock )
-    input  wire [CL_IN-1:0]   bp_ch_in   , // bypass output channel
-    input  wire [CL1  -1:0]   bp_src_in  , // bypass source channel
-    output reg  [CL_IN-1:0]   d_ch_out   , // enable channel
-    output reg  [CL_IN-1:0]   bp_ch_out  , // bypass channel
-    output reg  [CL1  -1:0]   bp_src_out   // bypass source channel
+    input  wire [CL_IN  -1:0] bp_ch_in   , // bypass output channel
+    input  wire [CL1    -1:0] bp_src_in  , // bypass source channel
+    output reg  [CL_IN  -1:0] d_ch_out   , // enable channel
+    output reg  [CL_IN  -1:0] bp_ch_out  , // bypass channel
+    output reg  [CL1    -1:0] bp_src_out   // bypass source channel
 
 );
-localparam USE_MEM = 0; // no memory
+localparam USE_MEM = 1; // 0/1 No/Use memory
 localparam KERNEL  = 3;
 localparam E_KER = (KERNEL == 3) ? 3 :4;
 wire [CL_IN*   N     -1:0] d_fil    ;
@@ -61,7 +62,7 @@ reg  [CL1     -1 : 0]  bp_src  ;
 
 generate 
    for (i = 0; i < CL_IN; i = i + 1) begin : gen_fil
-      assign d_fil[i*N +: N] = (d_ch_in[i]    == 1'b1 ) ? d_in[i*N    +: N] : { (N){1'b0} } ;
+      assign d_fil[i*N +: N] = (  (en_in[i] == 1'b1) && (bp_ch[i] == 1'b1)  ) ? d_in[i*N    +: N] : { (N){1'b0} } ;
     end
  endgenerate
 
@@ -89,6 +90,7 @@ generate
       .USE_MEM(USE_MEM)       
    )   d_w_fifo1   (
       .clk    (clk                 ) ,
+      .rst    (rst                 ) ,
       .d_in   (d_in_sum [N+CL1-1:0]) ,
       .en_in  (en_ce               ) , // need to fix
       .w_in   (w_in                ) ,
@@ -111,7 +113,7 @@ generate
       .clk       (clk     ), 
       .rst       (rst     ), 
       .data2conv (d_grp   ), 
-      .en_in     (en_in   ), 
+      .en_in     (en_ce   ), 
       .w         (w_grp   ), 
       .sum       (d_calc  ), 
       .cout      (c_calc  ), 
@@ -129,9 +131,12 @@ generate
 
 
 
-assign en_ce = (d_ch == 4'b0000) ? 1'b0 : 1'b1;
+assign en_ce = ((en_in & bp_ch) == 4'b0000) ? 1'b0 : 1'b1;
 
+always @(posedge clk)
+   if (cntl_conf) begin
 
+   end 
 
     
 always @(posedge clk)
@@ -146,12 +151,17 @@ always @(posedge clk)
 
 generate 
    for (i = 0; i < CL_IN; i = i + 1) begin : gen_en
-     // assign data            = (d_ch[i]    == 1'b1 ) ? d_in[i*N    +: N] : { (N){1'b0} } ;
-      assign d_out[i*N +: N] = (bp_ch[i]   == 1'b0 ) ? ce_d_out  [SR +: N] :
+
+      assign d_out[i*N +: N] = (bp_ch_in[i]== 1'b0 ) ? ce_d_out  [SR +: N] :
                                (bp_src_out == 2'b00) ? d_in[0*N    +: N] :
                                (bp_src_out == 2'b01) ? d_in[1*N    +: N] :
                                (bp_src_out == 2'b10) ? d_in[2*N    +: N] :
                                                        d_in[3*N    +: N] ;
+      assign en_out[i]       = (bp_ch_in[i]== 1'b0 ) ? en_in    :
+                               (bp_src_out == 2'b00) ? en_in[0] :
+                               (bp_src_out == 2'b01) ? en_in[1] :
+                               (bp_src_out == 2'b10) ? en_in[2] :
+                                                       en_in[3] ;
     end
  endgenerate
 

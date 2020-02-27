@@ -1,44 +1,23 @@
  `timescale 1 ns/10 ps 
 
- module PE_tb (); 
+ module Saved_lines_tb (); 
 
     parameter LINES  = 16; // line size of input frame
-    parameter MULT   =  0; // 1/0 -> Multiplier by FullAdders / * (both 2's compliment) 
-    parameter useCLA =  1; // 0/1  -> use ripleCarry/CLA
-    parameter CL_IN  =  4;  // number of in/out-puts feature
-    parameter CL1    =  2;  // bus width of bp_src_in
-    parameter KERNEL =  3;  // 1/3/5/7
-    parameter RELU   =  1;  // 0 - no relu, 1 - relu, only positive output values
-    parameter N      =  2;  // input data width
-    parameter M      =  4;  // input weight width
-    parameter SR     =  2;  // data shift right before output
+    parameter N      = 6 ; // input data width
+    parameter M      = 4 ; // input weight width
+    parameter USE_MEM= 1 ; // 1/0  
 
-    reg                 clk        ;
-    reg                 rst        ;
-    reg   [CL_IN*N-1:0] d_in       ;
-    reg   [CL_IN-1:0]   en_in      ; // data enable
-    reg   [CL_IN-1:0]   d_ch_in    ; // data input enable channel
-//  reg   [CL_IN*M-1:0] w_in       ;
-    reg   [      M-1:0] w_in       ;
-    wire  [CL_IN*N-1:0] d_out      ;
-    wire  [CL_IN  -1:0] en_out     ;
-    reg                 w_conf     ; // w_in configuration enable ( 9 clocks)
-    wire  [      M-1:0] w_out      ;
-    reg                 cntl_conf  ; // control configuration enable ( 1 clock )
-    reg   [CL_IN-1:0]   bp_ch_in   ; // bypass output channel
-    reg   [CL1  -1:0]   bp_src_in  ; // bypass source channel
-    wire  [CL_IN-1:0]   d_ch_out   ; // enable channel
-    wire  [CL_IN-1:0]   bp_ch_out  ; // bypass channel
-    wire  [CL1  -1:0]   bp_src_out ; // bypass source channel
+    reg            clk     ;
+    reg            rst     ;
+    reg  [  N-1:0] d_in    ;
+    reg            en_in   ;
+    reg  [  M-1:0] w_in    ;
+    reg            w_conf  ; // w_in configuration enable ( 9 clocks)
+    wire [  M-1:0] w_out   ;
+    wire [9*N-1:0] d_grp   ;
+    wire [9*M-1:0] w_grp   ;
 
 
-
-//    reg  [CL_IN*(N+M+E)-1:0]         mult_sum,mult_sum_d ;
-//    reg  [CL_IN*(N+M+E)-1:0]         mult_sum0,mult_sum1,mult_sum2,mult_sum3,mult_sum4,mult_sum5,mult_sum6,mult_sum7,mult_sum8 ;
-//
-//    reg  [CL_IN*(  N +E)-1:0]              mult_sum0d,mult_sum1d,mult_sum2d,mult_sum3d,mult_sum4d,mult_sum5d,mult_sum6d,mult_sum7d,mult_sum8d ;
-//    reg  [CL_IN*(  M +E)-1:0]              mult_sum0w,mult_sum1w,mult_sum2w,mult_sum3w,mult_sum4w,mult_sum5w,mult_sum6w,mult_sum7w,mult_sum8w ;
-//    reg  [CL_IN*(N+M +E)-1:0]              mult_sum0m,mult_sum1m,mult_sum2m,mult_sum3m,mult_sum4m,mult_sum5m,mult_sum6m,mult_sum7m,mult_sum8m ;
 
 integer           i,j,k;
 reg    [N-1:0] d_val; 
@@ -46,42 +25,31 @@ reg    [M-1:0] w_val;
 reg     err;
 
     localparam period = 20;
+    localparam KERNEL = 3;
+    localparam CL_IN  = 4;
 
  initial begin
    // $display($time, " TB, d_out port size | width= %d", N+M+E2);
  end
 
 
-PE  #(
-  .LINES  (LINES),
-  .MULT   (MULT)  , 
-  .useCLA (useCLA),
-  .CL_IN  (CL_IN) ,
-  .CL1    (CL1)   ,
-//  .KERNEL (KERNEL), 
-  .RELU   (RELU)  ,
-  .N      (N)     , 
-  .M      (M)     ,
-  .SR     (SR)
+Saved_lines  #(
+  .LINES  (LINES  ) , 
+  .N      (N      ) , 
+  .M      (M      ) ,
+  .USE_MEM(USE_MEM)
 ) 
 UUT
 (
-  .clk       (clk       ), 
-  .rst       (rst       ), 
-  .d_in      (d_in      ), 
-  .en_in     (en_in     ),
-  .d_ch_in   (d_ch_in   ), 
-  .w_in      (w_in      ), 
-  .d_out     (d_out     ), 
-  .en_out    (en_out    ), 
-  .w_conf    (w_conf    ),
-  .w_out     (w_out     ),
-  .cntl_conf (cntl_conf ),
-  .bp_ch_in  (bp_ch_in  ),
-  .bp_src_in (bp_src_in ),
-  .d_ch_out  (d_ch_out  ),
-  .bp_ch_out (bp_ch_out ),
-  .bp_src_out(bp_src_out)
+  .clk     (clk    ), 
+  .rst     (rst    ), 
+  .d_in    (d_in   ), 
+  .en_in   (en_in  ),
+  .w_in    (w_in   ),  
+  .w_conf  (w_conf ),
+  .w_out   (w_out  ),
+  .d_grp   (d_grp  ),
+  .w_grp   (w_grp  )
 );
 
 
@@ -103,12 +71,9 @@ end
           d_in      <= 16'h1234; //{ (CL_IN*KERNEL*KERNEL*N){1'd0} };
           w_in      <= 16'h1234; //{ (CL_IN*KERNEL*KERNEL*N){1'd0} }; 
           //w_in      <= 4'hf; //max value 
-          cntl_conf   <= 1'b0;
           w_conf <=   1'b0;
-          d_ch_in   <= 4'b1111;
-          bp_ch_in  <= 4'b0100;
-          bp_src_in <= 2'b00;
-          en_in     <= 4'b0000;
+
+          en_in     <= 1'b0;
           #20;
           rst <= 1'b0; 
           #20;
@@ -121,17 +86,13 @@ end
             #20;
             end
           w_conf <=   1'b0;
-          cntl_conf <= 1'b1;
-          bp_ch_in  <= 4'b1111;
-          bp_src_in <= 2'b01;
           #20;
-          cntl_conf   <= 1'b0;
           #20;
           //en_in <= 1'b1;
 
-          for(j=0; j<30; j=j+1) 
+          for(j=0; j<3000; j=j+1) 
           begin
-             en_in     <= 4'b0110;
+             en_in     <= 1'b1;
              for(i=0; i< CL_IN-1; i=i+1) 
               d_in [i*N +: N] <= d_val + i;
              // d_in [i*N +: N] <= {1'b0,{(N-1){1'b1}}};  // maximum positive valie

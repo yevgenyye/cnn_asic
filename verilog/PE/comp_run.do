@@ -1,3 +1,4 @@
+vlog -reportprogress 300 -work work /home/yyevgeny/hdd/asic/verilog/DPSRAM/DPSRAM.v
 vlog -reportprogress 300 -work work /home/yyevgeny/hdd/asic/verilog/ha_fa/ha_fa_ripple.v
 vlog -reportprogress 300 -work work /home/yyevgeny/hdd/asic/verilog/CLA/carry_lookahead_adder.v
 vlog -reportprogress 300 -work work /home/yyevgeny/hdd/asic/verilog/CSA/carry_save_adder.v
