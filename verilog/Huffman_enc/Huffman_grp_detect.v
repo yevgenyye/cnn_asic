@@ -23,11 +23,15 @@ module Huffman_grp_detect
 
 // encoder
 reg  [NUM_OF_CHARS*D_W - 1 : 0] Huff_table;
-reg  [NUM_OF_CHARS   - 1 : 0] Huff_active; // active addresses
+reg  [NUM_OF_CHARS   - 1 : 0]   Huff_active; // active addresses
+wire                            WR_table;
 
 ///////////////////////////////
 ////////////// encoding
 //////////////////////////////
+
+assign WR_table = ( {1'b0,w_conf} == C_W && en_conf) ? 1'b1 : 1'b0;
+
 always @(posedge clk) // or rst)
   if (rst) begin
      Huff_active   <= 0;
@@ -35,16 +39,19 @@ always @(posedge clk) // or rst)
     if (new_conf)
        Huff_active   <= 0;
     else
-       //if (en_conf == 1'b1) // && w_conf == NUM_OF_CHARS)
-       if ( {1'b0,w_conf} == C_W)
+       if ( WR_table)
          begin
           Huff_active[h_conf] <= 1'b1;
-          Huff_table[D_W*h_conf +: D_W] <= d_conf ;
+        //Huff_table[D_W*h_conf +: D_W] <= d_conf ;
          end
-
   end //rst
  
+ always @(posedge clk) // or rst)
+    if ( WR_table)
+       Huff_table[D_W*h_conf +: D_W] <= d_conf ;
+
+
  assign code_matched = (Huff_active[d2check]) ? 1'b1 : 1'b0;
  assign data_encoded = Huff_table[D_W * {1'b0 , d2check} +: D_W];
 
-endmodule // carry_lookahead_adder
+endmodule 
