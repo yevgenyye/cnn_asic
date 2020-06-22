@@ -27,7 +27,7 @@ module Huffman_enc_tb ();
  
 
 
-localparam  B2_0   = 2'b00;
+localparam  B2_2   = 2'b10;
 localparam  B2_1   = 2'b01;
 localparam  B6_33  = 6'b110011;
 localparam  B7_63  = 7'b1100011;
@@ -81,7 +81,7 @@ end
       en_conf  <= 1;
 
       w_conf   <= 2;
-      h_conf  <= {6'b000000 , B2_0};
+      h_conf  <= {6'b000000 , B2_2};
       d_conf  <= 8'h11;
 
       #10;
@@ -182,7 +182,7 @@ end
         end
 
         ready_in <= 0;
-        
+
       //for (i = 0; i < 100; i = i + 1) 
       //  begin
       //   #10;
@@ -202,7 +202,7 @@ end
 
 always @*
  case (j)
-    1:      d_in = {B2_0, B2_1, B6_33[5:2]}; //|1 0|1 0|5 4 3 2 
+    1:      d_in = {B2_2, B2_1, B6_33[5:2]}; //|1 0|1 0|5 4 3 2 
     2:      d_in = {B6_33[1:0], B7_63[6:1]}; // 1 0|6 5 4 3 2 1
     3:      d_in = {B7_63[0], B8_C0[7:1]};   // 0|7 6 5 4 3 2 1
     4:      d_in = {B8_C0[0],B7_63};         // 0|6 5 4 3 2 1 0
