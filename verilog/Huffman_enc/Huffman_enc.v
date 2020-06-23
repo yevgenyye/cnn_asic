@@ -16,7 +16,7 @@ module Huffman_enc
    input wire [W-1:0]  w_conf  , // configuration stage. huffman code  width
    input wire          en_conf , // configuration enable
    input wire          new_conf, // new configuration and reset old values
-   output      [W-1:0]  d_out   , // Encoded data
+   output      [W-1:0] d_out   , // Encoded data
    output              en_out    // 
    );
 
@@ -114,13 +114,12 @@ always @(posedge clk) // or rst)
                end
 
          ws1 :                                    begin state <= empty0; d_req <= 0;                $display("_w1_ %b",state);
-                                                                                     d_s   <= d_in;
-                     if (en_in)                                                      d_s3  <= d_s;                                 end // 3'b011
+                      if (en_in)  begin                                              d_s   <= d_in;
+                                                                                     d_s3  <= d_s; 
+                                  end
+                                                                                                                                     end // 3'b011
 
- //     empty0 :      if ( ready_in               ) begin state <= ws0;    d_req <= 0; d_s   <= d_in;  $display("empty0 %b",state);   
- //                                                                                 d_s2  <= d_s;
- //                                                                                 d_s3 <=  d_s2;
- //                                                                                d2check      <= d_s3 ;   pointer    <= pointer-W; end // 3'b100
+
 
          empty0 :    if ( ready_in         )
                                          begin                                                                                                // 3'b100
@@ -133,6 +132,7 @@ always @(posedge clk) // or rst)
                                                                                 // d2check <= d_s3             ;
                                                                                 // d_s3    <= d_s2;
                                                                                  d_s    <= d_in;    end // 3'b101
+
         work : begin                                                   d_req <= 0;
                       if ( ready_in         ) begin 
                                                        if (en_in)  begin         d_s    <= d_in; 
@@ -149,7 +149,7 @@ always @(posedge clk) // or rst)
                         begin
                            pointer    <= pointer-W;
                            case(pointer)
-                              8    : begin d2check      <= d_s             ;  d_s3 <=  d_s;                      end  
+                              8    : begin                                    d_s3 <=  d_s;                      end  
                               9    : begin d2check[  0] <= d_s[W-1        ];  d_s3 <= {d_s [W-1 - 1 : 0], 1'b0 }; end
                              10    : begin d2check[1:0] <= d_s[W-1 : W-1-1];  d_s3 <= {d_s [W-1 - 2 : 0], 2'b00 }; end
                              11    : begin d2check[2:0] <= d_s[W-1 : W-1-2];  d_s3 <= {d_s [W-1 - 3 : 0], 3'b000 }; end
@@ -172,22 +172,8 @@ always @(posedge clk) // or rst)
                         end
               
                end
-
-
-    //empty2 :      if ( en_in                  ) begin state <= ws2;    d_req <= 0; d_s2  <= d_in; $display("_1_ %b",state); end // 3'b000,
-    //   ws2 :      if ( en_in                  ) begin state <= empty0; d_req <= 0; d_s   <= d_in; $display("_2_ %b",state); end // 3'b001
-    //            else                            begin state <= empty1; d_req <= 1;                $display("_3_ %b",state); end // 
-    //empty1 :      if ( en_in &&  ~d_s2_empty  ) begin state <= empty0; d_req <= 0; d_s   <= d_in; $display("_4_ %b",state); end // 3'b010 
-    //         else if ( en_in &&   d_s2_empty  ) begin state <= empty1; d_req <= 1; d_s2  <= d_in; $display("_5_ %b",state); end // 
-    //         else if (~en_in &&   d_s2_empty  ) begin state <= empty2; d_req <= 1;                $display("_6_ %b",state); end // 
-    //   ws1 :                                    begin state <= empty1; d_req <= 0; d_s2  <= d_s;                            end // 3'b011
-    //empty0 :      if (            d_s2_empty  ) begin state <= ws1;    d_req <= 0;                $display("_7_ %b",state); end // 3'b100
-    //  default: state <= empty2;    
+   
     endcase
-
-
- 
-
 
 
   end // always
@@ -282,17 +268,13 @@ always @(posedge clk) // or rst)
          end
   end //rst
 
-// always @(posedge clk) // or rst)
-//    if ( WR_table)
-//       Huff_table[D_W*h_conf +: D_W] <= d_conf ;
-
 always @(posedge clk) // or rst)
   if (rst) begin
      check_big      <= CHECK6;
      check_big_prev <= CHECK6;
   end else begin
     check_big_prev <= check_big;
-    if (state != work)
+    if (state != work || pointer >= W)
        begin            check_big <= CHECK6;   end
        //begin            check_big <= CHECK7; d2check_big <= { 2'b00, d2check[W-1 : W-1-(6-1)] } + OFFSET_ADDR_6; end
     else
@@ -323,29 +305,17 @@ assign code_matched[6] = ( Huff_big_active[d2check_big] == 1'b1 && check_big_pre
 assign code_matched[7] = ( Huff_big_active[d2check_big] == 1'b1 && check_big_prev == CHECK7) ? 1'b1 : 1'b0;
 assign code_matched[8] = ( Huff_big_active[d2check_big] == 1'b1 && check_big_prev == CHECK8) ? 1'b1 : 1'b0;
 
-//assign code_matched[6] = (code_matched != 0 && Huff_big_active[Addr_table_big] == 1'b1                       ) ? 1'b1 : 1'b0;
-//assign code_matched[7] = (code_matched == 0 && Huff_big_active[Addr_table_big] == 1'b1 && check_big == CHECK7) ? 1'b1 : 1'b0;
-//assign code_matched[8] = (code_matched == 0 && Huff_big_active[Addr_table_big] == 1'b1 && check_big == CHECK8) ? 1'b1 : 1'b0;
-
-//always   @(code_matched,data_encoded ) 
-//  if      (code_matched[2]) d_out <= data_encoded[2*W +: W];
-//  else if (code_matched[3]) d_out <= data_encoded[3*W +: W];
-//  else if (code_matched[4]) d_out <= data_encoded[4*W +: W];
-//  else if (code_matched[5]) d_out <= data_encoded[5*W +: W];
-//  else if (code_matched[6]) d_out <= data_encoded[6*W +: W];
-//  else if (code_matched[7]) d_out <= data_encoded[7*W +: W];
-//  else if (code_matched[8]) d_out <= data_encoded[8*W +: W];
-
 assign d_out  = (code_matched[2]) ? data_encoded[2*W +: W] :
                 (code_matched[3]) ? data_encoded[3*W +: W] :
                 (code_matched[4]) ? data_encoded[4*W +: W] :
                 (code_matched[5]) ? data_encoded[5*W +: W] :
-                (code_matched[6]) ? data_encoded[6*W +: W] :
-                (code_matched[7]) ? data_encoded[7*W +: W] :
-                                    data_encoded[8*W +: W] ;
+                (code_matched[6]) ? data_encoded_big :
+                (code_matched[7]) ? data_encoded_big :
+                                    data_encoded_big ;
 
 
-assign en_out = (code_matched == 0 || ~d_s2_empty ) ? 1'b0 : 1'b1;
+//assign en_out = (code_matched == 0 || state != work ) ? 1'b0 : 1'b1;
+assign en_out = (code_matched != 0 && (state == work && pointer < W) ) ? 1'b1 : 1'b0;
  
 
 endmodule // carry_lookahead_adder
