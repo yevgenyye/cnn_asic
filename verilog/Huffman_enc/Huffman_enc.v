@@ -20,6 +20,8 @@ module Huffman_enc
    output              en_out    // 
    );
 
+localparam SIM = 0;
+
 localparam  W_A = (W == 8) ? 3 : 2;
 
 localparam [2:0] 
@@ -53,14 +55,35 @@ localparam  NUM_OF_2_BIT_CHARS   =   4; // less than 4
 localparam  NUM_OF_3_BIT_CHARS   =   8; // less than 8
 localparam  NUM_OF_4_BIT_CHARS   =  16; // less than 16
 localparam  NUM_OF_5_BIT_CHARS   =  32; // less than 32
-localparam  NUM_OF_6_BIT_CHARS   =  64; // less than 64 
-localparam  NUM_OF_7_BIT_CHARS   = 128; // less than 128
-localparam  NUM_OF_8_BIT_CHARS   = 256; 
+localparam  NUM_OF_6_BIT_CHARS   =   5; // 
+localparam  NUM_OF_7_BIT_CHARS   =   5; //
+localparam  NUM_OF_8_BIT_CHARS   =  15; //
 
 localparam  OFFSET_ADDR_6        =   0;
 localparam  OFFSET_ADDR_7        =   0;
 localparam  OFFSET_ADDR_8        =   0;
 
+localparam  ADDR_BIG = 5; // addr for NUM_OF_6/7/8_BIT_CHARS vectors
+wire  [NUM_OF_6_BIT_CHARS  -1 : 0]      en_conf_6bit;
+wire  [NUM_OF_7_BIT_CHARS  -1 : 0]      en_conf_7bit;
+wire  [NUM_OF_8_BIT_CHARS  -1 : 0]      en_conf_8bit;
+reg   [ADDR_BIG  -1 : 0]      count_conf6;
+reg   [ADDR_BIG  -1 : 0]      count_conf7;
+reg   [ADDR_BIG  -1 : 0]      count_conf8;
+wire  [NUM_OF_6_BIT_CHARS*W-1 : 0] code_matched_6bit;
+wire  [NUM_OF_7_BIT_CHARS*W-1 : 0] code_matched_7bit;
+wire  [NUM_OF_8_BIT_CHARS*W-1 : 0] code_matched_8bit;
+wire  [W -1 : 0] code_matched_6bit1;
+wire  [W -1 : 0] code_matched_7bit1;
+wire  [W -1 : 0] code_matched_8bit1;
+wire  [NUM_OF_6_BIT_CHARS  -1 : 0] data_encoded_6bit;
+wire  [NUM_OF_7_BIT_CHARS  -1 : 0] data_encoded_7bit;
+wire  [NUM_OF_8_BIT_CHARS  -1 : 0] data_encoded_8bit;
+reg   [ADDR_BIG  -1 : 0]           addr_6bit;
+reg   [ADDR_BIG  -1 : 0]           addr_7bit;
+reg   [ADDR_BIG  -1 : 0]           addr_8bit;
+genvar   j;
+integer  i;
 
 // input shift reg
 reg [W   -1 : 0]  d_s, d_s3  ; // input data sampled data 
@@ -249,73 +272,233 @@ assign test_shiftr = {d2check, d_s3};
    );
 
 
-
-assign WR_big_table = ( ( {1'b0,w_conf} == 6 || 
-                          {1'b0,w_conf} == 7 || 
-                          {1'b0,w_conf} == 8 ) && en_conf) ? 1'b1 : 1'b0;
-
-always @(posedge clk) // or rst)
+always @(posedge clk) 
   if (rst) begin
-     Huff_big_active   <= 0;
+     count_conf6   <= 0;
+     count_conf7   <= 0;
+     count_conf8   <= 0;
   end else begin
     if (new_conf)
-       Huff_big_active   <= 0;
+      begin
+        count_conf6   <= 0;
+        count_conf7   <= 0;
+        count_conf8   <= 0;
+      end
     else
-       if ( WR_big_table )
-         begin
-          Huff_big_active[Addr_table_big] <= 1'b1;
-        //Huff_table[D_W*h_conf +: D_W] <= d_conf ;
-         end
+      begin
+        if ( {1'b0,w_conf} == 6)  count_conf6  <= count_conf6 + 1;
+        if ( {1'b0,w_conf} == 7)  count_conf7  <= count_conf7 + 1;
+        if ( {1'b0,w_conf} == 8)  count_conf8  <= count_conf8 + 1;
+      end
   end //rst
 
-always @(posedge clk) // or rst)
-  if (rst) begin
-     check_big      <= CHECK6;
-     check_big_prev <= CHECK6;
-  end else begin
-    check_big_prev <= check_big;
-    if (state != work || pointer >= W)
-       begin            check_big <= CHECK6;   end
-       //begin            check_big <= CHECK7; d2check_big <= { 2'b00, d2check[W-1 : W-1-(6-1)] } + OFFSET_ADDR_6; end
-    else
-      case(check_big)
-        CHECK6  : begin check_big <= CHECK7; d2check_big <= { 2'b00, d2check[W-1 : W-1-(6-1)] } + OFFSET_ADDR_6; end  // 2'b01
-        CHECK7  : begin check_big <= CHECK8; d2check_big <= { 1'b0 , d2check[W-1 : W-1-(7-1)] } + OFFSET_ADDR_7; end  // 2'b10
-        CHECK8  : begin check_big <= CHECK6; d2check_big <=          d2check[W-1 : W-1-(8-1)]   + OFFSET_ADDR_8; end  // 2'b11
-        default :       check_big <= check_big;     
-      endcase
-  end //rst
+assign en_conf_6bit = ( {1'b0,w_conf} == 6 && en_conf) ? ( 1'b1 << count_conf6 ) : 1'b0;
+assign en_conf_7bit = ( {1'b0,w_conf} == 7 && en_conf) ? ( 1'b1 << count_conf7 ) : 1'b0;
+assign en_conf_8bit = ( {1'b0,w_conf} == 8 && en_conf) ? ( 1'b1 << count_conf8 ) : 1'b0;
+
+//assign en_conf_6bit = ( {1'b0,w_conf} == 6 && en_conf) ? 1'b1 : 1'b0;
+//assign en_conf_7bit = ( {1'b0,w_conf} == 7 && en_conf) ? 1'b1 : 1'b0;
+//assign en_conf_8bit = ( {1'b0,w_conf} == 8 && en_conf) ? 1'b1 : 1'b0;
 
 
-assign  Addr_table_big = ( {1'b0,w_conf} == 6 ) ? h_conf + OFFSET_ADDR_6 : 
-                         ( {1'b0,w_conf} == 7 ) ? h_conf + OFFSET_ADDR_7 : 
-                                                  h_conf + OFFSET_ADDR_8 ; 
 
-  always @(posedge clk) begin   
-    if (WR_big_table)   
-      ram[Addr_table_big] <= d_conf;   
-  end   
+generate 
+   for (j = 0; j <= NUM_OF_6_BIT_CHARS-1; j = j + 1) begin : gen_6bit
+       Huffman_one_detect
+       #(
+          .D_W(W),
+          .C_W(6) 
+       )
+       Huff_1_6
+       (
+         .clk         (clk                        ),
+         .rst         (rst                        ),
+         .d_conf      (d_conf                     ), // 
+         .h_conf      (h_conf                     ), //  
+         .en_conf     (en_conf_6bit[j]            ), // 
+         .new_conf    (new_conf                   ), // 
+         .d2check     (d2check[W-1 : W-1-(6-1)]   ),
+         .code_matched(code_matched_6bit[j*W +: W]),
+         .data_encoded(data_encoded_6bit[j]       )
+        );
+   end //for
+endgenerate
 
 
-  assign data_encoded_big = ram[d2check_big]; 
- //     assign code_matched = (Huff_active[d2check]) ? 1'b1 : 1'b0; 
-/////////////////////////////////////////////////
+generate 
+   for (j = 0; j <= NUM_OF_7_BIT_CHARS-1; j = j + 1) begin : gen_7bit
+       Huffman_one_detect
+       #(
+          .D_W(W),
+          .C_W(7) 
+       )
+       Huff_1_7
+       (
+         .clk         (clk                        ),
+         .rst         (rst                        ),
+         .d_conf      (d_conf                     ), // 
+         .h_conf      (h_conf                     ), //  
+         .en_conf     (en_conf_7bit[j]            ), // 
+         .new_conf    (new_conf                   ), // 
+         .d2check     (d2check[W-1 : W-1-(7-1)]   ),
+         .code_matched(code_matched_7bit[j*W +: W]),
+         .data_encoded(data_encoded_7bit[j]       )
+        );
+   end //for
+endgenerate
 
-assign code_matched[6] = ( Huff_big_active[d2check_big] == 1'b1 && check_big_prev == CHECK6) ? 1'b1 : 1'b0;
-assign code_matched[7] = ( Huff_big_active[d2check_big] == 1'b1 && check_big_prev == CHECK7) ? 1'b1 : 1'b0;
-assign code_matched[8] = ( Huff_big_active[d2check_big] == 1'b1 && check_big_prev == CHECK8) ? 1'b1 : 1'b0;
+generate 
+   for (j = 0; j <= NUM_OF_8_BIT_CHARS-1; j = j + 1) begin : gen_8bit
+      Huffman_one_detect
+       #(
+          .D_W(W),
+          .C_W(8) 
+       )
+       Huff_1_8
+       (
+         .clk         (clk                        ),
+         .rst         (rst                        ),
+         .d_conf      (d_conf                     ), // 
+         .h_conf      (h_conf                     ), //  
+         .en_conf     (en_conf_8bit[j]            ), // 
+         .new_conf    (new_conf                   ), // 
+         .d2check     (d2check[W-1 : W-1-(8-1)]   ),
+         .code_matched(code_matched_8bit[j*W +: W]),
+         .data_encoded(data_encoded_8bit[j]       )
+        );
+ 
+   end //for
+endgenerate
+
+assign code_matched[6] = ( data_encoded_6bit == 0) ? 1'b0 : 1'b1;
+assign code_matched[7] = ( data_encoded_7bit == 0) ? 1'b0 : 1'b1;
+assign code_matched[8] = ( data_encoded_8bit == 0) ? 1'b0 : 1'b1;
+
+  always @* begin
+    addr_6bit = 0; 
+    for (i=7; i>=0; i=i-1)
+        if (data_encoded_6bit[i]) 
+          addr_6bit = i;
+  end
+assign code_matched_6bit1 = code_matched_6bit[addr_6bit*W +: W];
+
+  always @* begin
+    addr_7bit = 0; 
+    for (i=7; i>=0; i=i-1)
+        if (data_encoded_7bit[i]) 
+          addr_7bit = i;
+  end
+assign code_matched_7bit1 = code_matched_7bit[addr_7bit*W +: W];
+
+  always @* begin
+    addr_8bit = 0; 
+    for (i=7; i>=0; i=i-1)
+        if (data_encoded_8bit[i]) 
+          addr_8bit = i;
+  end
+assign code_matched_8bit1 = code_matched_8bit[addr_8bit*W +: W];
 
 assign d_out  = (code_matched[2]) ? data_encoded[2*W +: W] :
                 (code_matched[3]) ? data_encoded[3*W +: W] :
                 (code_matched[4]) ? data_encoded[4*W +: W] :
                 (code_matched[5]) ? data_encoded[5*W +: W] :
-                (code_matched[6]) ? data_encoded_big :
-                (code_matched[7]) ? data_encoded_big :
-                                    data_encoded_big ;
+                (code_matched[6]) ? code_matched_6bit1 :
+                (code_matched[7]) ? code_matched_7bit1 :
+                                    code_matched_8bit1 ;
 
-
-//assign en_out = (code_matched == 0 || state != work ) ? 1'b0 : 1'b1;
 assign en_out = (code_matched != 0 && (state == work && pointer < W) ) ? 1'b1 : 1'b0;
+
+
+//assign WR_big_table = ( ( {1'b0,w_conf} == 6 || 
+//                          {1'b0,w_conf} == 7 || 
+//                          {1'b0,w_conf} == 8 ) && en_conf) ? 1'b1 : 1'b0;
+//
+//always @(posedge clk) // or rst)
+//  if (rst) begin
+//     Huff_big_active   <= 0;
+//  end else begin
+//    if (new_conf)
+//       Huff_big_active   <= 0;
+//    else
+//       if ( WR_big_table )
+//         begin
+//          Huff_big_active[Addr_table_big] <= 1'b1;
+//        //Huff_table[D_W*h_conf +: D_W] <= d_conf ;
+//         end
+//  end //rst
+//
+//always @(posedge clk) // or rst)
+//  if (rst) begin
+//     check_big      <= CHECK6;
+//     check_big_prev <= CHECK6;
+//  end else begin
+//    check_big_prev <= check_big;
+//    if (state != work || pointer >= W)
+//       begin            check_big <= CHECK6;   end
+//       //begin            check_big <= CHECK7; d2check_big <= { 2'b00, d2check[W-1 : W-1-(6-1)] } + OFFSET_ADDR_6; end
+//    else
+//      case(check_big)
+//        CHECK6  : begin check_big <= CHECK7; d2check_big <= { 2'b00, d2check[W-1 : W-1-(6-1)] } + OFFSET_ADDR_6; end  // 2'b01
+//        CHECK7  : begin check_big <= CHECK8; d2check_big <= { 1'b0 , d2check[W-1 : W-1-(7-1)] } + OFFSET_ADDR_7; end  // 2'b10
+//        CHECK8  : begin check_big <= CHECK6; d2check_big <=          d2check[W-1 : W-1-(8-1)]   + OFFSET_ADDR_8; end  // 2'b11
+//        default :       check_big <= check_big;     
+//      endcase
+//  end //rst
+//
+//
+//assign  Addr_table_big = ( {1'b0,w_conf} == 6 ) ? h_conf + OFFSET_ADDR_6 : 
+//                         ( {1'b0,w_conf} == 7 ) ? h_conf + OFFSET_ADDR_7 : 
+//                                                  h_conf + OFFSET_ADDR_8 ; 
+//// FOr simulation
+////  always @(posedge clk) begin   
+////    if (WR_big_table)   
+////      ram[Addr_table_big] <= d_conf;   
+////  end   
+////
+////  assign data_encoded_big = ram[d2check_big]; 
+//
+//      TSDN28HPCA256X8M8FW   
+//      fifo1
+//         (
+//          .WTSEL(WTSEL),
+//          .RTSEL(RTSEL),
+//          .VG   (VG   ),
+//          .VS   (VS   ),
+//          .AA   ( Addr_table_big), // addr portA
+//          .DA   (d_conf  ), // data portA 
+//          .BWEBA(BWEBA),
+//          .WEBA (WR_big_table ), //
+//          .CEBA (CEBA ),
+//          .CLKA (clk  ),
+//          .AB   (d2check_big  ), // porrtB
+//          .DB   (DB1  ), // porrtB
+//          .BWEBB(BWEBB),
+//          .WEBB (WEBB ),
+//          .CEBB (CEBB ),
+//          .CLKB (clk  ),
+//          .QA   (QA1  ), // outputs
+//          .QB   (data_encoded_big  )  // outputs
+//        );
+//
+//
+// //     assign code_matched = (Huff_active[d2check]) ? 1'b1 : 1'b0; 
+///////////////////////////////////////////////////
+//
+//assign code_matched[6] = ( Huff_big_active[d2check_big] == 1'b1 && check_big_prev == CHECK6) ? 1'b1 : 1'b0;
+//assign code_matched[7] = ( Huff_big_active[d2check_big] == 1'b1 && check_big_prev == CHECK7) ? 1'b1 : 1'b0;
+//assign code_matched[8] = ( Huff_big_active[d2check_big] == 1'b1 && check_big_prev == CHECK8) ? 1'b1 : 1'b0;
+//
+//assign d_out  = (code_matched[2]) ? data_encoded[2*W +: W] :
+//                (code_matched[3]) ? data_encoded[3*W +: W] :
+//                (code_matched[4]) ? data_encoded[4*W +: W] :
+//                (code_matched[5]) ? data_encoded[5*W +: W] :
+//                (code_matched[6]) ? data_encoded_big :
+//                (code_matched[7]) ? data_encoded_big :
+//                                    data_encoded_big ;
+//
+//
+////assign en_out = (code_matched == 0 || state != work ) ? 1'b0 : 1'b1;
+//assign en_out = (code_matched != 0 && (state == work && pointer < W) ) ? 1'b1 : 1'b0;
  
 
 endmodule // carry_lookahead_adder
