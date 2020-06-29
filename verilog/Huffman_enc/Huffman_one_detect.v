@@ -40,10 +40,9 @@ always @(posedge clk)
      data_encoded  <= d_conf;
      d_huff        <= h_conf;
    end
- //  else if  (d_huff == d2check && d_flg)
- //   data_encoded <= 0;
 
-always @(posedge clk)   
+//always @(posedge clk)  
+always @* 
   if (d_huff == d2check && d_flg)
      code_matched <= 1'b1;
    else 

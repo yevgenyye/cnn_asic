@@ -64,21 +64,21 @@ localparam  OFFSET_ADDR_7        =   0;
 localparam  OFFSET_ADDR_8        =   0;
 
 localparam  ADDR_BIG = 5; // addr for NUM_OF_6/7/8_BIT_CHARS vectors
-wire  [NUM_OF_6_BIT_CHARS  -1 : 0]      en_conf_6bit;
-wire  [NUM_OF_7_BIT_CHARS  -1 : 0]      en_conf_7bit;
-wire  [NUM_OF_8_BIT_CHARS  -1 : 0]      en_conf_8bit;
-reg   [ADDR_BIG  -1 : 0]      count_conf6;
-reg   [ADDR_BIG  -1 : 0]      count_conf7;
-reg   [ADDR_BIG  -1 : 0]      count_conf8;
-wire  [NUM_OF_6_BIT_CHARS*W-1 : 0] code_matched_6bit;
-wire  [NUM_OF_7_BIT_CHARS*W-1 : 0] code_matched_7bit;
-wire  [NUM_OF_8_BIT_CHARS*W-1 : 0] code_matched_8bit;
-wire  [W -1 : 0] code_matched_6bit1;
-wire  [W -1 : 0] code_matched_7bit1;
-wire  [W -1 : 0] code_matched_8bit1;
-wire  [NUM_OF_6_BIT_CHARS  -1 : 0] data_encoded_6bit;
-wire  [NUM_OF_7_BIT_CHARS  -1 : 0] data_encoded_7bit;
-wire  [NUM_OF_8_BIT_CHARS  -1 : 0] data_encoded_8bit;
+wire  [NUM_OF_6_BIT_CHARS  -1 : 0] en_conf_6bit;
+wire  [NUM_OF_7_BIT_CHARS  -1 : 0] en_conf_7bit;
+wire  [NUM_OF_8_BIT_CHARS  -1 : 0] en_conf_8bit;
+reg   [ADDR_BIG            -1 : 0] count_conf6;
+reg   [ADDR_BIG            -1 : 0] count_conf7;
+reg   [ADDR_BIG            -1 : 0] count_conf8;
+wire  [NUM_OF_6_BIT_CHARS  -1 : 0] code_matched_6bit;
+wire  [NUM_OF_7_BIT_CHARS  -1 : 0] code_matched_7bit;
+wire  [NUM_OF_8_BIT_CHARS  -1 : 0] code_matched_8bit;
+wire  [NUM_OF_6_BIT_CHARS*W-1 : 0] data_encoded_6bit;
+wire  [NUM_OF_7_BIT_CHARS*W-1 : 0] data_encoded_7bit;
+wire  [NUM_OF_8_BIT_CHARS*W-1 : 0] data_encoded_8bit;
+wire  [                   W-1 : 0] data_encoded_6bit1;
+wire  [                   W-1 : 0] data_encoded_7bit1;
+wire  [                   W-1 : 0] data_encoded_8bit1;
 reg   [ADDR_BIG  -1 : 0]           addr_6bit;
 reg   [ADDR_BIG  -1 : 0]           addr_7bit;
 reg   [ADDR_BIG  -1 : 0]           addr_8bit;
@@ -318,8 +318,8 @@ generate
          .en_conf     (en_conf_6bit[j]            ), // 
          .new_conf    (new_conf                   ), // 
          .d2check     (d2check[W-1 : W-1-(6-1)]   ),
-         .code_matched(code_matched_6bit[j*W +: W]),
-         .data_encoded(data_encoded_6bit[j]       )
+         .code_matched(code_matched_6bit[j]       ),
+         .data_encoded(data_encoded_6bit[j*W +: W])
         );
    end //for
 endgenerate
@@ -341,8 +341,8 @@ generate
          .en_conf     (en_conf_7bit[j]            ), // 
          .new_conf    (new_conf                   ), // 
          .d2check     (d2check[W-1 : W-1-(7-1)]   ),
-         .code_matched(code_matched_7bit[j*W +: W]),
-         .data_encoded(data_encoded_7bit[j]       )
+         .code_matched(code_matched_7bit[j]       ),
+         .data_encoded(data_encoded_7bit[j*W +: W])
         );
    end //for
 endgenerate
@@ -363,48 +363,48 @@ generate
          .en_conf     (en_conf_8bit[j]            ), // 
          .new_conf    (new_conf                   ), // 
          .d2check     (d2check[W-1 : W-1-(8-1)]   ),
-         .code_matched(code_matched_8bit[j*W +: W]),
-         .data_encoded(data_encoded_8bit[j]       )
+         .code_matched(code_matched_8bit[j]       ),
+         .data_encoded(data_encoded_8bit[j*W +: W])
         );
  
    end //for
 endgenerate
 
-assign code_matched[6] = ( data_encoded_6bit == 0) ? 1'b0 : 1'b1;
-assign code_matched[7] = ( data_encoded_7bit == 0) ? 1'b0 : 1'b1;
-assign code_matched[8] = ( data_encoded_8bit == 0) ? 1'b0 : 1'b1;
+assign code_matched[6] = ( code_matched_6bit == 0) ? 1'b0 : 1'b1;
+assign code_matched[7] = ( code_matched_7bit == 0) ? 1'b0 : 1'b1;
+assign code_matched[8] = ( code_matched_8bit == 0) ? 1'b0 : 1'b1;
 
   always @* begin
     addr_6bit = 0; 
     for (i=7; i>=0; i=i-1)
-        if (data_encoded_6bit[i]) 
+        if (code_matched_6bit[i]) 
           addr_6bit = i;
   end
-assign code_matched_6bit1 = code_matched_6bit[addr_6bit*W +: W];
+assign data_encoded_6bit1 = data_encoded_6bit[addr_6bit*W +: W];
 
   always @* begin
     addr_7bit = 0; 
     for (i=7; i>=0; i=i-1)
-        if (data_encoded_7bit[i]) 
+        if (code_matched_7bit[i]) 
           addr_7bit = i;
   end
-assign code_matched_7bit1 = code_matched_7bit[addr_7bit*W +: W];
+assign data_encoded_7bit1 = data_encoded_7bit[addr_7bit*W +: W];
 
   always @* begin
     addr_8bit = 0; 
     for (i=7; i>=0; i=i-1)
-        if (data_encoded_8bit[i]) 
+        if (code_matched_8bit[i]) 
           addr_8bit = i;
   end
-assign code_matched_8bit1 = code_matched_8bit[addr_8bit*W +: W];
+assign data_encoded_8bit1 = data_encoded_8bit[addr_8bit*W +: W];
 
 assign d_out  = (code_matched[2]) ? data_encoded[2*W +: W] :
                 (code_matched[3]) ? data_encoded[3*W +: W] :
                 (code_matched[4]) ? data_encoded[4*W +: W] :
                 (code_matched[5]) ? data_encoded[5*W +: W] :
-                (code_matched[6]) ? code_matched_6bit1 :
-                (code_matched[7]) ? code_matched_7bit1 :
-                                    code_matched_8bit1 ;
+                (code_matched[6]) ? data_encoded_6bit1 :
+                (code_matched[7]) ? data_encoded_7bit1 :
+                                    data_encoded_8bit1 ;
 
 assign en_out = (code_matched != 0 && (state == work && pointer < W) ) ? 1'b1 : 1'b0;
 
