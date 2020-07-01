@@ -26,8 +26,10 @@ module Huffman_enc_tb ();
 
 localparam  B2_0   = 2'b00;    //W2_1 = 2;
 localparam  B2_1   = 2'b01;    //W2_0 = 2;
+localparam  B2_2   = 2'bZZ;    //W2_0 = 2;
 localparam  B3_0   = 3'b100;   //W3_1 = 3;
 localparam  B3_1   = 3'b101;   //W3_0 = 3;
+localparam  B3_3   = 3'b10Z;   //W3_0 = 3;
 localparam  B4_0   = 4'b1100;  //W4_1 = 4;
 localparam  B4_1   = 4'b1101;  //W4_0 = 4;
 localparam  B5_0   = 5'b11100; //W5_1 = 5;
@@ -97,32 +99,32 @@ end
  always @*
   case (j)
  
-     1:  begin    d_in = { B2_0 , {(2){1'b0}} } ; w_in = 2; end // 1 byte 4x2
-     2:  begin    d_in = { B2_1 , {(2){1'b0}} } ; w_in = 2; end //
-     3:  begin    d_in = { B2_0 , {(2){1'b0}} } ; w_in = 2; end //
-     4:  begin    d_in = { B2_1 , {(2){1'b0}} } ; w_in = 2; end //
-     5:  begin    d_in = { B2_0 , {(2){1'b0}} } ; w_in = 2; end // 1 byte 4x2
-     6:  begin    d_in = { B2_1 , {(2){1'b0}} } ; w_in = 2; end //
-     7:  begin    d_in = { B2_0 , {(2){1'b0}} } ; w_in = 2; end //
-     8:  begin    d_in = { B2_1 , {(2){1'b0}} } ; w_in = 2; end // 
-     9:  begin    d_in = { B3_0 , {(3){1'b0}} } ; w_in = 3; end // 4 bytes 8x3
-    10:  begin    d_in = { B3_1 , {(3){1'b0}} } ; w_in = 3; end //
-    11:  begin    d_in = { B3_0 , {(3){1'b0}} } ; w_in = 3; end //
-    12:  begin    d_in = { B3_1 , {(3){1'b0}} } ; w_in = 3; end //
-    13:  begin    d_in = { B3_0 , {(3){1'b0}} } ; w_in = 3; end // 
-    14:  begin    d_in = { B3_1 , {(3){1'b0}} } ; w_in = 3; end //
-    15:  begin    d_in = { B3_0 , {(3){1'b0}} } ; w_in = 3; end //
-    16:  begin    d_in = { B3_1 , {(3){1'b0}} } ; w_in = 3; end // 
- // 17:  begin    d_in = { }; //
- // 18:  begin    d_in = { }; //
- // 19:  begin    d_in = { }; //
- // 20:  begin    d_in = { }; //
- // 21:  begin    d_in = { }; //
- // 22:  begin    d_in = { }; //
- // 23:  begin    d_in = { }; // 
- // 24:  begin    d_in = { };
- // 25:  begin    d_in = { }; // 
- // 26:  begin    d_in = { }; //
+     1:  begin    d_in = { B2_0 , {(8-2){1'b0}} } ; w_in = 2; end // 1 byte 4x2
+     2:  begin    d_in = { B2_1 , {(8-2){1'b0}} } ; w_in = 2; end //
+     3:  begin    d_in = { B2_0 , {(8-2){1'b0}} } ; w_in = 2; end //
+     4:  begin    d_in = { B2_1 , {(8-2){1'b0}} } ; w_in = 2; end //
+     5:  begin    d_in = { B2_0 , {(8-2){1'b0}} } ; w_in = 2; end // 1 byte 4x2
+     6:  begin    d_in = { B2_1 , {(8-2){1'b0}} } ; w_in = 2; end //
+     7:  begin    d_in = { B2_0 , {(8-2){1'b0}} } ; w_in = 2; end //
+     8:  begin    d_in = { B2_2 , {(8-2){1'b0}} } ; w_in = 2; end // 
+     9:  begin    d_in = { B3_0 , {(8-3){1'b0}} } ; w_in = 3; end // 4 bytes 8x3
+    10:  begin    d_in = { B3_1 , {(8-3){1'b0}} } ; w_in = 3; end //
+    11:  begin    d_in = { B3_0 , {(8-3){1'b0}} } ; w_in = 3; end //
+    12:  begin    d_in = { B3_1 , {(8-3){1'b0}} } ; w_in = 3; end //
+    13:  begin    d_in = { B3_0 , {(8-3){1'b0}} } ; w_in = 3; end // 
+    14:  begin    d_in = { B3_1 , {(8-3){1'b0}} } ; w_in = 3; end //
+    15:  begin    d_in = { B3_0 , {(8-3){1'b0}} } ; w_in = 3; end //
+    16:  begin    d_in = { B3_3 , {(8-3){1'b0}} } ; w_in = 3; end // 
+    17:  begin    d_in = { B4_0 , {(8-4){1'b0}} } ; w_in = 4; end // 1 byte 2x4
+    18:  begin    d_in = { B4_1 , {(8-4){1'b0}} } ; w_in = 4; end // 
+    19:  begin    d_in = { B2_0 , {(8-2){1'b0}} } ; w_in = 2; end // 1 byte 2+4+2
+    20:  begin    d_in = { B4_1 , {(8-4){1'b0}} } ; w_in = 4; end //
+    21:  begin    d_in = { B2_2 , {(8-2){1'b0}} } ; w_in = 2; end //
+    22:  begin    d_in = { B8_0                 } ; w_in = 8; end // 1 byte 1x8
+    23:  begin    d_in = { B8_1                 } ; w_in = 8; end // 1 byte 1x8 
+    24:  begin    d_in = { B6_0 , {(8-6){1'b0}} } ; w_in = 6; end // 1 byte 6+2
+    25:  begin    d_in = { B2_0 , {(8-2){1'b0}} } ; w_in = 2; end
+//    26:  begin    d_in = { }; //
  
   default:  d_in = 8'hFF;  
  endcase
