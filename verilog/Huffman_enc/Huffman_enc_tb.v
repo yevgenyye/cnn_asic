@@ -34,11 +34,20 @@ localparam  B4_0   = 4'b1100;  //W4_1 = 4;
 localparam  B4_1   = 4'b1101;  //W4_0 = 4;
 localparam  B5_0   = 5'b11100; //W5_1 = 5;
 localparam  B5_1   = 5'b11101; //W5_0 = 5;
+localparam  B5_Z   = 5'b1110Z; //W5_0 = 5;
+localparam  B5_X   = 5'bX110Z; //W5_0 = 5;
 
 localparam  B6_0   = 6'b111100;   //W6_1 = 6; 
 localparam  B6_1   = 6'b111101;   //W6_0 = 6; 
+localparam  B6_X   = 6'bX1110Z;   //W6_1 = 6; 
+localparam  B6_Z   = 6'b11110Z;   //W6_0 = 6; 
+
 localparam  B7_0   = 7'b1111100;  //W7_1 = 7; 
 localparam  B7_1   = 7'b1111101;  //W7_0 = 7; 
+localparam  B7_X   = 7'bX11110Z;  //W7_1 = 7; 
+localparam  B7_Z   = 7'b111110Z;  //W7_0 = 7; 
+
+
 localparam  B8_0   = 8'b11111100; //W8_1 = 8; 
 localparam  B8_1   = 8'b11111101; //W8_0 = 8; 
 
@@ -124,8 +133,31 @@ end
     23:  begin    d_in = { B8_1                 } ; w_in = 8; end // 1 byte 1x8 
     24:  begin    d_in = { B6_0 , {(8-6){1'b0}} } ; w_in = 6; end // 1 byte 6+2
     25:  begin    d_in = { B2_0 , {(8-2){1'b0}} } ; w_in = 2; end
-//    26:  begin    d_in = { }; //
+
+    26:  begin    d_in = { B5_0 , {(8-5){1'b0}} } ; w_in = 5; end // 5 bytes 5x8
+    27:  begin    d_in = { B5_0 , {(8-5){1'b0}} } ; w_in = 5; end // 
+    28:  begin    d_in = { B5_0 , {(8-5){1'b0}} } ; w_in = 5; end // 
+    29:  begin    d_in = { B5_0 , {(8-5){1'b0}} } ; w_in = 5; end // 
+    30:  begin    d_in = { B5_0 , {(8-5){1'b0}} } ; w_in = 5; end //
+    31:  begin    d_in = { B5_0 , {(8-5){1'b0}} } ; w_in = 5; end // 
+    32:  begin    d_in = { B5_0 , {(8-5){1'b0}} } ; w_in = 5; end // 
+    33:  begin    d_in = { B5_Z , {(8-5){1'b0}} } ; w_in = 5; end //
+
+
+    34:  begin    d_in = { B6_0 , {(8-6){1'b0}} } ; w_in = 6; end // 3 bytes 6x4
+    35:  begin    d_in = { B6_0 , {(8-6){1'b0}} } ; w_in = 6; end // 
+    36:  begin    d_in = { B6_0 , {(8-6){1'b0}} } ; w_in = 6; end // 
+    37:  begin    d_in = { B6_1 , {(8-6){1'b0}} } ; w_in = 6; end //
  
+    38:  begin    d_in = { B7_X , {(8-7){1'b0}} } ; w_in = 7; end // 7 bytes 8x7
+    39:  begin    d_in = { B7_X , {(8-7){1'b0}} } ; w_in = 7; end // 
+    40:  begin    d_in = { B7_X , {(8-7){1'b0}} } ; w_in = 7; end //
+    41:  begin    d_in = { B7_X , {(8-7){1'b0}} } ; w_in = 7; end // 
+    42:  begin    d_in = { B7_X , {(8-7){1'b0}} } ; w_in = 7; end // 
+    43:  begin    d_in = { B7_X , {(8-7){1'b0}} } ; w_in = 7; end //
+    44:  begin    d_in = { B7_X , {(8-7){1'b0}} } ; w_in = 7; end // 
+    45:  begin    d_in = { B7_Z , {(8-7){1'b0}} } ; w_in = 7; end //
+      
   default:  d_in = 8'hFF;  
  endcase
 

@@ -55,9 +55,9 @@ localparam  NUM_OF_2_BIT_CHARS   =   4; // less than 4
 localparam  NUM_OF_3_BIT_CHARS   =   8; // less than 8
 localparam  NUM_OF_4_BIT_CHARS   =  16; // less than 16
 localparam  NUM_OF_5_BIT_CHARS   =  32; // less than 32
-localparam  NUM_OF_6_BIT_CHARS   =   5; // 
+localparam  NUM_OF_6_BIT_CHARS   =  15; // 
 localparam  NUM_OF_7_BIT_CHARS   =   5; //
-localparam  NUM_OF_8_BIT_CHARS   =  15; //
+localparam  NUM_OF_8_BIT_CHARS   =   5; //
 
 localparam  OFFSET_ADDR_6        =   0;
 localparam  OFFSET_ADDR_7        =   0;
@@ -287,9 +287,9 @@ always @(posedge clk)
       end
     else
       begin
-        if ( {1'b0,w_conf} == 6)  count_conf6  <= count_conf6 + 1;
-        if ( {1'b0,w_conf} == 7)  count_conf7  <= count_conf7 + 1;
-        if ( {1'b0,w_conf} == 8)  count_conf8  <= count_conf8 + 1;
+        if ( {1'b0,w_conf} == 6 && en_conf )  count_conf6  <= count_conf6 + 1;
+        if ( {1'b0,w_conf} == 7 && en_conf )  count_conf7  <= count_conf7 + 1;
+        if ( {1'b0,w_conf} == 8 && en_conf )  count_conf8  <= count_conf8 + 1;
       end
   end //rst
 
