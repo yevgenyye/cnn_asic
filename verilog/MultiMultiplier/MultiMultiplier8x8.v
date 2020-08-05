@@ -27,9 +27,10 @@ localparam [1:0] CONV_2  = 2'b01;
 localparam [1:0] CONV_4  = 2'b10;
 localparam [1:0] CONV_8  = 2'b11;
 
-//wire [  3:0] dw; //sign of weight;
+wire [  3:0] dw; //sign of weight;
 
-wire [8-1:0] Wm1, Wm2, Wm3, Wm4, WmW1, WmW2, WmW3, WmW4  ; // magnitude of b
+wire [8-1:0] Wm1, Wm2, Wm3, Wm4, WmW1, WmW2, WmW3, WmW4  ; // magnitude of weigts
+wire [4-1:0] Ws1, Ws2, Ws3, Ws4, WsW1, WsW2, WsW3, WsW4   ; // sign of weigts
 wire [  4:0] m11, m12, m13, m14, m21, m22, m23, m24; // unsigned result of multiplication
 wire [  4:0] m31, m32, m33, m34, m41, m42, m43, m44; // unsigned result of multiplication
 
@@ -67,82 +68,88 @@ assign convtype = (convtypeD == CONV_8 && convtypeW == CONV_8) ? M8x8 :
 //Signed2SMagnitude s2sm4 (w4, convtypeW, Ws4, Wm4);
 
 // weight's magnitude for each 2x2 multiplier
+//assign WmW1 = (convtypeD == CONV_8) ? Wm1 : (convtypeD == CONV_4) ? Wm1 :  Wm1 ; // CONV_2
+//assign WmW2 = (convtypeD == CONV_8) ? Wm1 : (convtypeD == CONV_4) ? Wm1 :  Wm2 ; // CONV_2
+//assign WmW3 = (convtypeD == CONV_8) ? Wm1 : (convtypeD == CONV_4) ? Wm2 :  Wm3 ; // CONV_2
+//assign WmW4 = (convtypeD == CONV_8) ? Wm1 : (convtypeD == CONV_4) ? Wm2 :  Wm4 ; // CONV_2
+
 assign WmW1 = (convtypeD == CONV_8) ? w1 : (convtypeD == CONV_4) ? w1 :  w1 ; // CONV_2
 assign WmW2 = (convtypeD == CONV_8) ? w1 : (convtypeD == CONV_4) ? w1 :  w2 ; // CONV_2
 assign WmW3 = (convtypeD == CONV_8) ? w1 : (convtypeD == CONV_4) ? w2 :  w3 ; // CONV_2
 assign WmW4 = (convtypeD == CONV_8) ? w1 : (convtypeD == CONV_4) ? w2 :  w4 ; // CONV_2
-//
+
+// assign dw   = (convtypeD == CONV_8) ? { WmW4[7] , WmW4[7] ,WmW4[7] ,WmW4[7] } 
 ////// weight's sign for each 2x2 multiplier
-//assign WsW1 = (convtypeD == CONV_8) ? Ws1 : (convtypeD == CONV_4) ? Ws1 :  Ws1 ; // CONV_2  // Check it!!!
-//assign WsW2 = (convtypeD == CONV_8) ? Ws1 : (convtypeD == CONV_4) ? Ws1 :  Ws2 ; // CONV_2  // Check it!!!
-//assign WsW3 = (convtypeD == CONV_8) ? Ws1 : (convtypeD == CONV_4) ? Ws2 :  Ws3 ; // CONV_2  // Check it!!!
-//assign WsW4 = (convtypeD == CONV_8) ? Ws1 : (convtypeD == CONV_4) ? Ws2 :  Ws4 ; // CONV_2  // Check it!!!
+//assign WsW1 = (convtypeD == CONV_8) ? Ws1 : (convtypeD == CONV_4) ? Ws1 :  Ws1 ; // CONV_2  
+//assign WsW2 = (convtypeD == CONV_8) ? Ws1 : (convtypeD == CONV_4) ? Ws1 :  Ws2 ; // CONV_2  
+//assign WsW3 = (convtypeD == CONV_8) ? Ws1 : (convtypeD == CONV_4) ? Ws2 :  Ws3 ; // CONV_2  
+//assign WsW4 = (convtypeD == CONV_8) ? Ws1 : (convtypeD == CONV_4) ? Ws2 :  Ws4 ; // CONV_2  
 
 // Group of multipliers 
 // 1-st column
-Mult_2bits mu11 ( WmW1[7], WmW1[1:0], d[1:0], m11);
-Mult_2bits mu12 ( WmW1[7], WmW1[3:2], d[1:0], m12);
-Mult_2bits mu13 ( WmW1[7], WmW1[5:4], d[1:0], m13);
+// Mult_2bits mu11 ( WsW1, WmW1[1:0], d[1:0], m11);
+// Mult_2bits mu12 ( WsW1, WmW1[3:2], d[1:0], m12);
+// Mult_2bits mu13 ( WsW1, WmW1[5:4], d[1:0], m13);
+// Mult_2bits mu14 ( WsW1, WmW1[7:6], d[1:0], m14);
+// // 2-nd column
+// Mult_2bits mu21 ( WsW2, WmW2[1:0], d[3:2], m21);
+// Mult_2bits mu22 ( WsW2, WmW2[3:2], d[3:2], m22);
+// Mult_2bits mu23 ( WsW2, WmW2[5:4], d[3:2], m23);
+// Mult_2bits mu24 ( WsW2, WmW2[7:6], d[3:2], m24);
+// // 3-rd column
+// Mult_2bits mu31 ( WsW3, WmW3[1:0], d[5:4], m31);
+// Mult_2bits mu32 ( WsW3, WmW3[3:2], d[5:4], m32);
+// Mult_2bits mu33 ( WsW3, WmW3[5:4], d[5:4], m33);
+// Mult_2bits mu34 ( WsW3, WmW3[7:6], d[5:4], m34);
+// // 4-th column
+// Mult_2bits mu41 ( WsW4, WmW4[1:0], d[7:6], m41);
+// Mult_2bits mu42 ( WsW4, WmW4[3:2], d[7:6], m42);
+// Mult_2bits mu43 ( WsW4, WmW4[5:4], d[7:6], m43);
+// Mult_2bits mu44 ( WsW4, WmW4[7:6], d[7:6], m44);
+
+// 1-st column
+Mult_2bits mu11 (    1'b0, WmW1[1:0], d[1:0], m11);
+Mult_2bits mu12 (    1'b0, WmW1[3:2], d[1:0], m12);
+Mult_2bits mu13 (    1'b0, WmW1[5:4], d[1:0], m13);
 Mult_2bits mu14 ( WmW1[7], WmW1[7:6], d[1:0], m14);
 // 2-nd column
-Mult_2bits mu21 ( WmW2[7], WmW2[1:0], d[3:2], m21);
-Mult_2bits mu22 ( WmW2[7], WmW2[3:2], d[3:2], m22);
-Mult_2bits mu23 ( WmW2[7], WmW2[5:4], d[3:2], m23);
+Mult_2bits mu21 (    1'b0, WmW2[1:0], d[3:2], m21);
+Mult_2bits mu22 (    1'b0, WmW2[3:2], d[3:2], m22);
+Mult_2bits mu23 (    1'b0, WmW2[5:4], d[3:2], m23);
 Mult_2bits mu24 ( WmW2[7], WmW2[7:6], d[3:2], m24);
 // 3-rd column
-Mult_2bits mu31 ( WmW3[7], WmW3[1:0], d[5:4], m31);
-Mult_2bits mu32 ( WmW3[7], WmW3[3:2], d[5:4], m32);
-Mult_2bits mu33 ( WmW3[7], WmW3[5:4], d[5:4], m33);
+Mult_2bits mu31 (    1'b0, WmW3[1:0], d[5:4], m31);
+Mult_2bits mu32 (    1'b0, WmW3[3:2], d[5:4], m32);
+Mult_2bits mu33 (    1'b0, WmW3[5:4], d[5:4], m33);
 Mult_2bits mu34 ( WmW3[7], WmW3[7:6], d[5:4], m34);
 // 4-th column
-Mult_2bits mu41 ( WmW4[7], WmW4[1:0], d[7:6], m41);
-Mult_2bits mu42 ( WmW4[7], WmW4[3:2], d[7:6], m42);
-Mult_2bits mu43 ( WmW4[7], WmW4[5:4], d[7:6], m43);
+Mult_2bits mu41 (    1'b0, WmW4[1:0], d[7:6], m41);
+Mult_2bits mu42 (    1'b0, WmW4[3:2], d[7:6], m42);
+Mult_2bits mu43 (    1'b0, WmW4[5:4], d[7:6], m43);
 Mult_2bits mu44 ( WmW4[7], WmW4[7:6], d[7:6], m44);
-
-// // 1-st column
-// Mult_2bits mu11 ( WmW1[7], WmW1[1:0], d[1:0], m11);
-// Mult_2bits mu12 ( WmW1[7], WmW1[3:2], d[1:0], m12);
-// Mult_2bits mu13 ( WmW1[7], WmW1[5:4], d[1:0], m13);
-// Mult_2bits mu14 ( WmW1[7], WmW1[7:6], d[1:0], m14);
-// // 2-nd column
-// Mult_2bits mu21 ( WmW2[7], WmW2[1:0], d[3:2], m21);
-// Mult_2bits mu22 ( WmW2[7], WmW2[3:2], d[3:2], m22);
-// Mult_2bits mu23 ( WmW2[7], WmW2[5:4], d[3:2], m23);
-// Mult_2bits mu24 ( WmW2[7], WmW2[7:6], d[3:2], m24);
-// // 3-rd column
-// Mult_2bits mu31 ( WmW3[7], WmW3[1:0], d[5:4], m31);
-// Mult_2bits mu32 ( WmW3[7], WmW3[3:2], d[5:4], m32);
-// Mult_2bits mu33 ( WmW3[7], WmW3[5:4], d[5:4], m33);
-// Mult_2bits mu34 ( WmW3[7], WmW3[7:6], d[5:4], m34);
-// // 4-th column
-// Mult_2bits mu41 ( WmW4[7], WmW4[1:0], d[7:6], m41);
-// Mult_2bits mu42 ( WmW4[7], WmW4[3:2], d[7:6], m42);
-// Mult_2bits mu43 ( WmW4[7], WmW4[5:4], d[7:6], m43);
-// Mult_2bits mu44 ( WmW4[7], WmW4[7:6], d[7:6], m44);
 ///////////////////////////// Config: 2x2 + 4x2 + 4x4
 
 // Stage 1. Prepare basic patterns for 2x2, 4x2 and 4x4 multiplication
 
-assign pre_1_1 =                                             {4'h0, m11}                                               ;
-assign pre_1_2 = (convtype == M2x2 || convtypeW == CONV_2) ? {4'h0, m12} :                         {2'b00, m12, 2'b00} ;
-assign pre_2_1 = (convtype == M2x2)                        ? {4'h0, m21} :                         {2'b00, m21, 2'b00} ;
-assign pre_2_2 = (convtype == M2x2)                        ? {4'h0, m22} : (convtypeW == CONV_2) ? {2'b00, m22, 2'b00} : {m22 ,4'b0000};
+assign pre_1_1 =                                             { {(4) {m11[4]}}, m11}                                               ;
+assign pre_1_2 = (convtype == M2x2 || convtypeW == CONV_2) ? { {(4) {m12[4]}}, m12} :                         {{(4) {m12[4]}}, m12, 2'b00} ;
+assign pre_2_1 = (convtype == M2x2)                        ? { {(4) {m21[4]}}, m21} :                         {{(4) {m21[4]}}, m21, 2'b00} ;
+assign pre_2_2 = (convtype == M2x2)                        ? { {(4) {m22[4]}}, m22} : (convtypeW == CONV_2) ? {{(4) {m22[4]}}, m22, 2'b00} : {m22 ,4'b0000};
 
-assign pre_1_3 =                                             {4'h0, m13}                                               ;
-assign pre_1_4 = (convtype == M2x2 || convtypeW == CONV_2) ? {4'h0, m14} :                         {2'b00, m14, 2'b00} ;
-assign pre_2_3 = (convtype == M2x2)                        ? {4'h0, m23} :                         {2'b00, m23, 2'b00} ;
-assign pre_2_4 = (convtype == M2x2)                        ? {4'h0, m24} : (convtypeW == CONV_2) ? {2'b00, m24, 2'b00} : {m24 ,4'b0000};
+assign pre_1_3 =                                             { {(4) {m13[4]}}, m13}                                               ;
+assign pre_1_4 = (convtype == M2x2 || convtypeW == CONV_2) ? { {(4) {m14[4]}}, m14} :                         { {(4) {m14[4]}} , m14, 2'b00} ;
+assign pre_2_3 = (convtype == M2x2)                        ? { {(4) {m23[4]}}, m23} :                         { {(4) {m23[4]}} , m23, 2'b00} ;
+assign pre_2_4 = (convtype == M2x2)                        ? { {(4) {m24[4]}}, m24} : (convtypeW == CONV_2) ? { {(4) {m24[4]}} , m24, 2'b00} : {m24 ,4'b0000};
 
-assign pre_3_1 =                                             {4'h0, m31}                                               ;
-assign pre_3_2 = (convtype == M2x2 || convtypeW == CONV_2) ? {4'h0, m32} :                         {2'b00, m32, 2'b00} ;
-assign pre_4_1 = (convtype == M2x2)                        ? {4'h0, m41} :                         {2'b00, m41, 2'b00} ;
-assign pre_4_2 = (convtype == M2x2)                        ? {4'h0, m42} : (convtypeW == CONV_2) ? {2'b00, m42, 2'b00} : {m42 ,4'b0000};
+assign pre_3_1 =                                             { {(4) {m31[4]}}, m31}                                               ;
+assign pre_3_2 = (convtype == M2x2 || convtypeW == CONV_2) ? { {(4) {m32[4]}}, m32} :                         { {(4) {m32[4]}} , m32, 2'b00} ;
+assign pre_4_1 = (convtype == M2x2)                        ? { {(4) {m41[4]}}, m41} :                         { {(4) {m41[4]}} , m41, 2'b00} ;
+assign pre_4_2 = (convtype == M2x2)                        ? { {(4) {m42[4]}}, m42} : (convtypeW == CONV_2) ? { {(4) {m42[4]}} , m42, 2'b00} : {m42 ,4'b0000};
 
-assign pre_3_3 =                                             {4'h0, m33}                                               ;
-assign pre_3_4 = (convtype == M2x2 || convtypeW == CONV_2) ? {4'h0, m34} :                         {2'b00, m34, 2'b00} ;
-assign pre_4_3 = (convtype == M2x2)                        ? {4'h0, m43} :                         {2'b00, m43, 2'b00} ;
-assign pre_4_4 = (convtype == M2x2)                        ? {4'h0, m44} : (convtypeW == CONV_2) ? {2'b00, m44, 2'b00} : {m44 ,4'b0000};
+assign pre_3_3 =                                             { {(4) {m33[4]}}, m33}                                               ;
+assign pre_3_4 = (convtype == M2x2 || convtypeW == CONV_2) ? { {(4) {m34[4]}}, m34} :                         { {(4) {m34[4]}} , m34, 2'b00} ;
+assign pre_4_3 = (convtype == M2x2)                        ? { {(4) {m43[4]}}, m43} :                         { {(4) {m43[4]}} , m43, 2'b00} ;
+assign pre_4_4 = (convtype == M2x2)                        ? { {(4) {m44[4]}}, m44} : (convtypeW == CONV_2) ? { {(4) {m44[4]}} , m44, 2'b00} : {m44 ,4'b0000};
 
 carry_save_adder #(
   .N(4),  // 2; // 3; // 4; // 5; // 6; // 7; // 8; 9 ... 15; // 16 17 25; // 49; //64; //128; //256;  3+ number of busses 
@@ -204,14 +211,14 @@ ripple_carry# ( .W(8+2+1) ) st1_rca4 (.a(st1_4_s), .b(st1_4_c), .cin(1'b0), .sum
 /// Stage 2. Shift prev stage sum and carry.
 
 // 13 bits
-assign shf_2_1 = (convtype == M2x2) ? { 8'h00, st1_2_sum } : { 1'b0, st1_3_sum } ; // 8x2,4,8
-assign shf_2_2 = (convtype == M2x2) ? { 16'h0000, 1'b0   } : { 1'b0, st1_4_sum } ; // 8x2,4,8
+assign shf_2_1 = (convtype == M2x2) ? { {(8) {st1_2_sum[11]}} , st1_2_sum } : { st1_3_sum[11], st1_3_sum } ; // 8x2,4,8
+assign shf_2_2 = (convtype == M2x2) ? { 16'h0000, 1'b0                    } : { st1_4_sum[11], st1_4_sum } ; // 8x2,4,8
 
 // 17 bits
-assign shf_1_1 = (convtype == M2x2) ? { 8'h00, st1_1_sum } : (convtypeD == CONV_4) ? { 8'h00, st1_1_sum } : (convtype == M8x2 || convtype == M8x4) ? { 4'h0 , 4'h0   , st1_1_sum } : { 4'h0 , 4'h0, st1_1_sum }; // 8x8
-assign shf_1_2 = (convtype == M2x2) ? { 20'h00000        } : (convtypeD == CONV_4) ? { 8'h00, st1_2_sum } : (convtype == M8x2 || convtype == M8x4) ? { 4'h0 , 4'h0   , st1_2_sum } : { 4'h0 , st1_2_sum, 4'h0 }; // 8x8
-assign shf_1_3 = (convtype == M2x2) ? { 20'h00000        } : (convtypeD == CONV_4) ? { 20'h00000        } : (convtype == M8x2 || convtype == M8x4) ? { 4'h0 , st1_3_sum,   4'h0  } : { 4'h0 , st1_3_sum, 4'h0 }; // 8x8
-assign shf_1_4 = (convtype == M2x2) ? { 20'h00000        } : (convtypeD == CONV_4) ? { 20'h00000        } : (convtype == M8x2 || convtype == M8x4) ? { 4'h0 , st1_4_sum,   4'h0  } : { st1_4_sum,  4'h0, 4'h0 }; // 8x8
+assign shf_1_1 = (convtype == M2x2) ? { {(8) {st1_1_sum[11]}}, st1_1_sum } : (convtypeD == CONV_4) ? { {(8) {st1_1_sum[11]}}, st1_1_sum } : (convtype == M8x2 || convtype == M8x4) ? { {(8) {st1_1_sum[11]}},      st1_1_sum } : { {(8) {st1_1_sum[11]}},       st1_1_sum }; // 8x8
+assign shf_1_2 = (convtype == M2x2) ? { 20'h00000                        } : (convtypeD == CONV_4) ? { {(8) {st1_2_sum[11]}}, st1_2_sum } : (convtype == M8x2 || convtype == M8x4) ? { {(8) {st1_2_sum[11]}},      st1_2_sum } : { {(4) {st1_2_sum[11]}}, st1_2_sum, 4'h0 }; // 8x8
+assign shf_1_3 = (convtype == M2x2) ? { 20'h00000                        } : (convtypeD == CONV_4) ? { 20'h00000                        } : (convtype == M8x2 || convtype == M8x4) ? { {(4) {st1_3_sum[11]}}, st1_3_sum, 4'h0} : { {(4) {st1_3_sum[11]}}, st1_3_sum, 4'h0 }; // 8x8
+assign shf_1_4 = (convtype == M2x2) ? { 20'h00000                        } : (convtypeD == CONV_4) ? { 20'h00000                        } : (convtype == M8x2 || convtype == M8x4) ? { {(4) {st1_4_sum[11]}}, st1_4_sum, 4'h0} : { st1_4_sum,               4'h0,    4'h0 }; // 8x8
 
 //carry_save_adder #(
 //  .N(4),  // 2; // 3; // 4; // 5; // 6; // 7; // 8; 9 ... 15; // 16 17 25; // 49; //64; //128; //256;  3+ number of busses 
