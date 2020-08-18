@@ -79,21 +79,29 @@ assign pre_32 = (convtype == M3x3) ? { {(12) {m32[6]}}, m32} : { {( 3) {m32[6]}}
 assign pre_33 = (convtype == M3x3) ? { {(12) {m33[6]}}, m33} : {              m33, 12'b000000000000 };
 
 
-carry_save_adder #(
-  .N(9),  // 2; // 3; // 4; // 5; // 6; // 7; // 8; 9 ... 15; // 16 17 25; // 49; //64; //128; //256;  3+ number of busses 
-  .E(3),  // 0; // 1; // 2; // 2; // 2; // 2; // 3; 3 ...  3; // 4; 4  4;  // 6 ; // 6; //  7; //  8; bit extention ( N=9 -> E=3, N=25 -> E=4)
-  .W(19)  //    input data width
-)
-csa_1
-(
-  .a   ( {pre_11, pre_12, pre_13, pre_21, pre_22, pre_23, pre_31, pre_32, pre_33 } ), 
-  .sum ( csa_s ), 
-  .cout( csa_c )
-);
+//carry_save_adder #(
+//  .N(9),  // 2; // 3; // 4; // 5; // 6; // 7; // 8; 9 ... 15; // 16 17 25; // 49; //64; //128; //256;  3+ number of busses 
+//  .E(3),  // 0; // 1; // 2; // 2; // 2; // 2; // 3; 3 ...  3; // 4; 4  4;  // 6 ; // 6; //  7; //  8; bit extention ( N=9 -> E=3, N=25 -> E=4)
+//  .W(19)  //    input data width
+//)
+//csa_1
+//(
+//  .a   ( {pre_11, pre_12, pre_13, pre_21, pre_22, pre_23, pre_31, pre_32, pre_33 } ), 
+//  .sum ( csa_s ), 
+//  .cout( csa_c )
+//);
 
+//assign mul1 = csa_s + csa_c;
 
-//assign mul1 = {csa_s[22],csa_s} + {csa_c[2],csa_c};
-assign mul1 = csa_s + csa_c;
+assign mul1[15:0] = pre_11[15:0] + 
+                    pre_12[15:0] + 
+                    pre_13[15:0] + 
+                    pre_21[15:0] + 
+                    pre_22[15:0] + 
+                    pre_23[15:0] + 
+                    pre_31[15:0] + 
+                    pre_32[15:0] + 
+                    pre_33[15:0] ;
 
 always @(posedge clk)
  begin
